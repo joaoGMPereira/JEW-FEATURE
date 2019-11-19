@@ -1,5 +1,5 @@
 //
-//  INVSFloatingTextFieldType.swift
+//  JEWFloatingTextFieldType.swift
 //  InvestScopio_Example
 //
 //  Created by Joao Medeiros Pereira on 13/05/19.
@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-enum INVSFloatingTextFieldType: Int {
+enum JEWFloatingTextFieldType: Int {
     
     case initialValue = 0
     case monthValue
@@ -22,8 +22,8 @@ enum INVSFloatingTextFieldType: Int {
     case password
     case confirmPassword
     
-    func setupTextField(withTextField textfield: INVSFloatingTextField,keyboardType: UIKeyboardType = .numberPad, andDelegate delegate: INVSFloatingTextFieldDelegate, valueTypeTextField: INVSFloatingTextFieldValueType, isRequired: Bool = false, hasInfoButton: Bool = false, leftButtons: [INVSKeyboardToolbarButton] = [.cancel]) {
-        textfield.setup(placeholder: self.getTextFieldTitle(), typeTextField: self, valueTypeTextField: valueTypeTextField, keyboardType: keyboardType, required: isRequired, hasInfoButton: hasInfoButton, color: UIColor.INVSDefault(), leftButtons: leftButtons)
+    func setupTextField(withTextField textfield: JEWFloatingTextField,keyboardType: UIKeyboardType = .numberPad, andDelegate delegate: JEWFloatingTextFieldDelegate, valueTypeTextField: JEWFloatingTextFieldValueType, isRequired: Bool = false, hasInfoButton: Bool = false, leftButtons: [JEWKeyboardToolbarButton] = [.cancel]) {
+        textfield.setup(placeholder: self.getTextFieldTitle(), typeTextField: self, valueTypeTextField: valueTypeTextField, keyboardType: keyboardType, required: isRequired, hasInfoButton: hasInfoButton, color: UIColor.JEWDefault(), leftButtons: leftButtons)
         textfield.delegate = delegate
     }
     
@@ -103,12 +103,12 @@ enum INVSFloatingTextFieldType: Int {
         }
     }
     
-    func getNext(allTextFields: [INVSFloatingTextField]) -> INVSFloatingTextField? {
+    func getNext(allTextFields: [JEWFloatingTextField]) -> JEWFloatingTextField? {
         return allTextFields.filter({$0.typeTextField == self.next()}).first
     }
     
-    func next() -> INVSFloatingTextFieldType? {
-        return INVSFloatingTextFieldType(rawValue: rawValue + 1)
+    func next() -> JEWFloatingTextFieldType? {
+        return JEWFloatingTextFieldType(rawValue: rawValue + 1)
     }
     
     static func defaultErrorTitle() -> String {

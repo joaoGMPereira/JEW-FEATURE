@@ -9,14 +9,14 @@
 import UIKit
 import Lottie
 
-class INVSPresentBaseViewController: UIViewController {
+class JEWPresentBaseViewController: UIViewController {
     var navigationBarView = UIView()
     var navigationBarTitle = "Simulação" {
         didSet {
             navigationBarLabel.text = navigationBarTitle
         }
     }
-    var navigationBarTitleColor : UIColor = .INVSBlack() {
+    var navigationBarTitleColor : UIColor = .JEWBlack() {
         didSet {
             navigationBarLabel.textColor = navigationBarTitleColor
         }
@@ -42,7 +42,7 @@ class INVSPresentBaseViewController: UIViewController {
             topNavigationBarConstraint.constant = view.safeAreaInsets.top
             UIView.animate(withDuration: 1.6) {
                 self.view.layoutIfNeeded()
-                self.shadowLayer = CAShapeLayer.addCorner(withShapeLayer: self.shadowLayer, withCorners: [.topLeft, .topRight, .bottomLeft, .bottomRight], withRoundedCorner: 1, andColor: .INVSLightGray(), inView: self.navigationBarView)
+                self.shadowLayer = CAShapeLayer.addCorner(withShapeLayer: self.shadowLayer, withCorners: [.topLeft, .topRight, .bottomLeft, .bottomRight], withRoundedCorner: 1, andColor: .JEWLightGray(), inView: self.navigationBarView)
             }
     }
     
@@ -69,7 +69,7 @@ class INVSPresentBaseViewController: UIViewController {
 
 }
 
-extension INVSPresentBaseViewController {
+extension JEWPresentBaseViewController {
     private func buildViewHierarchy() {
         view.addSubview(navigationBarView)
         navigationBarView.addSubview(contentView)
@@ -122,17 +122,17 @@ extension INVSPresentBaseViewController {
     
     private func setupAdditionalConfiguration() {
         if let closeImage = UIImage.init(named: "closeIconWhite") {
-            closeButton.tintColor = .INVSBlack()
+            closeButton.tintColor = .JEWBlack()
             closeButton.setImage(closeImage, for: .normal)
         } else {
-            let closeTitle = NSAttributedString.init(string: "X", attributes: [NSAttributedString.Key.font : UIFont.INVSFontDefault(),NSAttributedString.Key.foregroundColor:UIColor.INVSBlack()])
+            let closeTitle = NSAttributedString.init(string: "X", attributes: [NSAttributedString.Key.font : UIFont.JEWFontDefault(),NSAttributedString.Key.foregroundColor:UIColor.JEWBlack()])
             closeButton.setAttributedTitle(closeTitle, for: .normal)
         }
-        closeButton.addTarget(self, action: #selector(INVSPresentBaseViewController.dismissViewController), for: .touchUpInside)
+        closeButton.addTarget(self, action: #selector(JEWPresentBaseViewController.dismissViewController), for: .touchUpInside)
         navigationBarLabel.text = navigationBarTitle
-        navigationBarLabel.textColor = .INVSBlack()
-        view.backgroundColor = .INVSGray()
-        navigationBarView.backgroundColor = .INVSLightGray()
+        navigationBarLabel.textColor = .JEWBlack()
+        view.backgroundColor = .JEWGray()
+        navigationBarView.backgroundColor = .JEWLightGray()
         let starAnimation = Animation.named("animatedLoadingPurple")
         animatedLogoView.animation = starAnimation
         animatedLogoView.contentMode = .scaleAspectFit

@@ -1,5 +1,5 @@
 //
-//  NSAttributedString+INVSExtension.swift
+//  NSAttributedString+JEWExtension.swift
 //  InvestScopio
 //
 //  Created by Joao Medeiros Pereira on 02/06/19.
@@ -12,19 +12,19 @@ import UIKit
 extension NSAttributedString {
     
     static func title(withText text: String) -> NSAttributedString {
-        return set(withText: text, andFont: UIFont.INVSTitle())
+        return set(withText: text, andFont: UIFont.JEWTitle())
     }
     
     static func titleBold(withText text: String) -> NSAttributedString {
-        return set(withText: text, andFont: UIFont.INVSTitleBold())
+        return set(withText: text, andFont: UIFont.JEWTitleBold())
     }
     
     static func subtitle(withText text: String) -> NSAttributedString {
-        return set(withText: text, andFont: UIFont.INVSSubtitle())
+        return set(withText: text, andFont: UIFont.JEWSubtitle())
     }
     
     static func subtitleBold(withText text: String) -> NSAttributedString {
-        return set(withText: text, andFont: UIFont.INVSSubtitleBold())
+        return set(withText: text, andFont: UIFont.JEWSubtitleBold())
     }
     
     static func set(withText text: String, andFont font:UIFont) -> NSAttributedString {

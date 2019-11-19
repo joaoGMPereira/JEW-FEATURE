@@ -1,5 +1,5 @@
 //
-//  INVSPopupMessage.swift
+//  JEWPopupMessage.swift
 //  InvestScopio
 //
 //  Created by Joao Medeiros Pereira on 13/05/19.
@@ -8,11 +8,11 @@
 import Foundation
 import UIKit
 
-protocol INVSPopupMessageDelegate {
-    func didFinishDismissPopupMessage(withPopupMessage popupMessage:INVSPopupMessage)
+protocol JEWPopupMessageDelegate {
+    func didFinishDismissPopupMessage(withPopupMessage popupMessage:JEWPopupMessage)
 }
 
-class INVSPopupMessage: UIView {
+class JEWPopupMessage: UIView {
     
     private let defaultHeight = CGFloat(60)
     private var size = CGSize()
@@ -23,8 +23,8 @@ class INVSPopupMessage: UIView {
     private var popupWidth = CGFloat(200)
     private var shadowLayer: CAShapeLayer?
     private var timerToHide = Timer()
-    private var messageColor: UIColor = INVSPopupMessageType.error.messageColor()
-    private var popupBackgroundColor: UIColor = INVSPopupMessageType.error.backgroundColor()
+    private var messageColor: UIColor = JEWPopupMessageType.error.messageColor()
+    private var popupBackgroundColor: UIColor = JEWPopupMessageType.error.backgroundColor()
     private var heightLabelConstraint = NSLayoutConstraint()
     private var parentViewController = UIViewController()
     private var sender: UIView?
@@ -32,8 +32,8 @@ class INVSPopupMessage: UIView {
     private var messageAttributed = NSMutableAttributedString()
     var textMessageLabel = UILabel()
     var closeButton = UIButton()
-    var delegate: INVSPopupMessageDelegate?
-    var popupType: INVSPopupMessageType = .alert
+    var delegate: JEWPopupMessageDelegate?
+    var popupType: JEWPopupMessageType = .alert
     
     
     init(parentViewController:UIViewController) {
@@ -60,7 +60,7 @@ class INVSPopupMessage: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func show(withTextMessage message:String, title:String = "", popupType: INVSPopupMessageType = .error, shouldHideAutomatically: Bool = true, sender: UIView? = nil) {
+    func show(withTextMessage message:String, title:String = "", popupType: JEWPopupMessageType = .error, shouldHideAutomatically: Bool = true, sender: UIView? = nil) {
         if let shadowLayer = self.shadowLayer {
             shadowLayer.removeFromSuperlayer()
         }
@@ -81,7 +81,7 @@ class INVSPopupMessage: UIView {
         showPopup(sender: sender)
     }
     
-    func show(withAttributedMessage message:String, title:String = "", popupType: INVSPopupMessageType = .error, shouldHideAutomatically: Bool = true, sender: UIView? = nil) {
+    func show(withAttributedMessage message:String, title:String = "", popupType: JEWPopupMessageType = .error, shouldHideAutomatically: Bool = true, sender: UIView? = nil) {
         if let shadowLayer = self.shadowLayer {
             shadowLayer.removeFromSuperlayer()
         }
@@ -103,8 +103,8 @@ class INVSPopupMessage: UIView {
     
     private func setupMessageAttributed(withTextMessage message:String, title:String) {
         messageAttributed = NSMutableAttributedString()
-        let titleAttributed = NSAttributedString.init(string: title, attributes: [NSAttributedString.Key.font : UIFont.INVSFontBigBold()])
-        let textMessageAttributed = NSAttributedString.init(string: message, attributes: [NSAttributedString.Key.font : UIFont.INVSFontDefault()])
+        let titleAttributed = NSAttributedString.init(string: title, attributes: [NSAttributedString.Key.font : UIFont.JEWFontBigBold()])
+        let textMessageAttributed = NSAttributedString.init(string: message, attributes: [NSAttributedString.Key.font : UIFont.JEWFontDefault()])
         messageAttributed.append(titleAttributed)
         messageAttributed.append(textMessageAttributed)
         
@@ -118,7 +118,7 @@ class INVSPopupMessage: UIView {
             closeButton.setImage(closeImage, for: .normal)
         } else {
             closeButton.setTitleColor(messageColor, for: .normal)
-            let closeTitle = NSAttributedString.init(string: "X", attributes: [NSAttributedString.Key.font : UIFont.INVSFontDefault(),NSAttributedString.Key.foregroundColor:messageColor])
+            let closeTitle = NSAttributedString.init(string: "X", attributes: [NSAttributedString.Key.font : UIFont.JEWFontDefault(),NSAttributedString.Key.foregroundColor:messageColor])
             closeButton.setAttributedTitle(closeTitle, for: .normal)
         }
         if shadowLayer != nil {
@@ -131,7 +131,7 @@ class INVSPopupMessage: UIView {
         let buttonWidth: CGFloat = 30
         popupWidth = parentViewController.view.frame.width * 0.9
         let textMessageWidth = popupWidth - paddings - buttonWidth
-        let estimatedPopupHeight = messageAttributed.string.height(withConstrainedWidth: textMessageWidth, font: .INVSFontBigBold())
+        let estimatedPopupHeight = messageAttributed.string.height(withConstrainedWidth: textMessageWidth, font: .JEWFontBigBold())
         popupHeight = defaultHeight
         if estimatedPopupHeight > defaultHeight {
             popupHeight = estimatedPopupHeight
@@ -151,7 +151,7 @@ class INVSPopupMessage: UIView {
 
         }) { (finished) in
             if self.shouldHideAutomatically {
-                self.timerToHide = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(INVSPopupMessage.hide), userInfo: nil, repeats: false)
+                self.timerToHide = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(JEWPopupMessage.hide), userInfo: nil, repeats: false)
             }
         }
     }
@@ -170,7 +170,7 @@ class INVSPopupMessage: UIView {
     }
 }
 
-extension INVSPopupMessage: INVSCodeView {
+extension JEWPopupMessage: JEWCodeView {
     func buildViewHierarchy() {
         self.addSubview(textMessageLabel)
         self.addSubview(closeButton)
@@ -195,7 +195,7 @@ extension INVSPopupMessage: INVSCodeView {
     }
     
     func setupAdditionalConfiguration() {
-        closeButton.addTarget(self, action: #selector(INVSPopupMessage.hide), for: .touchUpInside)
+        closeButton.addTarget(self, action: #selector(JEWPopupMessage.hide), for: .touchUpInside)
         textMessageLabel.textColor = messageColor
         textMessageLabel.textAlignment = .left
         textMessageLabel.numberOfLines = 0

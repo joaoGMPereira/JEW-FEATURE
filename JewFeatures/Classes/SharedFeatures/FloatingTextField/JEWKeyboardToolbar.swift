@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-enum INVSKeyboardToolbarButton: Int {
+enum JEWKeyboardToolbarButton: Int {
     
     case ok = 0
     case cancel
@@ -26,23 +26,23 @@ enum INVSKeyboardToolbarButton: Int {
         case .back:
             button = UIBarButtonItem(title: "Voltar", style: .plain, target: target, action: action)
         }
-        button.tintColor = .INVSDefault()
+        button.tintColor = .JEWDefault()
         button.tag = rawValue
         return button
     }
     
-    static func detectType(barButton: UIBarButtonItem) -> INVSKeyboardToolbarButton? {
-        return INVSKeyboardToolbarButton(rawValue: barButton.tag)
+    static func detectType(barButton: UIBarButtonItem) -> JEWKeyboardToolbarButton? {
+        return JEWKeyboardToolbarButton(rawValue: barButton.tag)
     }
 }
 
-protocol INVSKeyboardToolbarDelegate: class {
-    func keyboardToolbar(button: UIBarButtonItem, type: INVSKeyboardToolbarButton, tappedIn toolbar: INVSKeyboardToolbar)
+protocol JEWKeyboardToolbarDelegate: class {
+    func keyboardToolbar(button: UIBarButtonItem, type: JEWKeyboardToolbarButton, tappedIn toolbar: JEWKeyboardToolbar)
 }
 
-class INVSKeyboardToolbar: UIToolbar {
+class JEWKeyboardToolbar: UIToolbar {
     
-    weak var toolBarDelegate: INVSKeyboardToolbarDelegate?
+    weak var toolBarDelegate: JEWKeyboardToolbarDelegate?
     
     init() {
         super.init(frame: .zero)
@@ -52,7 +52,7 @@ class INVSKeyboardToolbar: UIToolbar {
         isUserInteractionEnabled = true
     }
     
-    func setup(leftButtons: [INVSKeyboardToolbarButton] = [INVSKeyboardToolbarButton](), rightButtons: [INVSKeyboardToolbarButton] = [INVSKeyboardToolbarButton]()) {
+    func setup(leftButtons: [JEWKeyboardToolbarButton] = [JEWKeyboardToolbarButton](), rightButtons: [JEWKeyboardToolbarButton] = [JEWKeyboardToolbarButton]()) {
 
         let leftBarButtons = leftButtons.map { (item) -> UIBarButtonItem in
             return item.createButton(target: self, action: #selector(buttonTapped))
@@ -71,7 +71,7 @@ class INVSKeyboardToolbar: UIToolbar {
     }
     
     @objc func buttonTapped(sender: UIBarButtonItem) {
-        if let type = INVSKeyboardToolbarButton.detectType(barButton: sender) {
+        if let type = JEWKeyboardToolbarButton.detectType(barButton: sender) {
             toolBarDelegate?.keyboardToolbar(button: sender, type: type, tappedIn: self)
         }
     }

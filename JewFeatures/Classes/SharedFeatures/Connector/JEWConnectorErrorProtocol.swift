@@ -1,5 +1,5 @@
 //
-//  INVSConnectorErrorProtocol.swift
+//  JEWConnectorErrorProtocol.swift
 //  InvestScopio
 //
 //  Created by Joao Medeiros Pereira on 02/07/19.
@@ -9,7 +9,7 @@
 import Foundation
 
 protocol JEWConnectorErrorProtocol {
-    func displayErrorDefault(titleError: String, messageError:String, shouldHideAutomatically: Bool, popupType: INVSPopupMessageType)
+    func displayErrorDefault(titleError: String, messageError:String, shouldHideAutomatically: Bool, popupType: JEWPopupMessageType)
     func displayErrorAuthentication(titleError: String, messageError: String, shouldRetry: Bool)
     func displayErrorSettings(titleError: String, messageError: String)
     func displayErrorLogout(titleError: String, messageError: String)

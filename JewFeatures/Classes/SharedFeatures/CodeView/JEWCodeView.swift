@@ -8,14 +8,14 @@
 
 import Foundation
 
-protocol INVSCodeView: class {
+protocol JEWCodeView: class {
     func buildViewHierarchy()
     func setupConstraints()
     func setupAdditionalConfiguration()
     func setupView()
 }
 
-extension INVSCodeView {
+extension JEWCodeView {
     func setupView() {
         buildViewHierarchy()
         setupConstraints()

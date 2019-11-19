@@ -1,5 +1,5 @@
 //
-//  INVSBiometricsHelpers.swift
+//  JEWBiometricsHelpers.swift
 //  InvestScopio
 //
 //  Created by Joao Medeiros Pereira on 22/06/19.
@@ -78,7 +78,7 @@ public enum AuthenticationError {
     
     // get error message based on type
     public func message() -> String {
-        let authentication = INVSBiometrics.shared
+        let authentication = JEWBiometrics.shared
         
         switch self {
         case .canceledByUser, .fallback, .canceledBySystem:

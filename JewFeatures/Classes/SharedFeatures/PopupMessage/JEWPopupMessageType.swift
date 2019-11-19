@@ -1,5 +1,5 @@
 //
-//  INVSPopupMessageType.swift
+//  JEWPopupMessageType.swift
 //  InvestScopio
 //
 //  Created by Joao Medeiros Pereira on 21/05/19.
@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-enum INVSPopupMessageType: Int {
+enum JEWPopupMessageType: Int {
     case error = 0
     case alert
     
@@ -24,9 +24,9 @@ enum INVSPopupMessageType: Int {
     func backgroundColor() -> UIColor {
         switch self {
         case .error:
-            return .INVSRed()
+            return .JEWRed()
         case .alert:
-            return .INVSDefault()
+            return .JEWDefault()
         }
     }
 }

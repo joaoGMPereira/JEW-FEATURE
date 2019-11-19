@@ -1,5 +1,5 @@
 //
-//  INVSConnectorHelpers.swift
+//  JEWConnectorHelpers.swift
 //  InvestScopio
 //
 //  Created by Joao Medeiros Pereira on 22/06/19.
@@ -23,23 +23,23 @@ enum ConnectorRoutes {
     func getRoute() -> URL? {
         switch self {
         case .signup:
-            return INVSConector.getURL(withRoute: "/account/sign-up")
+            return JEWConnector.getURL(withRoute: "/account/sign-up")
         case .signin:
-            return INVSConector.getURL(withRoute: "/account/sign-in")
+            return JEWConnector.getURL(withRoute: "/account/sign-in")
         case .logout:
-            return INVSConector.getURL(withRoute: "/account/logout")
+            return JEWConnector.getURL(withRoute: "/account/logout")
         case .simulation:
-            return INVSConector.getURL(withRoute: "/simulation/simulator")
+            return JEWConnector.getURL(withRoute: "/simulation/simulator")
         case .userSimulations:
-            return INVSConector.getURL(withRoute: "/simulation/simulations")
+            return JEWConnector.getURL(withRoute: "/simulation/simulations")
         case .deleteSimulation:
-            return INVSConector.getURL(withRoute: "/simulation/delete")
+            return JEWConnector.getURL(withRoute: "/simulation/delete")
         case .deleteAllSimulations:
-            return INVSConector.getURL(withRoute: "/simulation/deleteAll")
+            return JEWConnector.getURL(withRoute: "/simulation/deleteAll")
         case .evaluate:
-            return INVSConector.getURL(withRoute: "/evaluation/evaluate")
+            return JEWConnector.getURL(withRoute: "/evaluation/evaluate")
         case .refreshToken:
-            return INVSConector.getURL(withRoute: "/account/refresh-token")
+            return JEWConnector.getURL(withRoute: "/account/refresh-token")
         }
     }
 }
@@ -60,7 +60,7 @@ struct ConnectorError {
     let shouldRetry: Bool
     
     
-    init(error: ConnectorErrorType = .none, title: String = INVSFloatingTextFieldType.defaultErrorTitle(), message: String = INVSFloatingTextFieldType.defaultErrorMessage(), shouldRetry: Bool = false) {
+    init(error: ConnectorErrorType = .none, title: String = JEWFloatingTextFieldType.defaultErrorTitle(), message: String = JEWFloatingTextFieldType.defaultErrorMessage(), shouldRetry: Bool = false) {
         self.error = error
         self.title = title
         self.message = message
@@ -72,7 +72,7 @@ struct ApiError: Decodable {
     var error: Bool = true
     let reason: String
     static func `default`() -> ApiError {
-        return ApiError(error: true, reason: INVSFloatingTextFieldType.defaultErrorMessage())
+        return ApiError(error: true, reason: JEWFloatingTextFieldType.defaultErrorMessage())
     }
 }
 
@@ -92,7 +92,7 @@ class JEWConnectorHelpers: NSObject {
     }
     
     static func presentErrorRememberedUserLogged(lastViewController: UIViewController, finishCompletion:@escaping(FinishResponse)) {
-        let errorViewController = setupAlertController(lastViewController: lastViewController, message: INVSConstants.RefreshErrors.message.rawValue, title: INVSConstants.RefreshErrors.title.rawValue)
+        let errorViewController = setupAlertController(lastViewController: lastViewController, message: JEWConstants.RefreshErrors.message.rawValue, title: JEWConstants.RefreshErrors.title.rawValue)
         errorViewController.confirmCallback = { (button) -> () in
             errorViewController.dismiss(animated: true) {
                 finishCompletion()
@@ -113,7 +113,7 @@ class JEWConnectorHelpers: NSObject {
         }
     }
     
-    static func presentErrorGoToSettingsRememberedUserLogged(lastViewController: UIViewController, message: String, title: String = INVSConstants.StartAlertViewController.title.rawValue, finishCompletion:@escaping(FinishResponse)) {
+    static func presentErrorGoToSettingsRememberedUserLogged(lastViewController: UIViewController, message: String, title: String = JEWConstants.StartAlertViewController.title.rawValue, finishCompletion:@escaping(FinishResponse)) {
         let errorViewController = setupAlertController(lastViewController: lastViewController, message: message, title: title)
         errorViewController.confirmCallback = { (button) -> () in
             errorViewController.dismiss(animated: true) {

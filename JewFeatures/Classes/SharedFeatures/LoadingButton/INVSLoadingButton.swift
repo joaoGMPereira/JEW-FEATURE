@@ -1,5 +1,5 @@
 //
-//  INVSLoadingButton.swift
+//  JEWLoadingButton.swift
 //  InvestScopio
 //
 //  Created by Joao Medeiros Pereira on 14/06/19.
@@ -9,15 +9,16 @@
 import Foundation
 import UIKit
 import Lottie
+import SkeletonView
 
-class INVSLoadingButton: UIView {
+class JEWLoadingButton: UIView {
     let button = UIButton(frame: .zero)
     let loadingView = AnimationView()
     var buttonAction: ((_ button: UIButton) -> ())?
     var buttonTitle = ""
     var loadingJson = ""
     
-    func setupFill(withColor color: UIColor = UIColor.INVSDefault(), title: String, andRounded isRounded: Bool = true) {
+    func setupFill(withColor color: UIColor = UIColor.JEWDefault(), title: String, andRounded isRounded: Bool = true) {
         loadingJson = "animatedLoadingWhite"
         setupView()
         buttonTitle = title
@@ -27,7 +28,7 @@ class INVSLoadingButton: UIView {
         
     }
     
-    func setupFillGradient(withColor colors: [CGColor] = UIColor.INVSGradientColors(), title: String, andRounded isRounded: Bool = true) {
+    func setupFillGradient(withColor colors: [CGColor] = UIColor.JEWGradientColors(), title: String, andRounded isRounded: Bool = true) {
         loadingJson = "animatedLoadingWhite"
         setupView()
         buttonTitle = title
@@ -36,7 +37,7 @@ class INVSLoadingButton: UIView {
         let _ = CAShapeLayer.addGradientLayer(withGradientLayer: nil, inView: button, withColorsArr: colors, withRoundedCorner: isRounded ? button.frame.height/2 : 0)
     }
     
-    func setupBorded(withColor color: UIColor = UIColor.INVSDefault(), title: String, andRounded isRounded: Bool = true) {
+    func setupBorded(withColor color: UIColor = UIColor.JEWDefault(), title: String, andRounded isRounded: Bool = true) {
         loadingJson = "animatedLoadingPurple"
         setupView()
         buttonTitle = title
@@ -65,9 +66,6 @@ class INVSLoadingButton: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        if isSkeletonActive {
-            layoutSkeletonIfNeeded()
-        }
     }
     
     func showLoading() {
@@ -92,7 +90,7 @@ class INVSLoadingButton: UIView {
     }
 }
 
-extension INVSLoadingButton: INVSCodeView {
+extension JEWLoadingButton: JEWCodeView {
     func buildViewHierarchy() {
         self.addSubview(button)
         self.addSubview(loadingView)

@@ -1,5 +1,5 @@
 //
-//  INVSFloatingTextFieldValueType.swift
+//  JEWFloatingTextFieldValueType.swift
 //  InvestEx_Example
 //
 //  Created by Joao Medeiros Pereira on 12/05/19.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum INVSFloatingTextFieldValueType: Int {
+enum JEWFloatingTextFieldValueType: Int {
     
     case none = 0
     case currency

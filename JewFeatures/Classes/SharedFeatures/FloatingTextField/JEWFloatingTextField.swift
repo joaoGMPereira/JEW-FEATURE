@@ -9,20 +9,20 @@
 import Foundation
 import UIKit
 
-protocol INVSFloatingTextFieldDelegate: class {
-    func infoButtonAction(_ textField: INVSFloatingTextField)
-    func toolbarAction(_ textField: INVSFloatingTextField, typeOfAction type: INVSKeyboardToolbarButton)
-    func textFieldDidBeginEditing(_ textField: INVSFloatingTextField)
+protocol JEWFloatingTextFieldDelegate: class {
+    func infoButtonAction(_ textField: JEWFloatingTextField)
+    func toolbarAction(_ textField: JEWFloatingTextField, typeOfAction type: JEWKeyboardToolbarButton)
+    func textFieldDidBeginEditing(_ textField: JEWFloatingTextField)
 }
 
-class INVSFloatingTextField: UIView {
+class JEWFloatingTextField: UIView {
     let floatingTextField = UITextField(frame: .zero)
     let placeholderLabel = UILabel(frame: .zero)
     let bottomLineView = UIView(frame: .zero)
     let infoButton = UIButton.init(type: .infoLight)
-    var delegate: INVSFloatingTextFieldDelegate?
+    var delegate: JEWFloatingTextFieldDelegate?
     
-    var typeTextField: INVSFloatingTextFieldType?
+    var typeTextField: JEWFloatingTextFieldType?
     var required: Bool = false
     var hasInfoButton: Bool = false {
         didSet {
@@ -44,7 +44,7 @@ class INVSFloatingTextField: UIView {
         }
     }
     
-    private var valueTypeTextField: INVSFloatingTextFieldValueType = .currency
+    private var valueTypeTextField: JEWFloatingTextFieldValueType = .currency
     private var selectedColor = UIColor.lightGray
     private var currentlySelectedColor = UIColor.lightGray
     private var smallFont = UIFont.systemFont(ofSize: 11)
@@ -64,7 +64,7 @@ class INVSFloatingTextField: UIView {
         setupView()
     }
     
-    func setup(placeholder: String,typeTextField: INVSFloatingTextFieldType?, valueTypeTextField: INVSFloatingTextFieldValueType? = nil,keyboardType: UIKeyboardType = .numberPad , required: Bool = false, hasInfoButton: Bool = false, color: UIColor, smallFont: UIFont = UIFont.systemFont(ofSize: 11), bigFont: UIFont = UIFont.systemFont(ofSize: 16), leftButtons: [INVSKeyboardToolbarButton] = [INVSKeyboardToolbarButton.cancel], rightButtons: [INVSKeyboardToolbarButton] = [INVSKeyboardToolbarButton.ok]) {
+    func setup(placeholder: String,typeTextField: JEWFloatingTextFieldType?, valueTypeTextField: JEWFloatingTextFieldValueType? = nil,keyboardType: UIKeyboardType = .numberPad , required: Bool = false, hasInfoButton: Bool = false, color: UIColor, smallFont: UIFont = UIFont.systemFont(ofSize: 11), bigFont: UIFont = UIFont.systemFont(ofSize: 16), leftButtons: [JEWKeyboardToolbarButton] = [JEWKeyboardToolbarButton.cancel], rightButtons: [JEWKeyboardToolbarButton] = [JEWKeyboardToolbarButton.ok]) {
         placeholderLabel.text = placeholder
         floatingTextField.keyboardType = keyboardType
         self.typeTextField = typeTextField
@@ -84,8 +84,8 @@ class INVSFloatingTextField: UIView {
         setToolbar(leftButtons: leftButtons, rightButtons: rightButtons)
     }
     
-    func setToolbar(leftButtons: [INVSKeyboardToolbarButton], rightButtons: [INVSKeyboardToolbarButton]) {
-        let toolbar = INVSKeyboardToolbar()
+    func setToolbar(leftButtons: [JEWKeyboardToolbarButton], rightButtons: [JEWKeyboardToolbarButton]) {
+        let toolbar = JEWKeyboardToolbar()
         toolbar.toolBarDelegate = self
         toolbar.setup(leftButtons: leftButtons, rightButtons: rightButtons)
         floatingTextField.inputAccessoryView = toolbar
@@ -95,7 +95,7 @@ class INVSFloatingTextField: UIView {
         currentlySelectedColor = selectedColor
         placeholderLabel.text = placeholderLabel.text?.replacingOccurrences(of: "*", with: "")
         if hasError {
-            currentlySelectedColor = .INVSRed()
+            currentlySelectedColor = .JEWRed()
             placeholderLabel.text = "\(placeholderLabel.text ?? "")*"
         }
         placeholderLabel.textColor = currentlySelectedColor
@@ -107,7 +107,7 @@ class INVSFloatingTextField: UIView {
         if hasInfoButton {
             addSubview(infoButton)
             infoButton.translatesAutoresizingMaskIntoConstraints = false
-            infoButton.tintColor = .INVSDefault()
+            infoButton.tintColor = .JEWDefault()
             infoButton.addTarget(self, action: #selector(infoButtonTapped(_:)), for: .touchUpInside)
             let size = frame.height * 0.8
             NSLayoutConstraint.activate([
@@ -126,7 +126,7 @@ class INVSFloatingTextField: UIView {
     
 }
 
-extension INVSFloatingTextField: INVSCodeView {
+extension JEWFloatingTextField: JEWCodeView {
     func buildViewHierarchy() {
         addSubview(floatingTextField)
         addSubview(placeholderLabel)
@@ -175,13 +175,13 @@ extension INVSFloatingTextField: INVSCodeView {
     }
 }
 
-extension INVSFloatingTextField: UITextFieldDelegate, INVSKeyboardToolbarDelegate {
+extension JEWFloatingTextField: UITextFieldDelegate, JEWKeyboardToolbarDelegate {
     
     @objc func infoButtonTapped(_ sender: UIButton) {
         self.delegate?.infoButtonAction(self)
     }
     
-    func keyboardToolbar(button: UIBarButtonItem, type: INVSKeyboardToolbarButton, tappedIn toolbar: INVSKeyboardToolbar) {
+    func keyboardToolbar(button: UIBarButtonItem, type: JEWKeyboardToolbarButton, tappedIn toolbar: JEWKeyboardToolbar) {
         self.delegate?.toolbarAction(self, typeOfAction: type)
     }
     

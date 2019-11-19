@@ -1,5 +1,5 @@
 //
-//  INVSBiometrics.swift
+//  JEWBiometrics.swift
 //  InvestScopio
 //
 //  Created by Joao Medeiros Pereira on 21/06/19.
@@ -13,8 +13,8 @@ public typealias AuthenticationSuccess = (() -> ())
 public typealias AuthenticationFailure = ((AuthenticationError) -> ())
 
 
-class INVSBiometrics: NSObject {
-    public static let shared = INVSBiometrics()
+class JEWBiometrics: NSObject {
+    public static let shared = JEWBiometrics()
     
     class func canAuthenticate() -> Bool {
         
@@ -28,7 +28,7 @@ class INVSBiometrics: NSObject {
     }
     
     class func authenticateWithBiometrics(reason: String, fallbackTitle: String? = "", cancelTitle: String? = "", success successBlock:@escaping AuthenticationSuccess, failure failureBlock:@escaping AuthenticationFailure) {
-        let reasonString = reason.isEmpty ? INVSBiometrics.shared.defaultBiometricsAuthenticationReason() : reason
+        let reasonString = reason.isEmpty ? JEWBiometrics.shared.defaultBiometricsAuthenticationReason() : reason
         
         let context = LAContext()
         context.localizedFallbackTitle = fallbackTitle
@@ -39,17 +39,17 @@ class INVSBiometrics: NSObject {
         }
         
         // authenticate
-        INVSBiometrics.shared.evaluate(policy: LAPolicy.deviceOwnerAuthenticationWithBiometrics, with: context, reason: reasonString, success: successBlock, failure: failureBlock)
+        JEWBiometrics.shared.evaluate(policy: LAPolicy.deviceOwnerAuthenticationWithBiometrics, with: context, reason: reasonString, success: successBlock, failure: failureBlock)
     }
     
     class func authenticateWithPasscode(reason: String, cancelTitle: String? = "", success successBlock:@escaping AuthenticationSuccess, failure failureBlock:@escaping AuthenticationFailure) {
-        let reasonString = reason.isEmpty ? INVSBiometrics.shared.defaultPasscodeAuthenticationReason() : reason
+        let reasonString = reason.isEmpty ? JEWBiometrics.shared.defaultPasscodeAuthenticationReason() : reason
         
         let context = LAContext()
         context.localizedCancelTitle = cancelTitle
         
         // authenticate
-        INVSBiometrics.shared.evaluate(policy: LAPolicy.deviceOwnerAuthentication, with: context, reason: reasonString, success: successBlock, failure: failureBlock)
+        JEWBiometrics.shared.evaluate(policy: LAPolicy.deviceOwnerAuthentication, with: context, reason: reasonString, success: successBlock, failure: failureBlock)
     }
     
     public func faceIDAvailable() -> Bool {
@@ -82,9 +82,9 @@ class INVSBiometrics: NSObject {
 public typealias FailureChallenge = ((_ challengeErrorType: ChallengeFailureType) -> ())
 public typealias SuccessChallenge = (() -> ())
 
-class INVSBiometricsChallenge: NSObject {
+class JEWBiometricsChallenge: NSObject {
     static func checkLoggedUser(reason: String = "", successChallenge: @escaping(SuccessChallenge), failureChallenge: @escaping(FailureChallenge)) {
-        let hasBiometricAuthenticationEnabled = INVSKeyChainWrapper.retrieveBool(withKey: INVSConstants.LoginKeyChainConstants.hasEnableBiometricAuthentication.rawValue)
+        let hasBiometricAuthenticationEnabled = JEWKeyChainWrapper.retrieveBool(withKey: JEWConstants.LoginKeyChainConstants.hasEnableBiometricAuthentication.rawValue)
         if let hasBiometricAuthentication = hasBiometricAuthenticationEnabled, hasBiometricAuthentication == true {
             showTouchId(reason: reason,successChallenge: {
                 successChallenge()
@@ -98,7 +98,7 @@ class INVSBiometricsChallenge: NSObject {
     
     static func showTouchId(reason: String = "", successChallenge: @escaping(SuccessChallenge), failureChallenge: @escaping(FailureChallenge)) {
         // start authentication
-        INVSBiometrics.authenticateWithBiometrics(reason: reason, success: {
+        JEWBiometrics.authenticateWithBiometrics(reason: reason, success: {
             // authentication successful
             successChallenge()
         }, failure: { (error) in
@@ -135,7 +135,7 @@ class INVSBiometricsChallenge: NSObject {
     // show passcode authentication
     static func showPasscodeAuthentication(message: String, successChallenge: @escaping(SuccessChallenge), failureChallenge: @escaping(FailureChallenge)) {
         
-        INVSBiometrics.authenticateWithPasscode(reason: message, success: {
+        JEWBiometrics.authenticateWithPasscode(reason: message, success: {
             // passcode authentication success
             successChallenge()
         }) { (error) in
