@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'JewFeatures_Example' do
+  pod 'JewFeatures', :path => '../'
+
+  target 'JewFeatures_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
