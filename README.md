@@ -27,3 +27,4 @@ joaoGMPereira, joao.perei@itau-unibanco.com.br
 ## License
 
 JewFeatures is available under the MIT license. See the LICENSE file for more info.
+
