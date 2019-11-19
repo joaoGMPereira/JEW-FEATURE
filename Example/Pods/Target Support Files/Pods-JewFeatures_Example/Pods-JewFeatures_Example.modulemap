@@ -1,0 +1,6 @@
+framework module Pods_JewFeatures_Example {
+  umbrella header "Pods-JewFeatures_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}

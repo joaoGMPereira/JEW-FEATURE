@@ -1,0 +1,16 @@
+PODS:
+  - JewFeatures (0.1.0)
+
+DEPENDENCIES:
+  - JewFeatures (from `../`)
+
+EXTERNAL SOURCES:
+  JewFeatures:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  JewFeatures: 451da2487b0b8fb7c6f9bbde47ab14ffa9479b78
+
+PODFILE CHECKSUM: 4999cee46db641f92fd6f2eb713597c00e5a0e77
+
+COCOAPODS: 1.7.5

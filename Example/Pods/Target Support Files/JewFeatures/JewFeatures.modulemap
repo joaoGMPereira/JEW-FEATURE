@@ -1,0 +1,6 @@
+framework module JewFeatures {
+  umbrella header "JewFeatures-umbrella.h"
+
+  export *
+  module * { export * }
+}
