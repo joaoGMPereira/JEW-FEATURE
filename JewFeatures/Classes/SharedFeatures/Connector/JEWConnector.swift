@@ -13,7 +13,7 @@ typealias FinishResponse = () -> ()
 typealias SuccessRefreshResponse = (_ shouldUpdateHeaders: Bool) -> ()
 typealias ErrorCompletion = (ConnectorError) -> ()
 
-final class INVSConector {
+final class JEWConnector {
     
     // Can't init is singleton
     private init() { }

@@ -76,7 +76,7 @@ struct ApiError: Decodable {
     }
 }
 
-class INVSConnectorHelpers: NSObject {
+class JEWConnectorHelpers: NSObject {
     
     static func setupAlertController(lastViewController: UIViewController, message: String, title: String) -> INVSAlertViewController {
         let errorViewController = INVSAlertViewController()
