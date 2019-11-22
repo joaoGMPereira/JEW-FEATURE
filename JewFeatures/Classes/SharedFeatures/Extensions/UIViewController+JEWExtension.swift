@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 extension UIViewController {
-    static func toString() -> String {
+    public static func toString() -> String {
         return String(describing: self.self)
     }
 }

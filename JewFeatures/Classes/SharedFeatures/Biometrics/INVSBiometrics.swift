@@ -13,10 +13,10 @@ public typealias AuthenticationSuccess = (() -> ())
 public typealias AuthenticationFailure = ((AuthenticationError) -> ())
 
 
-class JEWBiometrics: NSObject {
+public class JEWBiometrics: NSObject {
     public static let shared = JEWBiometrics()
     
-    class func canAuthenticate() -> Bool {
+    public class func canAuthenticate() -> Bool {
         
         var isBioMetrixAuthenticationAvailable = false
         var error: NSError? = nil
@@ -27,22 +27,20 @@ class JEWBiometrics: NSObject {
         return isBioMetrixAuthenticationAvailable
     }
     
-    class func authenticateWithBiometrics(reason: String, fallbackTitle: String? = "", cancelTitle: String? = "", success successBlock:@escaping AuthenticationSuccess, failure failureBlock:@escaping AuthenticationFailure) {
+    public class func authenticateWithBiometrics(reason: String, fallbackTitle: String? = "", cancelTitle: String? = "", success successBlock:@escaping AuthenticationSuccess, failure failureBlock:@escaping AuthenticationFailure) {
         let reasonString = reason.isEmpty ? JEWBiometrics.shared.defaultBiometricsAuthenticationReason() : reason
         
         let context = LAContext()
         context.localizedFallbackTitle = fallbackTitle
         
         // cancel button title
-        if #available(iOS 10.0, *) {
-            context.localizedCancelTitle = cancelTitle
-        }
+        context.localizedCancelTitle = cancelTitle
         
         // authenticate
         JEWBiometrics.shared.evaluate(policy: LAPolicy.deviceOwnerAuthenticationWithBiometrics, with: context, reason: reasonString, success: successBlock, failure: failureBlock)
     }
     
-    class func authenticateWithPasscode(reason: String, cancelTitle: String? = "", success successBlock:@escaping AuthenticationSuccess, failure failureBlock:@escaping AuthenticationFailure) {
+    public class func authenticateWithPasscode(reason: String, cancelTitle: String? = "", success successBlock:@escaping AuthenticationSuccess, failure failureBlock:@escaping AuthenticationFailure) {
         let reasonString = reason.isEmpty ? JEWBiometrics.shared.defaultPasscodeAuthenticationReason() : reason
         
         let context = LAContext()
@@ -57,15 +55,15 @@ class JEWBiometrics: NSObject {
         return (context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthentication, error: nil) && context.biometryType == .faceID)
     }
     
-    func defaultBiometricsAuthenticationReason() -> String {
+    public func defaultBiometricsAuthenticationReason() -> String {
         return faceIDAvailable() ? BioMetricsFaceIDErrors.kFaceIdAuthenticationReason.rawValue : BioMetricsTouchIDErrors.kTouchIdAuthenticationReason.rawValue
     }
     
-    func defaultPasscodeAuthenticationReason() -> String {
+    public func defaultPasscodeAuthenticationReason() -> String {
         return faceIDAvailable() ? BioMetricsFaceIDErrors.kFaceIdPasscodeAuthenticationReason.rawValue : BioMetricsTouchIDErrors.kTouchIdPasscodeAuthenticationReason.rawValue
     }
     
-    func evaluate(policy: LAPolicy, with context: LAContext, reason: String, success successBlock:@escaping AuthenticationSuccess, failure failureBlock:@escaping AuthenticationFailure) {
+    public func evaluate(policy: LAPolicy, with context: LAContext, reason: String, success successBlock:@escaping AuthenticationSuccess, failure failureBlock:@escaping AuthenticationFailure) {
         
         context.evaluatePolicy(policy, localizedReason: reason) { (success, err) in
             DispatchQueue.main.async {
@@ -82,9 +80,9 @@ class JEWBiometrics: NSObject {
 public typealias FailureChallenge = ((_ challengeErrorType: ChallengeFailureType) -> ())
 public typealias SuccessChallenge = (() -> ())
 
-class JEWBiometricsChallenge: NSObject {
-    static func checkLoggedUser(reason: String = "", successChallenge: @escaping(SuccessChallenge), failureChallenge: @escaping(FailureChallenge)) {
-        let hasBiometricAuthenticationEnabled = JEWKeyChainWrapper.retrieveBool(withKey: JEWConstants.LoginKeyChainConstants.hasEnableBiometricAuthentication.rawValue)
+public class JEWBiometricsChallenge: NSObject {
+    public static func checkLoggedUser(reason: String = "", keychainKey: String = "", successChallenge: @escaping(SuccessChallenge), failureChallenge: @escaping(FailureChallenge)) {
+        let hasBiometricAuthenticationEnabled = JEWKeyChainWrapper.retrieveBool(withKey: keychainKey)
         if let hasBiometricAuthentication = hasBiometricAuthenticationEnabled, hasBiometricAuthentication == true {
             showTouchId(reason: reason,successChallenge: {
                 successChallenge()
@@ -96,7 +94,7 @@ class JEWBiometricsChallenge: NSObject {
         }
     }
     
-    static func showTouchId(reason: String = "", successChallenge: @escaping(SuccessChallenge), failureChallenge: @escaping(FailureChallenge)) {
+    public static func showTouchId(reason: String = "", successChallenge: @escaping(SuccessChallenge), failureChallenge: @escaping(FailureChallenge)) {
         // start authentication
         JEWBiometrics.authenticateWithBiometrics(reason: reason, success: {
             // authentication successful
@@ -133,7 +131,7 @@ class JEWBiometricsChallenge: NSObject {
     }
 
     // show passcode authentication
-    static func showPasscodeAuthentication(message: String, successChallenge: @escaping(SuccessChallenge), failureChallenge: @escaping(FailureChallenge)) {
+    public static func showPasscodeAuthentication(message: String, successChallenge: @escaping(SuccessChallenge), failureChallenge: @escaping(FailureChallenge)) {
         
         JEWBiometrics.authenticateWithPasscode(reason: message, success: {
             // passcode authentication success

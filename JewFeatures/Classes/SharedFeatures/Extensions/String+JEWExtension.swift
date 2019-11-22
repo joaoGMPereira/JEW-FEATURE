@@ -11,7 +11,7 @@ import UIKit
 
 extension String {
     // formatting text for currency textField
-    func percentFormat(backSpace: Bool = false) -> String {
+    public func percentFormat(backSpace: Bool = false) -> String {
         var number: NSNumber!
         let formatter = NumberFormatter.currencyDefault()
         formatter.numberStyle = .currencyAccounting
@@ -41,7 +41,7 @@ extension String {
         return stringWithSymbol
     }
     
-    func currencyFormat(backSpace: Bool = false) -> String {
+    public func currencyFormat(backSpace: Bool = false) -> String {
         
         var number: NSNumber!
         let formatter = NumberFormatter.currencyDefault()
@@ -65,7 +65,7 @@ extension String {
         return formatter.string(from: number)!
     }
     
-    func monthFormat() -> String {
+    public func monthFormat() -> String {
         
         var amountWithoutPrefix = self
         
@@ -75,33 +75,33 @@ extension String {
         return amountWithoutPrefix
     }
     
-    func convertFormattedToInt() -> Int {
+    public func convertFormattedToInt() -> Int {
         let intValue = (self.stringOfNumbersRegex() as NSString).intValue
         let number = NSNumber(value: (intValue))
         return number.intValue
     }
     
-    func convertFormattedToDouble() -> Double {
+    public func convertFormattedToDouble() -> Double {
         let double = (self.stringOfNumbersRegex() as NSString).doubleValue
         let number = NSNumber(value: (double / 100))
         return number.doubleValue
     }
     
-    func stringOfNumbersRegex(with size:Int? = nil) -> String {
+    public func stringOfNumbersRegex(with size:Int? = nil) -> String {
         var amountWithPrefix = self
         let regex = try! NSRegularExpression(pattern: "[^0-9]", options: .caseInsensitive)
         amountWithPrefix = String(regex.stringByReplacingMatches(in: amountWithPrefix, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, self.count), withTemplate: "").prefix(size ?? self.count))
         return amountWithPrefix
     }
     
-    func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
+    public func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
         let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
         let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
         
         return ceil(boundingBox.height)
     }
     
-    func checkSignal() -> String {
+    public func checkSignal() -> String {
         if self != "" {
             if self.first == "-" {
                 return "-"
@@ -111,7 +111,7 @@ extension String {
         return "+"
     }
     
-    func isValidEmail() -> Bool {
+    public func isValidEmail() -> Bool {
         let regex: String
         regex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}"
         return NSPredicate(format: "SELF MATCHES %@", regex).evaluate(with: self)

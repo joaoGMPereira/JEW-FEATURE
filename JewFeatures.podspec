@@ -32,9 +32,9 @@ TODO: Add long description of the pod here.
 
   s.source_files = 'JewFeatures/Classes/**/*'
   
-  # s.resource_bundles = {
-  #   'JewFeatures' => ['JewFeatures/Assets/*.png']
-  # }
+  s.resource_bundles = {
+      'JewFeatures' => ['JewFeatures/Assets/*.json', 'JewFeatures/Assets/*']
+  }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
@@ -42,4 +42,5 @@ TODO: Add long description of the pod here.
    s.dependency 'lottie-ios'
    s.dependency 'Alamofire'
    s.dependency 'SkeletonView'
+   s.dependency 'PodAsset'
 end

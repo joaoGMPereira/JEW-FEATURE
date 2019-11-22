@@ -7,7 +7,7 @@
 //
 
 import Foundation
-struct JEWUserRequest: JSONAble {
+public struct JEWUserRequest: JSONAble {
     var email: String = ""
     var password: String = ""
     

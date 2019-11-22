@@ -9,79 +9,42 @@
 import Foundation
 import LocalAuthentication
 
-enum JEWConstants {
-    enum SimulatorKeyChainConstants: String {
-        case lastTotalValue = "JEWLastTotalValue"
-        case lastProfitabilityUntilNextIncreaseRescue = "JEWLastProfitabilityUntilNextIncreaseRescue"
-//        case lastGoalIncreaseRescue = "JEWLastGoalIncreaseRescue"
-        case lastRescue = "JEWLastRescue"
-    }
+public enum JEWConstants {
     
-    enum SimulatorCellConstants: String {
-        case cellIdentifier = "JEWSimulatorCell"
-        case tableViewHeaderName = "JEWSimulatorHeaderView"
-    }
-    
-    enum SimulationCellConstants: String {
-        case cellIdentifier = "JEWSimulationCell"
-    }
-    
-    enum JEWTransactionsViewControllersID: String {
-        case startSimulatedViewController = "JEWStartSimulatedViewController"
-    }
-    
-    enum JEWServicesConstants: String {
-        case apiV1 = "https://invest-scopio-backend.herokuapp.com/api/v1"
-        case apiV1Dev = "https://invest-scopio-dev-backend.herokuapp.com/api/v1"
+    public enum Services: String {
         case localHost = "http://localhost:8080/api/v1"
         case version = "version"
+        case signUp = "/account/sign-up"
+        case signIn = "/account/sign-in"
+        case logout = "/account/logout"
+        case refreshToken = "/account/refresh-token"
     }
     
-    enum SimulationErrors: String {
-        case defaultTitleError = "Ocorreu um problema, Tente novamente.\n\n"
-        case defaultMessageError = "Não foi possível fazer o cálculo da simulação."
-    }
-    
-    enum RefreshErrors: String {
+    public enum Default: String {
         case title = "Atenção"
+        case errorMessage = "Ocorreu algum problema,\nIremos resolver em breve."
+        case invalidURL = "URL Inválida!"
+        case expiredSession = "Sessão Expirada"
+    }
+    
+    public enum RefreshErrors: String {
         case message = "A autenticação falhou, entre novamente."
+        case invalidRefreshToken = "Refresh Token Inválido!"
+        case invalidAccessToken = "Access Token Inválido!"
+        
     }
     
-    enum LoginKeyChainConstants: String {
-        case hasUserLogged = "JEWHasUserLogged"
-        case hasEnableBiometricAuthentication = "JEWHasEnableBiometricAuthentication"
-        case lastLoginEmail = "JEWRememberMeEmail"
-        case lastLoginSecurity = "JEWRememberMeSecurity"
-        case hasEvaluateApp = "JEWHasEvaluatedApp"
-    }
-    
-    enum OfflineViewController: String {
-        case title = "Atenção"
-        case message = "Sem efetuar o login você não terá\nacesso ao seu histórico de simulações."
-    }
-    
-    enum StartAlertViewController: String {
-        case title = "Atenção"
+    public enum StartAlertViewController: String {
         case titleSettings = "Vá para Ajustes"
     }
     
-    enum LogoutAlertViewController: String {
-        case title = "Atenção"
+    public enum LogoutAlertViewController: String {
         case message = "Deseja sair da sua conta?"
     }
     
-    enum TalkWithUsAlertViewController: String {
-        case titleError = "Atenção\n"
-        case messageMailError = "Você não habilitou o serviço de enviar email pelo app."
-        case messageInvalidVoteError = "Selecione uma avaliação antes de votar."
-        case messageVoteError = "Não foi possível gravar seu voto. Tente novamente."
-        case titleSuccess = "Obrigado\n"
-        case messageMailSuccess = "Iremos te responder em breve!"
-    }
-    
-    enum EnableBiometricViewController: String {
-        case title = "Atenção"
-        static func biometricMessageType() -> String {
+    public enum EnableBiometricViewController: String {
+        case EnableBiometricViewController = "EnableBiometricViewController"
+        public static func biometricMessageType() -> String {
             let authContext = LAContext()
             let _ = authContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
             switch(authContext.biometryType) {

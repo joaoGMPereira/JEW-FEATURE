@@ -8,6 +8,7 @@
 
 import UIKit
 import Lottie
+import PodAsset
 
 class JEWPresentBaseViewController: UIViewController {
     var navigationBarView = UIView()
@@ -121,7 +122,7 @@ extension JEWPresentBaseViewController {
     }
     
     private func setupAdditionalConfiguration() {
-        if let closeImage = UIImage.init(named: "closeIconWhite") {
+        if let closeImage = UIImage.init(named: "closeIconWhite", in: Bundle(for: type(of: self)), compatibleWith: nil) {
             closeButton.tintColor = .JEWBlack()
             closeButton.setImage(closeImage, for: .normal)
         } else {
@@ -133,12 +134,14 @@ extension JEWPresentBaseViewController {
         navigationBarLabel.textColor = .JEWBlack()
         view.backgroundColor = .JEWGray()
         navigationBarView.backgroundColor = .JEWLightGray()
-        let starAnimation = Animation.named("animatedLoadingPurple")
-        animatedLogoView.animation = starAnimation
-        animatedLogoView.contentMode = .scaleAspectFit
-        animatedLogoView.animationSpeed = 1.0
-        animatedLogoView.loopMode = .loop
-        animatedLogoView.alpha = 0.0
+        if let bundle = PodAsset.bundle(forPod: "JewFeatures") {
+            let starAnimation = Animation.named("animatedLoadingPurple", bundle: bundle)
+            animatedLogoView.animation = starAnimation
+            animatedLogoView.contentMode = .scaleAspectFit
+            animatedLogoView.animationSpeed = 1.0
+            animatedLogoView.loopMode = .loop
+            animatedLogoView.alpha = 0.0
+        }
     }
     
     private func setupView() {

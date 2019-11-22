@@ -8,10 +8,10 @@
 
 import Foundation
 
-protocol JSONAble {}
+public protocol JSONAble {}
 
 extension JSONAble {
-    func toDict() -> [String:Any] {
+    public func toDict() -> [String:Any] {
         var dict = [String:Any]()
         let otherSelf = Mirror(reflecting: self)
         for child in otherSelf.children {

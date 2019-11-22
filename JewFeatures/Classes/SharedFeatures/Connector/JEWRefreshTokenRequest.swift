@@ -8,6 +8,6 @@
 
 import Foundation
 
-struct JEWRefreshTokenRequest: JSONAble {
+public struct JEWRefreshTokenRequest: JSONAble {
     let refreshToken: String
 }

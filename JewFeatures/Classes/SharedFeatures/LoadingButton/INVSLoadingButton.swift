@@ -10,15 +10,16 @@ import Foundation
 import UIKit
 import Lottie
 import SkeletonView
+import PodAsset
 
-class JEWLoadingButton: UIView {
+public class JEWLoadingButton: UIView {
     let button = UIButton(frame: .zero)
     let loadingView = AnimationView()
     var buttonAction: ((_ button: UIButton) -> ())?
     var buttonTitle = ""
     var loadingJson = ""
     
-    func setupFill(withColor color: UIColor = UIColor.JEWDefault(), title: String, andRounded isRounded: Bool = true) {
+    public func setupFill(withColor color: UIColor = UIColor.JEWDefault(), title: String, andRounded isRounded: Bool = true) {
         loadingJson = "animatedLoadingWhite"
         setupView()
         buttonTitle = title
@@ -28,7 +29,7 @@ class JEWLoadingButton: UIView {
         
     }
     
-    func setupFillGradient(withColor colors: [CGColor] = UIColor.JEWGradientColors(), title: String, andRounded isRounded: Bool = true) {
+    public func setupFillGradient(withColor colors: [CGColor] = UIColor.JEWGradientColors(), title: String, andRounded isRounded: Bool = true) {
         loadingJson = "animatedLoadingWhite"
         setupView()
         buttonTitle = title
@@ -37,7 +38,7 @@ class JEWLoadingButton: UIView {
         let _ = CAShapeLayer.addGradientLayer(withGradientLayer: nil, inView: button, withColorsArr: colors, withRoundedCorner: isRounded ? button.frame.height/2 : 0)
     }
     
-    func setupBorded(withColor color: UIColor = UIColor.JEWDefault(), title: String, andRounded isRounded: Bool = true) {
+    public func setupBorded(withColor color: UIColor = UIColor.JEWDefault(), title: String, andRounded isRounded: Bool = true) {
         loadingJson = "animatedLoadingPurple"
         setupView()
         buttonTitle = title
@@ -48,7 +49,7 @@ class JEWLoadingButton: UIView {
         button.layer.cornerRadius = isRounded ? button.frame.height/2 : 0
     }
     
-    func setupSkeleton() {
+    public func setupSkeleton() {
         button.setTitle("", for: .normal)
         button.setTitleColor(.clear, for: .normal)
         button.layer.borderColor = UIColor.white.cgColor
@@ -60,22 +61,22 @@ class JEWLoadingButton: UIView {
         showAnimatedGradientSkeleton()
     }
     
-    func setHideSkeleton() {
+    public func setHideSkeleton() {
         hideSkeleton()
     }
     
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
     }
     
-    func showLoading() {
+    public func showLoading() {
         self.loadingView.play()
         self.button.isUserInteractionEnabled = false
         self.button.setTitle("", for: .normal)
         self.loadingView.alpha = 1.0
     }
     
-    func hideLoading() {
+    public func hideLoading() {
         UIView.animate(withDuration: 0.6) {
             self.button.isUserInteractionEnabled = true
             self.button.setTitle(self.buttonTitle, for: .normal)
@@ -83,7 +84,7 @@ class JEWLoadingButton: UIView {
         }
     }
     
-    @objc func buttonClicked(_ sender: UIButton) {
+    @objc public func buttonClicked(_ sender: UIButton) {
         if let buttonAction = buttonAction {
             buttonAction(sender)
         }
@@ -91,14 +92,14 @@ class JEWLoadingButton: UIView {
 }
 
 extension JEWLoadingButton: JEWCodeView {
-    func buildViewHierarchy() {
+    public func buildViewHierarchy() {
         self.addSubview(button)
         self.addSubview(loadingView)
         button.translatesAutoresizingMaskIntoConstraints = false
         loadingView.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    func setupConstraints() {
+    public func setupConstraints() {
         NSLayoutConstraint.activate([
             button.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             button.trailingAnchor.constraint(equalTo: self.trailingAnchor),
@@ -113,14 +114,16 @@ extension JEWLoadingButton: JEWCodeView {
             ])
     }
     
-    func setupAdditionalConfiguration() {
+    public func setupAdditionalConfiguration() {
         self.layoutIfNeeded()
-        let loadAnimation = Animation.named(loadingJson)
-        loadingView.animation = loadAnimation
-        loadingView.contentMode = .scaleAspectFit
-        loadingView.animationSpeed = 1.0
-        loadingView.loopMode = .loop
-        loadingView.alpha = 0.0
+        if let bundle = PodAsset.bundle(forPod: "JewFeatures") {
+        let loadAnimation = Animation.named(loadingJson, bundle: bundle)
+            loadingView.animation = loadAnimation
+            loadingView.contentMode = .scaleAspectFit
+            loadingView.animationSpeed = 1.0
+            loadingView.loopMode = .loop
+            loadingView.alpha = 0.0
+        }
         self.button.addTarget(self, action: #selector(buttonClicked(_:)), for: .touchUpInside)
     }
 }

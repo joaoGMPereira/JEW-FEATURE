@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol JEWCodeView: class {
+public protocol JEWCodeView: class {
     func buildViewHierarchy()
     func setupConstraints()
     func setupAdditionalConfiguration()
@@ -16,7 +16,7 @@ protocol JEWCodeView: class {
 }
 
 extension JEWCodeView {
-    func setupView() {
+    public func setupView() {
         buildViewHierarchy()
         setupConstraints()
         setupAdditionalConfiguration()

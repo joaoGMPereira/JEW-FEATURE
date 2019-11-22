@@ -13,7 +13,7 @@ let kBiometryNotAvailableReason = "Autenticação de biometria não está dispon
 let kSessionExpiredTitle = "Sessão Expirada!"
 let kSessionExpiredMessage = "Para que continue usando o app\nsem que deslogue, salve seus Dados. "
 
-enum BioMetricsTouchIDErrors: String {
+public enum BioMetricsTouchIDErrors: String {
     //Touch ID
     case kTouchIdAuthenticationReason = "Confirme sua digital para autenticar."
     case kTouchIdPasscodeAuthenticationReason = "Touch ID está bloqueado agora, porque muitas tentativas falharam. Digite sua senha para desbloquear o Touch ID."
@@ -26,7 +26,7 @@ enum BioMetricsTouchIDErrors: String {
     
 }
 
-enum BioMetricsFaceIDErrors: String{
+public enum BioMetricsFaceIDErrors: String{
     //Face ID
     case kFaceIdAuthenticationReason = "Confirme sua face para autenticar."
     case kFaceIdPasscodeAuthenticationReason = "Face ID está bloqueado agora, porque muitas tentativas falharam. Digite sua senha para desbloquear o Face ID."
@@ -109,7 +109,6 @@ public enum AuthenticationError {
 }
 
 public enum ChallengeFailureType {
-    
     case `default`
     case error(error: AuthenticationError)
     case goSettings(error: AuthenticationError)

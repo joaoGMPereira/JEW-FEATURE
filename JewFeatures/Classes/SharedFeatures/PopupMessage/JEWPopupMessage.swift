@@ -8,11 +8,11 @@
 import Foundation
 import UIKit
 
-protocol JEWPopupMessageDelegate {
+public protocol JEWPopupMessageDelegate {
     func didFinishDismissPopupMessage(withPopupMessage popupMessage:JEWPopupMessage)
 }
 
-class JEWPopupMessage: UIView {
+public class JEWPopupMessage: UIView {
     
     private let defaultHeight = CGFloat(60)
     private var size = CGSize()
@@ -36,7 +36,7 @@ class JEWPopupMessage: UIView {
     var popupType: JEWPopupMessageType = .alert
     
     
-    init(parentViewController:UIViewController) {
+    public init(parentViewController:UIViewController) {
         self.parentViewController = parentViewController
         let topPadding = CGFloat(10)
         popupWidth = parentViewController.view.frame.width * 0.9
@@ -45,7 +45,7 @@ class JEWPopupMessage: UIView {
         
     }
 
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         popupWidth = parentViewController.view.frame.width * 0.9
         self.frame.size.width = popupWidth
@@ -60,7 +60,7 @@ class JEWPopupMessage: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func show(withTextMessage message:String, title:String = "", popupType: JEWPopupMessageType = .error, shouldHideAutomatically: Bool = true, sender: UIView? = nil) {
+    public func show(withTextMessage message:String, title:String = "", popupType: JEWPopupMessageType = .error, shouldHideAutomatically: Bool = true, sender: UIView? = nil) {
         if let shadowLayer = self.shadowLayer {
             shadowLayer.removeFromSuperlayer()
         }
@@ -81,7 +81,7 @@ class JEWPopupMessage: UIView {
         showPopup(sender: sender)
     }
     
-    func show(withAttributedMessage message:String, title:String = "", popupType: JEWPopupMessageType = .error, shouldHideAutomatically: Bool = true, sender: UIView? = nil) {
+    public func show(withAttributedMessage message:String, title:String = "", popupType: JEWPopupMessageType = .error, shouldHideAutomatically: Bool = true, sender: UIView? = nil) {
         if let shadowLayer = self.shadowLayer {
             shadowLayer.removeFromSuperlayer()
         }
@@ -113,7 +113,8 @@ class JEWPopupMessage: UIView {
     private func setupUI() {
         textMessageLabel.attributedText = messageAttributed
         textMessageLabel.textColor = messageColor
-        if let closeImage = UIImage.init(named: "closeIconWhite") {
+        
+        if let closeImage = UIImage.init(named: "closeIconWhite", in: Bundle(for: type(of: self)), compatibleWith: nil) {
             closeButton.tintColor = messageColor
             closeButton.setImage(closeImage, for: .normal)
         } else {
@@ -171,14 +172,14 @@ class JEWPopupMessage: UIView {
 }
 
 extension JEWPopupMessage: JEWCodeView {
-    func buildViewHierarchy() {
+    public func buildViewHierarchy() {
         self.addSubview(textMessageLabel)
         self.addSubview(closeButton)
         textMessageLabel.translatesAutoresizingMaskIntoConstraints = false
         closeButton.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    func setupConstraints() {
+    public func setupConstraints() {
         heightLabelConstraint = textMessageLabel.heightAnchor.constraint(equalToConstant: popupHeight * 0.95)
         NSLayoutConstraint.activate([
             textMessageLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 16),
@@ -194,7 +195,7 @@ extension JEWPopupMessage: JEWCodeView {
             ])
     }
     
-    func setupAdditionalConfiguration() {
+    public func setupAdditionalConfiguration() {
         closeButton.addTarget(self, action: #selector(JEWPopupMessage.hide), for: .touchUpInside)
         textMessageLabel.textColor = messageColor
         textMessageLabel.textAlignment = .left

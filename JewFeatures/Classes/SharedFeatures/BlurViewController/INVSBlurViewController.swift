@@ -8,7 +8,7 @@
 
 import UIKit
 
-class INVSBlurViewController: UIViewController {
+public class INVSBlurViewController: UIViewController {
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var blurView: UIVisualEffectView!
     @IBOutlet weak var widthConstraint: NSLayoutConstraint!
@@ -21,7 +21,7 @@ class INVSBlurViewController: UIViewController {
     var cornerRadius: CGFloat = 0
     var color: UIColor = .white
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         if contentView != nil && widthConstraint != nil && heightConstraint != nil && axysYConstraint != nil {
             if let height = height {
@@ -39,7 +39,7 @@ class INVSBlurViewController: UIViewController {
         }
         // Do any additional setup after loading the view.
     }
-    func setup(withHeight height:CGFloat? = nil, andWidth width:CGFloat? = nil, andAxysY axysY:CGFloat? = nil, andCornerRadius cornerRadius: CGFloat? = nil, andContentViewColor color: UIColor = .white) {
+    public func setup(withHeight height:CGFloat? = nil, andWidth width:CGFloat? = nil, andAxysY axysY:CGFloat? = nil, andCornerRadius cornerRadius: CGFloat? = nil, andContentViewColor color: UIColor = .white) {
         self.color = color
         if let cornerRadius = cornerRadius {
             self.cornerRadius = cornerRadius

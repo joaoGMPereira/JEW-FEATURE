@@ -7,7 +7,7 @@
 //
 
 import Foundation
-struct JEWLogoutResponse: Decodable {
+public struct JEWLogoutResponse: Decodable {
     let error: Bool
     let message: String
 }

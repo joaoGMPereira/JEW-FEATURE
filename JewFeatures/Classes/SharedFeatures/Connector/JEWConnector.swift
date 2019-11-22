@@ -8,33 +8,29 @@
 
 import Foundation
 import Alamofire
-typealias SuccessResponse = (Decodable) -> ()
-typealias FinishResponse = () -> ()
-typealias SuccessRefreshResponse = (_ shouldUpdateHeaders: Bool) -> ()
-typealias ErrorCompletion = (ConnectorError) -> ()
+public typealias SuccessResponse = (Decodable) -> ()
+public typealias FinishResponse = () -> ()
+public typealias SuccessRefreshResponse = (_ shouldUpdateHeaders: Bool) -> ()
+public typealias ErrorCompletion = (ConnectorError) -> ()
 
 
-final class JEWConnector {
+public final class JEWConnector {
     
     // Can't init is singleton
     private init() { }
     
     static let connector = JEWConnector()
-    let workerLogin: JEWLoginWorkerProtocol = JEWLoginWorker()
-    
-    static func getURL(withRoute route: String) -> URL? {
-        var baseURL = URL(string: "\(JEWConstants.JEWServicesConstants.apiV1.rawValue)\(route)")
-        if JEWSession.session.isDev() {
-            baseURL = JEWSession.session.callService == .heroku ? URL(string: "\(JEWConstants.JEWServicesConstants.apiV1Dev.rawValue)\(route)") : URL(string: "\(JEWConstants.JEWServicesConstants.localHost.rawValue)\(route)")
-        }
+    let urlPath: String = JEWConstants.Services.localHost.rawValue
+    public static func getURL(withRoute route: String) -> URL? {
+        let baseURL = URL(string: route)
         return baseURL
     }
     
-    static func getVersion() -> URL? {
-        return getURL(withRoute: JEWConstants.JEWServicesConstants.version.rawValue)
+    public static func getVersion() -> URL? {
+        return getURL(withRoute: JEWConstants.Services.version.rawValue)
     }
     
-    func request<T: Decodable>(withRoute route: ConnectorRoutes, method: HTTPMethod = .get, parameters: JSONAble? = nil, responseClass: T.Type, headers: HTTPHeaders? = nil, shouldRetry: Bool = false, successCompletion: @escaping(SuccessResponse), errorCompletion: @escaping(ErrorCompletion)) {
+    public func request<T: Decodable>(withRoute route: ConnectorRoutes, method: HTTPMethod = .get, parameters: JSONAble? = nil, responseClass: T.Type, headers: HTTPHeaders? = nil, shouldRetry: Bool = false, successCompletion: @escaping(SuccessResponse), errorCompletion: @escaping(ErrorCompletion)) {
         
         guard let url = route.getRoute() else {
             return
@@ -109,15 +105,15 @@ final class JEWConnector {
     private func refreshToken(withRoute route:ConnectorRoutes, successCompletion: @escaping(SuccessRefreshResponse), errorCompletion: @escaping(ErrorCompletion)) {
         if route != .signup &&  route != .signin &&  route != .logout {
             guard let url = ConnectorRoutes.refreshToken.getRoute() else {
-                errorCompletion(ConnectorError.init(error: .logout, message: "URL Inválida!"))
+                errorCompletion(ConnectorError.init(error: .logout, message: JEWConstants.Default.invalidURL.rawValue))
                 return
             }
             guard let refreshToken = JEWSession.session.user?.access?.refreshToken else {
-                errorCompletion(ConnectorError.init(error: .logout, message: "Refresh Token Inválido!"))
+                errorCompletion(ConnectorError.init(error: .logout, message: JEWConstants.RefreshErrors.invalidRefreshToken.rawValue))
                 return
             }
             guard let headers = ["Content-Type": "application/json", "Authorization": JEWSession.session.user?.access?.accessToken] as? HTTPHeaders else {
-                errorCompletion(ConnectorError.init(error: .logout, message: "Access Token Inválido!"))
+                errorCompletion(ConnectorError.init(error: .logout, message: JEWConstants.RefreshErrors.invalidAccessToken.rawValue))
                 return
             }
             let refreshTokenRequest = JEWRefreshTokenRequest.init(refreshToken: refreshToken)
@@ -126,66 +122,10 @@ final class JEWConnector {
                 JEWSession.session.user?.access = accessModel
                 successCompletion(true)
             }) { (error) in
-                self.checkLoggedUser(successCompletion: {
-                    successCompletion(true)
-                }, errorCompletion: { (checkLoggedUserError) in
-                    errorCompletion(checkLoggedUserError)
-                })
+                errorCompletion(ConnectorError.init(error: .expiredSession, message: JEWConstants.Default.expiredSession.rawValue))
             }
         } else {
             successCompletion(false)
         }
     }
-    
-    
-    func checkLoggedUser(successCompletion: @escaping(FinishResponse), errorCompletion: @escaping(ErrorCompletion)) {
-        let hasBiometricAuthenticationEnabled = JEWKeyChainWrapper.retrieveBool(withKey: JEWConstants.LoginKeyChainConstants.hasEnableBiometricAuthentication.rawValue)
-        guard let hasBiometricAuthentication = hasBiometricAuthenticationEnabled, hasBiometricAuthentication == true else {
-            errorCompletion(ConnectorError.init(error: .sessionExpired, title: AuthenticationError.sessionExpired.title(), message: AuthenticationError.sessionExpired.message()))
-            return
-        }
-        JEWBiometricsChallenge.checkLoggedUser(reason: "Sessão expirada!\nAutentique novamente para continuar." ,successChallenge: {
-            self.loginUserSaved(successCompletion: {
-                successCompletion()
-            }, errorCompletion: { (error) in
-                errorCompletion(error)
-            })
-        }) { (challengeFailureType) in
-            switch challengeFailureType {
-            case .default:
-                errorCompletion(ConnectorError.init(error: .logout))
-                break
-            case .error(let error):
-                errorCompletion(ConnectorError.init(error: .authentication, title: error.title(), message: error.message(), shouldRetry: error.shouldRetry()))
-                break
-            case .goSettings(let error):
-                errorCompletion(ConnectorError.init(error: .settings, title: error.title(), message: error.message()))
-                break
-            }
-        }
-    }
-    
-    private func loginUserSaved(successCompletion: @escaping(FinishResponse), errorCompletion: @escaping(ErrorCompletion)) {
-        let email = JEWKeyChainWrapper.retrieve(withKey: JEWConstants.LoginKeyChainConstants.lastLoginEmail.rawValue)
-        let security = JEWKeyChainWrapper.retrieve(withKey: JEWConstants.LoginKeyChainConstants.lastLoginSecurity.rawValue)
-//        if let emailRetrived = email, let securityRetrived = security {
-//            if let emailAES = JEWCrypto.decryptAES(withText: emailRetrived), let securityAES = JEWCrypto.decryptAES(withText: securityRetrived) {
-//                workerLogin.loggedUser(withEmail: emailAES, security: securityAES, successCompletionHandler: { (userResponse) in
-//                    JEWSession.session.user = userResponse
-//                    successCompletion()
-//                }) { (title, message, shouldHideAutomatically, popupType) in
-//                    JEWKeyChainWrapper.clear()
-//                    errorCompletion(ConnectorError.init(error: .logout))
-//                }
-//            } else {
-//                JEWKeyChainWrapper.clear()
-//                errorCompletion(ConnectorError.init(error: .logout))
-//            }
-//        } else {
-//            JEWKeyChainWrapper.clear()
-//            errorCompletion(ConnectorError.init(error: .logout))
-//        }
-    }
-    
-    
 }

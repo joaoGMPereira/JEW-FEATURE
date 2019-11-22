@@ -8,19 +8,19 @@
 
 import UIKit
 
-class INVSAlertViewController: INVSBlurViewController {
-    var titleLabel = UILabel(frame: .zero)
-    var messageLabel = UILabel(frame: .zero)
-    var buttonStackView = UIStackView(frame: .zero)
-    var confirmButton = JEWLoadingButton(frame: .zero)
-    var cancelButton = UIButton(frame: .zero)
-    var confirmCallback: ((_ button: UIButton) -> ())?
-    var cancelCallback: ((_ button: UIButton) -> ())?
+public class INVSAlertViewController: INVSBlurViewController {
+    public var titleLabel = UILabel(frame: .zero)
+    public var messageLabel = UILabel(frame: .zero)
+    public var buttonStackView = UIStackView(frame: .zero)
+    public var confirmButton = JEWLoadingButton(frame: .zero)
+    public var cancelButton = UIButton(frame: .zero)
+    public var confirmCallback: ((_ button: UIButton) -> ())?
+    public var cancelCallback: ((_ button: UIButton) -> ())?
     
-    var titleAlert: String = ""
-    var messageAlert: String = ""
-    var hasCancelButton: Bool = true
-    init() {
+    public var titleAlert: String = ""
+    public var messageAlert: String = ""
+    public var hasCancelButton: Bool = true
+    public init() {
         super.init(nibName: INVSBlurViewController.toString(), bundle: Bundle(for: INVSBlurViewController.self))
     }
     
@@ -28,7 +28,7 @@ class INVSAlertViewController: INVSBlurViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         view.layoutIfNeeded()
@@ -51,7 +51,7 @@ class INVSAlertViewController: INVSBlurViewController {
 }
 
 extension INVSAlertViewController: JEWCodeView {
-    func buildViewHierarchy() {
+    public func buildViewHierarchy() {
         contentView.addSubview(titleLabel)
         contentView.addSubview(messageLabel)
         contentView.addSubview(buttonStackView)
@@ -60,7 +60,7 @@ extension INVSAlertViewController: JEWCodeView {
         buttonStackView.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    func setupConstraints() {
+    public func setupConstraints() {
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor,constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor,constant: -16),
@@ -81,7 +81,7 @@ extension INVSAlertViewController: JEWCodeView {
             ])
     }
     
-    func setupAdditionalConfiguration() {
+    public func setupAdditionalConfiguration() {
         titleLabel.textColor = .JEWBlack()
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 1

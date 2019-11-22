@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 extension UIView {
-    func addBlur(withBlurEffectStyle style: UIBlurEffect.Style = .dark) {
+    public func addBlur(withBlurEffectStyle style: UIBlurEffect.Style = .dark) {
         let darkBlur = UIBlurEffect(style: style)
         let blurView = UIVisualEffectView(effect: darkBlur)
         blurView.frame = self.bounds

@@ -12,7 +12,7 @@ import UIKit
 public extension UIWindow {
     
     /// Transition Options
-    struct TransitionOptions {
+    public struct TransitionOptions {
         
         /// Curve of animation
         ///
@@ -124,7 +124,7 @@ public extension UIWindow {
     /// - Parameters:
     ///   - controller: controller to set
     ///   - options: options of the transition
-    func setRootViewController(_ controller: UIViewController, options: TransitionOptions = TransitionOptions()) {
+    public func setRootViewController(_ controller: UIViewController, options: TransitionOptions = TransitionOptions()) {
         
         var transitionWnd: UIWindow? = nil
         if let background = options.background {
