@@ -7,10 +7,10 @@
 
 import Foundation
 
-class JEWFloatingTextFieldInfoButtonBuilder: NSObject, JGFloatingTextFieldBuilderProtocol {
+class JEWFloatingTextFieldInfoButtonBuilder: NSObject, JEWFloatingTextFieldBuilderProtocol {
     
-    private var floatingTextField: JGFloatingTextField
-    init(with floatingTextField: JGFloatingTextField) {
+    private var floatingTextField: JEWFloatingTextField
+    init(with floatingTextField: JEWFloatingTextField) {
         self.floatingTextField = floatingTextField
         super.init()
     }
@@ -22,7 +22,7 @@ class JEWFloatingTextFieldInfoButtonBuilder: NSObject, JGFloatingTextFieldBuilde
         floatingTextField.addSubview(floatingTextField.infoButton)
         floatingTextField.infoButton.translatesAutoresizingMaskIntoConstraints = false
         floatingTextField.infoButton.tintColor = .JEWDefault()
-        floatingTextField.infoButton.addTarget(self, action: #selector(JGFloatingTextField.infoButtonTapped(_:)), for: .touchUpInside)
+        floatingTextField.infoButton.addTarget(self, action: #selector(JEWFloatingTextField.infoButtonTapped(_:)), for: .touchUpInside)
         let size = floatingTextField.frame.height * 0.8
         NSLayoutConstraint.activate([
             floatingTextField.infoButton.trailingAnchor.constraint(equalTo: floatingTextField.safeAreaLayoutGuide.trailingAnchor, constant: -8),

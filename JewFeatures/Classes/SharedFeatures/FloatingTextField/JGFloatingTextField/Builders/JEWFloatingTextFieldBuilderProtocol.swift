@@ -1,5 +1,5 @@
 //
-//  JGFloatingTextFieldBuilderProtocol.swift
+//  JEWFloatingTextFieldBuilderProtocol.swift
 //  InvestScopio
 //
 //  Created by Joao Medeiros Pereira on 22/10/19.
@@ -7,6 +7,6 @@
 //
 
 import Foundation
-public protocol JGFloatingTextFieldBuilderProtocol {
+public protocol JEWFloatingTextFieldBuilderProtocol {
     func setup()
 }

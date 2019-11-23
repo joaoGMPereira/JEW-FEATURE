@@ -24,10 +24,6 @@ public enum JEWFloatingTextFieldType: Int {
 }
 
 extension JEWFloatingTextFieldType {
-    func setupTextField(withTextField textfield: JEWFloatingTextField,keyboardType: UIKeyboardType = .numberPad, andDelegate delegate: JEWFloatingTextFieldDelegate, valueTypeTextField: JEWFloatingTextFieldValueType, isRequired: Bool = false, hasInfoButton: Bool = false, leftButtons: [JEWKeyboardToolbarButton] = [.cancel], shouldShowKeyboard: Bool = true) {
-        textfield.setup(placeholder: self.getTextFieldTitle(), typeTextField: self, valueTypeTextField: valueTypeTextField, keyboardType: keyboardType, required: isRequired, hasInfoButton: hasInfoButton, color: UIColor.JEWDefault(), leftButtons: leftButtons)
-        textfield.delegate = delegate
-    }
     
     func getTextFieldTitle() -> String {
         switch self {

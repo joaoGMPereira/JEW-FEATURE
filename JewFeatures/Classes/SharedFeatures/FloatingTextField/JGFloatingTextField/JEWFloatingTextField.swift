@@ -1,5 +1,5 @@
 //
-//  JGFloatingTextField.swift
+//  JEWFloatingTextField.swift
 //  InvestScopio
 //
 //  Created by Joao Medeiros Pereira on 19/10/19.
@@ -9,13 +9,13 @@
 import Foundation
 import UIKit
 
-public protocol JGFloatingTextFieldDelegate: class {
-    func infoButtonAction(_ textField: JGFloatingTextField)
-    func toolbarAction(_ textField: JGFloatingTextField, typeOfAction type: JEWKeyboardToolbarButton)
-    func textFieldDidBeginEditing(_ textField: JGFloatingTextField)
+public protocol JEWFloatingTextFieldDelegate: class {
+    func infoButtonAction(_ textField: JEWFloatingTextField)
+    func toolbarAction(_ textField: JEWFloatingTextField, typeOfAction type: JEWKeyboardToolbarButton)
+    func textFieldDidBeginEditing(_ textField: JEWFloatingTextField)
 }
 
-public class JGFloatingTextField: UIView {
+public class JEWFloatingTextField: UIView {
     
     //Constants
     static let requiredCharacter: String = "*"
@@ -34,7 +34,7 @@ public class JGFloatingTextField: UIView {
     let infoButton = UIButton.init(type: .infoLight)
     
     //Variables
-    var delegate: JGFloatingTextFieldDelegate?
+    var delegate: JEWFloatingTextFieldDelegate?
     
     var typeTextField: JEWFloatingTextFieldType?
     var required: Bool = false
@@ -82,10 +82,10 @@ public class JGFloatingTextField: UIView {
     
     func updateTextFieldUI() {
         currentlySelectedColor = selectedColor
-        placeholderLabel.text = placeholderLabel.text?.replacingOccurrences(of: JGFloatingTextField.requiredCharacter, with: String())
+        placeholderLabel.text = placeholderLabel.text?.replacingOccurrences(of: JEWFloatingTextField.requiredCharacter, with: String())
         if hasError {
             currentlySelectedColor = .JEWRed()
-            placeholderLabel.text = "\(placeholderLabel.text ?? String())\(JGFloatingTextField.requiredCharacter)"
+            placeholderLabel.text = "\(placeholderLabel.text ?? String())\(JEWFloatingTextField.requiredCharacter)"
         }
         placeholderLabel.textColor = currentlySelectedColor
         bottomLineView.backgroundColor = currentlySelectedColor
@@ -94,7 +94,7 @@ public class JGFloatingTextField: UIView {
     
 }
 
-extension JGFloatingTextField: UITextFieldDelegate, JEWKeyboardToolbarDelegate {
+extension JEWFloatingTextField: UITextFieldDelegate, JEWKeyboardToolbarDelegate {
     
     @objc func infoButtonTapped(_ sender: UIButton) {
         self.delegate?.infoButtonAction(self)
@@ -135,9 +135,9 @@ extension JGFloatingTextField: UITextFieldDelegate, JEWKeyboardToolbarDelegate {
     }
     
     func openKeyboard() {
-        UIView.animate(withDuration: JGFloatingTextField.animationDuration) { [weak self] in
-            self?.bottomLabelConstraint.constant = -(self?.frame.height ?? JGFloatingTextField.defaultHeight)/JGFloatingTextField.numberTwo
-            self?.topTextFieldConstraint.constant = (self?.frame.height ?? JGFloatingTextField.defaultHeight)/JGFloatingTextField.numberTwo
+        UIView.animate(withDuration: JEWFloatingTextField.animationDuration) { [weak self] in
+            self?.bottomLabelConstraint.constant = -(self?.frame.height ?? JEWFloatingTextField.defaultHeight)/JEWFloatingTextField.numberTwo
+            self?.topTextFieldConstraint.constant = (self?.frame.height ?? JEWFloatingTextField.defaultHeight)/JEWFloatingTextField.numberTwo
             self?.placeholderLabel.font = self?.smallFont
             self?.placeholderLabel.textColor = self?.currentlySelectedColor
             self?.bottomLineView.backgroundColor = self?.currentlySelectedColor
@@ -151,13 +151,13 @@ extension JGFloatingTextField: UITextFieldDelegate, JEWKeyboardToolbarDelegate {
     }
     
     func closeKeyboard() {
-        let trailingFromInfoButton = -((frame.height * JGFloatingTextField.eightyPercentSize) + JGFloatingTextField.padding)
-        UIView.animate(withDuration: JGFloatingTextField.animationDuration/Double(JGFloatingTextField.numberTwo)) { [weak self] in
+        let trailingFromInfoButton = -((frame.height * JEWFloatingTextField.eightyPercentSize) + JEWFloatingTextField.padding)
+        UIView.animate(withDuration: JEWFloatingTextField.animationDuration/Double(JEWFloatingTextField.numberTwo)) { [weak self] in
             if self?.floatingTextField.text == "" || self?.floatingTextField.text == nil {
                 self?.trailingLabelConstraint.constant = trailingFromInfoButton
-                self?.bottomLabelConstraint.constant = JGFloatingTextField.zero
-                self?.topTextFieldConstraint.constant = JGFloatingTextField.zero
-                self?.placeholderLabel.minimumScaleFactor = JGFloatingTextField.minimumScale
+                self?.bottomLabelConstraint.constant = JEWFloatingTextField.zero
+                self?.topTextFieldConstraint.constant = JEWFloatingTextField.zero
+                self?.placeholderLabel.minimumScaleFactor = JEWFloatingTextField.minimumScale
                 self?.placeholderLabel.font = self?.bigFont
                 self?.placeholderLabel.textColor = .lightGray
                 self?.bottomLineView.backgroundColor = UIColor.lightGray

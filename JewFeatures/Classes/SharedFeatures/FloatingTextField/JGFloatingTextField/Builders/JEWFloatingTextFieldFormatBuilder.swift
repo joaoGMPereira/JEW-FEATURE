@@ -7,10 +7,10 @@
 
 import Foundation
 
-public class JEWFloatingTextFieldFormatBuilder: NSObject, JGFloatingTextFieldBuilderProtocol {
+public class JEWFloatingTextFieldFormatBuilder: NSObject, JEWFloatingTextFieldBuilderProtocol {
     
-    private var floatingTextField: JGFloatingTextField
-    public init(with floatingTextField: JGFloatingTextField) {
+    private var floatingTextField: JEWFloatingTextField
+    public init(with floatingTextField: JEWFloatingTextField) {
         self.floatingTextField = floatingTextField
         super.init()
     }
@@ -68,7 +68,7 @@ public class JEWFloatingTextFieldFormatBuilder: NSObject, JGFloatingTextFieldBui
     
     public func setup() {
         if self.floatingTextField.required {
-            floatingTextField.placeholderLabel.text = "\(floatingTextField.placeholderLabel.text ?? String())\(JGFloatingTextField.requiredCharacter)"
+            floatingTextField.placeholderLabel.text = "\(floatingTextField.placeholderLabel.text ?? String())\(JEWFloatingTextField.requiredCharacter)"
         }
         
         if self.floatingTextField.floatingTextField.text != nil && self.floatingTextField.floatingTextField.text != String() {

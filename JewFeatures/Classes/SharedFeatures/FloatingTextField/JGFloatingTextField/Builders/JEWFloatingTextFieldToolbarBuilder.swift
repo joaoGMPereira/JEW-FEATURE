@@ -6,13 +6,13 @@
 //
 
 import Foundation
-public class JEWFloatingTextFieldToolbarBuilder: NSObject, JGFloatingTextFieldBuilderProtocol {
+public class JEWFloatingTextFieldToolbarBuilder: NSObject, JEWFloatingTextFieldBuilderProtocol {
     
-    private var floatingTextField: JGFloatingTextField
+    private var floatingTextField: JEWFloatingTextField
     private var leftButtons: [JEWKeyboardToolbarButton] = [.cancel]
     private var rightButtons: [JEWKeyboardToolbarButton] = [.ok]
     private var shouldShowKeyboard: Bool = true
-    public init(with floatingTextField: JGFloatingTextField) {
+    public init(with floatingTextField: JEWFloatingTextField) {
         self.floatingTextField = floatingTextField
         super.init()
     }

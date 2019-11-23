@@ -1,5 +1,5 @@
 //
-//  JGFloatingTextFieldCodeViewBuilder.swift
+//  JEWFloatingTextFieldCodeViewBuilder.swift
 //  InvestScopio
 //
 //  Created by Joao Medeiros Pereira on 19/10/19.
@@ -8,10 +8,10 @@
 
 import Foundation
 import UIKit
-class JGFloatingTextFieldCodeViewBuilder: NSObject, JGFloatingTextFieldBuilderProtocol, JEWCodeView {
+class JEWFloatingTextFieldCodeViewBuilder: NSObject, JEWFloatingTextFieldBuilderProtocol, JEWCodeView {
     
-    private var floatingTextField: JGFloatingTextField
-    init(with floatingTextField: JGFloatingTextField) {
+    private var floatingTextField: JEWFloatingTextField
+    init(with floatingTextField: JEWFloatingTextField) {
         self.floatingTextField = floatingTextField
         super.init()
     }
