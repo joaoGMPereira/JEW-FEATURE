@@ -12,19 +12,19 @@ import UIKit
 extension NSAttributedString {
     
     public static func title(withText text: String) -> NSAttributedString {
-        return set(withText: text, andFont: UIFont.JEWTitle())
+        return set(withText: text, andFont: UIFont.JEW24())
     }
     
     public static func titleBold(withText text: String) -> NSAttributedString {
-        return set(withText: text, andFont: UIFont.JEWTitleBold())
+        return set(withText: text, andFont: UIFont.JEW24Bold())
     }
     
     public static func subtitle(withText text: String) -> NSAttributedString {
-        return set(withText: text, andFont: UIFont.JEWSubtitle())
+        return set(withText: text, andFont: UIFont.JEW20())
     }
     
     public static func subtitleBold(withText text: String) -> NSAttributedString {
-        return set(withText: text, andFont: UIFont.JEWSubtitleBold())
+        return set(withText: text, andFont: UIFont.JEW20Bold())
     }
     
     public static func set(withText text: String, andFont font:UIFont) -> NSAttributedString {

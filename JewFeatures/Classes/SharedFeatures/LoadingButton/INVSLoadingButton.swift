@@ -20,7 +20,7 @@ public class JEWLoadingButton: UIView {
     var loadingJson = ""
     
     public func setupFill(withColor color: UIColor = UIColor.JEWDefault(), title: String, andRounded isRounded: Bool = true) {
-        loadingJson = "animatedLoadingWhite"
+        loadingJson = JEWConstants.Resources.Lotties.animatedLoadingWhite.rawValue
         setupView()
         buttonTitle = title
         button.setTitle(buttonTitle, for: .normal)
@@ -30,7 +30,7 @@ public class JEWLoadingButton: UIView {
     }
     
     public func setupFillGradient(withColor colors: [CGColor] = UIColor.JEWGradientColors(), title: String, andRounded isRounded: Bool = true) {
-        loadingJson = "animatedLoadingWhite"
+        loadingJson = JEWConstants.Resources.Lotties.animatedLoadingWhite.rawValue
         setupView()
         buttonTitle = title
         button.setTitle(buttonTitle, for: .normal)
@@ -38,8 +38,8 @@ public class JEWLoadingButton: UIView {
         let _ = CAShapeLayer.addGradientLayer(withGradientLayer: nil, inView: button, withColorsArr: colors, withRoundedCorner: isRounded ? button.frame.height/2 : 0)
     }
     
-    public func setupBorded(withColor color: UIColor = UIColor.JEWDefault(), title: String, andRounded isRounded: Bool = true) {
-        loadingJson = "animatedLoadingPurple"
+    public func setupBorded(withColor color: UIColor = UIColor.JEWDefault(), lottie: JEWConstants.Resources.Lotties = .animatedLoadingBlack, title: String, andRounded isRounded: Bool = true) {
+        loadingJson = lottie.rawValue
         setupView()
         buttonTitle = title
         button.setTitle(buttonTitle, for: .normal)
@@ -116,7 +116,7 @@ extension JEWLoadingButton: JEWCodeView {
     
     public func setupAdditionalConfiguration() {
         self.layoutIfNeeded()
-        if let bundle = PodAsset.bundle(forPod: "JewFeatures") {
+        if let bundle = PodAsset.bundle(forPod: JEWConstants.Resources.podsJewFeature.rawValue) {
         let loadAnimation = Animation.named(loadingJson, bundle: bundle)
             loadingView.animation = loadAnimation
             loadingView.contentMode = .scaleAspectFit

@@ -17,6 +17,7 @@ public class INVSAlertViewController: INVSBlurViewController {
     public var confirmCallback: ((_ button: UIButton) -> ())?
     public var cancelCallback: ((_ button: UIButton) -> ())?
     
+    public var lottie: JEWConstants.Resources.Lotties = .animatedLoadingBlack
     public var titleAlert: String = ""
     public var messageAlert: String = ""
     public var hasCancelButton: Bool = true
@@ -32,7 +33,8 @@ public class INVSAlertViewController: INVSBlurViewController {
         super.viewDidLoad()
         setupView()
         view.layoutIfNeeded()
-        confirmButton.setupBorded(title: "Confirmar")
+        
+        confirmButton.setupBorded(lottie: lottie, title: "Confirmar")
         confirmButton.buttonAction = {(button) -> () in
             self.confirmButton.showLoading()
             if let confirmCallback = self.confirmCallback {
@@ -85,12 +87,12 @@ extension INVSAlertViewController: JEWCodeView {
         titleLabel.textColor = .JEWBlack()
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 1
-        titleLabel.font = .JEWFontBigBold()
+        titleLabel.font = .JEW16Bold()
         titleLabel.text = titleAlert
         messageLabel.textColor = .JEWBlack()
         messageLabel.textAlignment = .center
         messageLabel.numberOfLines = 0
-        messageLabel.font = .JEWFontDefault()
+        messageLabel.font = .JEW14()
         messageLabel.text = messageAlert
         if hasCancelButton {
             buttonStackView.addArrangedSubview(cancelButton)

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-enum JEWKeyboardToolbarButton: Int {
+public enum JEWKeyboardToolbarButton: Int {
     
     case ok = 0
     case cancel
@@ -36,11 +36,11 @@ enum JEWKeyboardToolbarButton: Int {
     }
 }
 
-protocol JEWKeyboardToolbarDelegate: class {
+public protocol JEWKeyboardToolbarDelegate: class {
     func keyboardToolbar(button: UIBarButtonItem, type: JEWKeyboardToolbarButton, tappedIn toolbar: JEWKeyboardToolbar)
 }
 
-class JEWKeyboardToolbar: UIToolbar {
+public class JEWKeyboardToolbar: UIToolbar {
     
     weak var toolBarDelegate: JEWKeyboardToolbarDelegate?
     

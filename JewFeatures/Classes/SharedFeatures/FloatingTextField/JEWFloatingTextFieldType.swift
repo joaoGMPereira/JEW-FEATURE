@@ -9,20 +9,22 @@
 import Foundation
 import UIKit
 
-enum JEWFloatingTextFieldType: Int {
-    
+
+public enum JEWFloatingTextFieldType: Int {
     case initialValue = 0
     case monthValue
+    case totalTimes
     case interestRate
-    case totalMonths
     case initialMonthlyRescue
     case increaseRescue
     case goalIncreaseRescue
     case email
     case password
     case confirmPassword
-    
-    func setupTextField(withTextField textfield: JEWFloatingTextField,keyboardType: UIKeyboardType = .numberPad, andDelegate delegate: JEWFloatingTextFieldDelegate, valueTypeTextField: JEWFloatingTextFieldValueType, isRequired: Bool = false, hasInfoButton: Bool = false, leftButtons: [JEWKeyboardToolbarButton] = [.cancel]) {
+}
+
+extension JEWFloatingTextFieldType {
+    func setupTextField(withTextField textfield: JEWFloatingTextField,keyboardType: UIKeyboardType = .numberPad, andDelegate delegate: JEWFloatingTextFieldDelegate, valueTypeTextField: JEWFloatingTextFieldValueType, isRequired: Bool = false, hasInfoButton: Bool = false, leftButtons: [JEWKeyboardToolbarButton] = [.cancel], shouldShowKeyboard: Bool = true) {
         textfield.setup(placeholder: self.getTextFieldTitle(), typeTextField: self, valueTypeTextField: valueTypeTextField, keyboardType: keyboardType, required: isRequired, hasInfoButton: hasInfoButton, color: UIColor.JEWDefault(), leftButtons: leftButtons)
         textfield.delegate = delegate
     }
@@ -35,8 +37,8 @@ enum JEWFloatingTextFieldType: Int {
             return "Investimento Mensal"
         case .interestRate:
             return "Taxa de Juros"
-        case .totalMonths:
-            return "Total de Meses"
+        case .totalTimes:
+            return ""
         case .initialMonthlyRescue:
             return "Valor Inicial para Resgatar do seu rendimento"
         case .increaseRescue:
@@ -55,15 +57,15 @@ enum JEWFloatingTextFieldType: Int {
     func getMessageInfo() -> String {
         switch self {
         case .initialValue:
-        return ""
+            return ""
         case .monthValue:
-        return ""
+            return ""
         case .interestRate:
-        return ""
-        case .totalMonths:
-        return ""
+            return ""
+        case .totalTimes:
+            return ""
         case .initialMonthlyRescue:
-        return "É o valor inicial para começar o resgate do seu rendimento.\n\nExemplo: Seu rendimento está em R$10,00 e o valor de resgate inicial é de R$1,00, portanto nesse mês você terá como resultado:\nRendimento: R$9,00 Resgate: R$1,00"
+            return "É o valor inicial para começar o resgate do seu rendimento.\n\nExemplo: Seu rendimento está em R$10,00 e o valor de resgate inicial é de R$1,00, portanto nesse mês você terá como resultado:\nRendimento: R$9,00 Resgate: R$1,00"
         case .increaseRescue:
             return "Exemplos:\n\n 1º Caso: 0 valor que será aumentado no resgate todo mês, caso não tenha colocado um objetivo de rendimento para aumento no resgate.\n\nExemplo:\nSeu acréscimo de resgate é de R$10,00 neste mês no próximo será R$20,00 e assim sucessivamente.\n\n 2º Caso: Toda vez que você atingir o objetivo de rendimento o valor será aumentado.\n\nExemplo:\nSeu acréscimo de resgate é de R$10,00, seu valor inicial é de R$100,00, seu objetivo é de mais R$100,00, então quando seu rendimento chegar em R$200,00, seu resgate será de mais R$10,00."
         case .goalIncreaseRescue:
@@ -84,9 +86,9 @@ enum JEWFloatingTextFieldType: Int {
             return ""
         case .monthValue:
             return ""
-        case .interestRate:
+        case .totalTimes:
             return ""
-        case .totalMonths:
+        case .interestRate:
             return ""
         case .initialMonthlyRescue:
             return "Valor Inicial do Resgate\n\n"

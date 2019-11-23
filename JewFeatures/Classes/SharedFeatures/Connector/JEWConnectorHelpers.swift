@@ -11,9 +11,10 @@ import UIKit
 
 public class JEWConnectorHelpers: NSObject {
     
-    public static func setupAlertController(lastViewController: UIViewController, message: String, title: String, height: CGFloat = 150, width: CGFloat = 300, cornerRadius: CGFloat = 8) -> INVSAlertViewController {
+    public static func setupAlertController(lastViewController: UIViewController, message: String, title: String, height: CGFloat = 150, width: CGFloat = 300, cornerRadius: CGFloat = 8, lottie: JEWConstants.Resources.Lotties = .animatedLoadingBlack) -> INVSAlertViewController {
         let errorViewController = INVSAlertViewController()
         errorViewController.setup(withHeight: height, andWidth: width, andCornerRadius: cornerRadius, andContentViewColor: .white)
+        errorViewController.lottie = lottie
         errorViewController.titleAlert = title
         errorViewController.messageAlert = message
         errorViewController.hasCancelButton = false
@@ -24,8 +25,9 @@ public class JEWConnectorHelpers: NSObject {
         return errorViewController
     }
     
-    public static func presentErrorRememberedUserLogged(lastViewController: UIViewController, message: String = JEWConstants.RefreshErrors.message.rawValue, title: String = JEWConstants.Default.title.rawValue, shouldRetry: Bool = false, successCompletion: @escaping(FinishResponse), errorCompletion:@escaping(FinishResponse)) {
-        let errorViewController = setupAlertController(lastViewController: lastViewController, message: message, title: title)
+    public static func presentErrorRememberedUserLogged(lastViewController: UIViewController, message: String = JEWConstants.RefreshErrors.message.rawValue, title: String = JEWConstants.Default.title.rawValue, height: CGFloat = 150, width: CGFloat = 300, cornerRadius: CGFloat = 8, lottie: JEWConstants.Resources.Lotties = .animatedLoadingBlack, shouldRetry: Bool = false, successCompletion: @escaping(FinishResponse), errorCompletion:@escaping(FinishResponse)) {
+        let errorViewController = setupAlertController(lastViewController: lastViewController, message: message, title: title, height: height, width: width, cornerRadius: cornerRadius, lottie: lottie)
+        
         errorViewController.confirmCallback = { (button) -> () in
             errorViewController.dismiss(animated: true) {
                 if shouldRetry == true  {
@@ -37,8 +39,9 @@ public class JEWConnectorHelpers: NSObject {
         }
     }
     
-    public static func presentErrorGoToSettingsRememberedUserLogged(lastViewController: UIViewController, message: String, title: String = JEWConstants.Default.title.rawValue, finishCompletion:@escaping(FinishResponse)) {
-        let errorViewController = setupAlertController(lastViewController: lastViewController, message: message, title: title)
+    public static func presentErrorGoToSettingsRememberedUserLogged(lastViewController: UIViewController, message: String, title: String = JEWConstants.Default.title.rawValue, height: CGFloat = 150, width: CGFloat = 300, cornerRadius: CGFloat = 8, lottie: JEWConstants.Resources.Lotties = .animatedLoadingBlack, finishCompletion:@escaping(FinishResponse)) {
+        let errorViewController = setupAlertController(lastViewController: lastViewController, message: message, title: title, height: height, width: width, cornerRadius: cornerRadius, lottie: lottie)
+        
         errorViewController.confirmCallback = { (button) -> () in
             errorViewController.dismiss(animated: true) {
                 finishCompletion()

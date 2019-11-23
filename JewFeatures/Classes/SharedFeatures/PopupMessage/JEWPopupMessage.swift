@@ -103,8 +103,8 @@ public class JEWPopupMessage: UIView {
     
     private func setupMessageAttributed(withTextMessage message:String, title:String) {
         messageAttributed = NSMutableAttributedString()
-        let titleAttributed = NSAttributedString.init(string: title, attributes: [NSAttributedString.Key.font : UIFont.JEWFontBigBold()])
-        let textMessageAttributed = NSAttributedString.init(string: message, attributes: [NSAttributedString.Key.font : UIFont.JEWFontDefault()])
+        let titleAttributed = NSAttributedString.init(string: title, attributes: [NSAttributedString.Key.font : UIFont.JEW16Bold()])
+        let textMessageAttributed = NSAttributedString.init(string: message, attributes: [NSAttributedString.Key.font : UIFont.JEW14()])
         messageAttributed.append(titleAttributed)
         messageAttributed.append(textMessageAttributed)
         
@@ -114,12 +114,12 @@ public class JEWPopupMessage: UIView {
         textMessageLabel.attributedText = messageAttributed
         textMessageLabel.textColor = messageColor
         
-        if let closeImage = UIImage.init(named: "closeIconWhite", in: Bundle(for: type(of: self)), compatibleWith: nil) {
+        if let closeImage = UIImage.init(named: JEWConstants.Resources.Images.closeIconWhite.rawValue, in: Bundle(for: type(of: self)), compatibleWith: nil) {
             closeButton.tintColor = messageColor
             closeButton.setImage(closeImage, for: .normal)
         } else {
             closeButton.setTitleColor(messageColor, for: .normal)
-            let closeTitle = NSAttributedString.init(string: "X", attributes: [NSAttributedString.Key.font : UIFont.JEWFontDefault(),NSAttributedString.Key.foregroundColor:messageColor])
+            let closeTitle = NSAttributedString.init(string: "X", attributes: [NSAttributedString.Key.font : UIFont.JEW14(),NSAttributedString.Key.foregroundColor:messageColor])
             closeButton.setAttributedTitle(closeTitle, for: .normal)
         }
         if shadowLayer != nil {
@@ -132,7 +132,7 @@ public class JEWPopupMessage: UIView {
         let buttonWidth: CGFloat = 30
         popupWidth = parentViewController.view.frame.width * 0.9
         let textMessageWidth = popupWidth - paddings - buttonWidth
-        let estimatedPopupHeight = messageAttributed.string.height(withConstrainedWidth: textMessageWidth, font: .JEWFontBigBold())
+        let estimatedPopupHeight = messageAttributed.string.height(withConstrainedWidth: textMessageWidth, font: .JEW16Bold())
         popupHeight = defaultHeight
         if estimatedPopupHeight > defaultHeight {
             popupHeight = estimatedPopupHeight

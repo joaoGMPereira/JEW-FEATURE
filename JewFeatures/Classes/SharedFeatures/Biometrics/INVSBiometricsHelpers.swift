@@ -72,7 +72,7 @@ public enum AuthenticationError {
         case .sessionExpired:
             return kSessionExpiredTitle
         default:
-            return "Atenção"
+            return JEWConstants.Default.title.rawValue
         }
     }
     
@@ -82,7 +82,7 @@ public enum AuthenticationError {
         
         switch self {
         case .canceledByUser, .fallback, .canceledBySystem:
-            return "Tente novamente mais tarde."
+            return JEWConstants.Default.tryAgainLater.rawValue
         case .passcodeNotSet:
             return authentication.faceIDAvailable() ? BioMetricsFaceIDErrors.kSetPasscodeToUseFaceID.rawValue : BioMetricsTouchIDErrors.kSetPasscodeToUseTouchID.rawValue
         case .biometryNotAvailable:

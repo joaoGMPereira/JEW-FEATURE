@@ -25,6 +25,7 @@ public enum JEWConstants {
         case errorMessage = "Ocorreu algum problema,\nIremos resolver em breve."
         case invalidURL = "URL Inválida!"
         case expiredSession = "Sessão Expirada"
+        case tryAgainLater = "Tente novamente mais tarde."
     }
     
     public enum RefreshErrors: String {
@@ -32,6 +33,21 @@ public enum JEWConstants {
         case invalidRefreshToken = "Refresh Token Inválido!"
         case invalidAccessToken = "Access Token Inválido!"
         
+    }
+    
+    public enum Resources: String {
+        case podsJewFeature = "JewFeatures"
+        public enum Images: String {
+            case closeIconWhite = "closeIconWhite"
+        }
+        public enum Lotties: String {
+            case animatedLoadingBlack = "animatedLoadingBlack"
+            case animatedLoadingPurple = "animatedLoadingPurple"
+            case animatedLoadingWhite = "animatedLoadingWhite"
+            case closePlusAnimationPurple = "closePlusAnimationPurple"
+            case refreshAnimationBlack = "refreshAnimationBlack"
+            case refreshAnimationPurple = "refreshAnimationPurple"
+        }
     }
     
     public enum StartAlertViewController: String {

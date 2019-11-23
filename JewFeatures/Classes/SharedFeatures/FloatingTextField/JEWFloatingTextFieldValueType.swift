@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum JEWFloatingTextFieldValueType: Int {
+public enum JEWFloatingTextFieldValueType: Int {
     
     case none = 0
     case currency
@@ -16,7 +16,7 @@ enum JEWFloatingTextFieldValueType: Int {
     case percent
     
     
-    func formatText(textFieldText: String, isBackSpace: Bool = false) -> String {
+    public func formatText(textFieldText: String, isBackSpace: Bool = false) -> String {
         switch self {
         case .none:
             return textFieldText

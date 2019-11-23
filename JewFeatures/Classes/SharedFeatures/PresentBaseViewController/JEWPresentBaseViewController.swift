@@ -10,33 +10,41 @@ import UIKit
 import Lottie
 import PodAsset
 
-class JEWPresentBaseViewController: UIViewController {
-    var navigationBarView = UIView()
-    var navigationBarTitle = "Simulação" {
+public class JEWPresentBaseViewController: UIViewController {
+    public var navigationBarView = UIView()
+    public var navigationBarTitle = "" {
         didSet {
             navigationBarLabel.text = navigationBarTitle
         }
     }
-    var navigationBarTitleColor : UIColor = .JEWBlack() {
+    public var navigationBarTitleColor : UIColor = .JEWBlack() {
         didSet {
             navigationBarLabel.textColor = navigationBarTitleColor
         }
     }
-    var closeButton = UIButton()
-    var navigationBarHeight: CGFloat = 44
+    
+    public var lottie : JEWConstants.Resources.Lotties = .animatedLoadingBlack {
+        didSet {
+            lottieString = lottie.rawValue
+        }
+    }
+    
+    public var closeButton = UIButton()
+    public var navigationBarHeight: CGFloat = 44
+    private var lottieString: String = JEWConstants.Resources.Lotties.animatedLoadingBlack.rawValue
     private var navigationBarLabel = UILabel()
     private var contentView = UIView()
     private var shadowLayer: CAShapeLayer?
     private var heightNavigationBarConstraint = NSLayoutConstraint()
     private var topNavigationBarConstraint = NSLayoutConstraint()
     private var animatedLogoView = AnimationView()
-    var closeClosure: (() -> ())?
-    override func viewDidLoad() {
+    public var closeClosure: (() -> ())?
+    override public func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
     
-    override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
             navigationBarHeight = view.safeAreaInsets.top + 44
             heightNavigationBarConstraint.constant = navigationBarHeight
@@ -53,7 +61,7 @@ class JEWPresentBaseViewController: UIViewController {
         }
     }
     
-    func showLoading() {
+    public func showLoading() {
         UIView.animate(withDuration: 0.4) {
             self.animatedLogoView.play()
             self.navigationBarLabel.alpha = 0.0
@@ -61,10 +69,21 @@ class JEWPresentBaseViewController: UIViewController {
         }
     }
     
-    func hideLoading() {
+    public func hideLoading() {
         UIView.animate(withDuration: 0.6) {
             self.navigationBarLabel.alpha = 1.0
             self.animatedLogoView.alpha = 0.0
+        }
+    }
+    
+    private func setupLottie() {
+        if let bundle = PodAsset.bundle(forPod: JEWConstants.Resources.podsJewFeature.rawValue) {
+            let loadingAnimation = Animation.named(lottieString, bundle: bundle)
+            animatedLogoView.animation = loadingAnimation
+            animatedLogoView.contentMode = .scaleAspectFit
+            animatedLogoView.animationSpeed = 1.0
+            animatedLogoView.loopMode = .loop
+            animatedLogoView.alpha = 0.0
         }
     }
 
@@ -122,26 +141,13 @@ extension JEWPresentBaseViewController {
     }
     
     private func setupAdditionalConfiguration() {
-        if let closeImage = UIImage.init(named: "closeIconWhite", in: Bundle(for: type(of: self)), compatibleWith: nil) {
-            closeButton.tintColor = .JEWBlack()
-            closeButton.setImage(closeImage, for: .normal)
-        } else {
-            let closeTitle = NSAttributedString.init(string: "X", attributes: [NSAttributedString.Key.font : UIFont.JEWFontDefault(),NSAttributedString.Key.foregroundColor:UIColor.JEWBlack()])
-            closeButton.setAttributedTitle(closeTitle, for: .normal)
-        }
-        closeButton.addTarget(self, action: #selector(JEWPresentBaseViewController.dismissViewController), for: .touchUpInside)
+        setupExitButton()
+        
         navigationBarLabel.text = navigationBarTitle
         navigationBarLabel.textColor = .JEWBlack()
         view.backgroundColor = .JEWGray()
         navigationBarView.backgroundColor = .JEWLightGray()
-        if let bundle = PodAsset.bundle(forPod: "JewFeatures") {
-            let starAnimation = Animation.named("animatedLoadingPurple", bundle: bundle)
-            animatedLogoView.animation = starAnimation
-            animatedLogoView.contentMode = .scaleAspectFit
-            animatedLogoView.animationSpeed = 1.0
-            animatedLogoView.loopMode = .loop
-            animatedLogoView.alpha = 0.0
-        }
+        setupLottie()
     }
     
     private func setupView() {
@@ -150,5 +156,41 @@ extension JEWPresentBaseViewController {
         setupAdditionalConfiguration()
     }
     
+    private func setupExitButton() {
+        if let closeImage = UIImage.init(named: JEWConstants.Resources.Images.closeIconWhite.rawValue, in: Bundle(for: type(of: self)), compatibleWith: nil) {
+            closeButton.tintColor = .JEWBlack()
+            closeButton.setImage(closeImage, for: .normal)
+        } else {
+            let closeTitle = NSAttributedString.init(string: "X", attributes: [NSAttributedString.Key.font : UIFont.JEW14(),NSAttributedString.Key.foregroundColor:UIColor.JEWBlack()])
+            closeButton.setAttributedTitle(closeTitle, for: .normal)
+        }
+        closeButton.addTarget(self, action: #selector(JEWPresentBaseViewController.dismissViewController), for: .touchUpInside)
+    }
+    
+}
+
+extension JEWPresentBaseViewController {
+    public class Builder: NSObject {
+        let presentBaseViewController = JEWPresentBaseViewController()
+        
+        public func set(navigationBarTitle: String) -> Builder {
+            presentBaseViewController.navigationBarTitle = navigationBarTitle
+            return self
+        }
+        
+        public func set(navigationBarTitleColor: UIColor) -> Builder {
+            presentBaseViewController.navigationBarTitleColor = navigationBarTitleColor
+            return self
+        }
+        
+        public func set(lottie: JEWConstants.Resources.Lotties) -> Builder {
+            presentBaseViewController.lottie = lottie
+            return self
+        }
+        
+        public func build() -> JEWPresentBaseViewController {
+            return JEWPresentBaseViewController()
+        }
+    }
 }
 
