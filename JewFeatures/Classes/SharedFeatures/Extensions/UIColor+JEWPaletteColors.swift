@@ -13,7 +13,7 @@ extension UIColor {
         return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: alpha)
     }
     
-    public static func JEWDefault(withAlpha alpha: CGFloat = 1.0) -> UIColor {
+    public static func JEWDefault() -> UIColor {
         return JEWUIColor.default.defaultColor
     }
     
@@ -38,12 +38,16 @@ extension UIColor {
     }
     
     public static func JEWBlack() -> UIColor {
-        return UIColor.JEWPallete(red: 44, green: 44, blue: 44)
+        return UIColor.JEWPallete(red: 35, green: 35, blue: 35)
+    }
+    
+    public static func JEWLightBlack() -> UIColor {
+        return UIColor.JEWPallete(red: 105, green: 105, blue: 105)
     }
 }
 
 public class JEWUIColor: NSObject {
     static public let `default` = JEWUIColor()
-    var defaultColor:UIColor = .JEWBlack()
-    var lightDefaultColor:UIColor = .JEWLightGray()
+    public var defaultColor:UIColor = .JEWBlack()
+    public var lightDefaultColor:UIColor = .JEWLightGray()
 }

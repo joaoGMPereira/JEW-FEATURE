@@ -28,14 +28,14 @@ public class JEWFloatingTextFieldToolbarBuilder: NSObject, JEWFloatingTextFieldB
         setToolbar()
     }
     
-    func setToolbar() {
+    private func setToolbar() {
         let toolbar = JEWKeyboardToolbar()
         toolbar.toolBarDelegate = floatingTextField
         toolbar.setup(leftButtons: leftButtons, rightButtons: rightButtons)
         if shouldShowKeyboard {
-            floatingTextField.floatingTextField.inputAccessoryView = toolbar
+            floatingTextField.textField.inputAccessoryView = toolbar
         } else {
-            floatingTextField.floatingTextField.inputView = UIView()
+            floatingTextField.textField.inputView = UIView()
         }
     }
     

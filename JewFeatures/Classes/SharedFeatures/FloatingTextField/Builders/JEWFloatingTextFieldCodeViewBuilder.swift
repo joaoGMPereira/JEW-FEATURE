@@ -20,10 +20,10 @@ class JEWFloatingTextFieldCodeViewBuilder: NSObject, JEWFloatingTextFieldBuilder
     }
     
     func buildViewHierarchy() {
-        self.floatingTextField.addSubview(self.floatingTextField.floatingTextField)
+        self.floatingTextField.addSubview(self.floatingTextField.textField)
         self.floatingTextField.addSubview(self.floatingTextField.placeholderLabel)
         self.floatingTextField.addSubview(self.floatingTextField.bottomLineView)
-        self.floatingTextField.floatingTextField.translatesAutoresizingMaskIntoConstraints = false
+        self.floatingTextField.textField.translatesAutoresizingMaskIntoConstraints = false
         self.floatingTextField.placeholderLabel.translatesAutoresizingMaskIntoConstraints = false
         self.floatingTextField.bottomLineView.translatesAutoresizingMaskIntoConstraints = false
         self.floatingTextField.placeholderLabel.isUserInteractionEnabled = false
@@ -33,8 +33,8 @@ class JEWFloatingTextFieldCodeViewBuilder: NSObject, JEWFloatingTextFieldBuilder
         let trailingFromInfoButton = CGFloat(-8)
         self.floatingTextField.trailingLabelConstraint = self.floatingTextField.placeholderLabel.trailingAnchor.constraint(equalTo: self.floatingTextField.trailingAnchor, constant: trailingFromInfoButton)
         self.floatingTextField.bottomLabelConstraint = self.floatingTextField.placeholderLabel.bottomAnchor.constraint(equalTo: self.floatingTextField.bottomLineView.topAnchor)
-        self.floatingTextField.trailingTextFieldConstraint = self.floatingTextField.floatingTextField.trailingAnchor.constraint(equalTo: self.floatingTextField.trailingAnchor, constant: trailingFromInfoButton)
-        self.floatingTextField.topTextFieldConstraint = self.floatingTextField.floatingTextField.topAnchor.constraint(equalTo: self.floatingTextField.topAnchor)
+        self.floatingTextField.trailingTextFieldConstraint = self.floatingTextField.textField.trailingAnchor.constraint(equalTo: self.floatingTextField.trailingAnchor, constant: trailingFromInfoButton)
+        self.floatingTextField.topTextFieldConstraint = self.floatingTextField.textField.topAnchor.constraint(equalTo: self.floatingTextField.topAnchor)
 
         NSLayoutConstraint.activate([
             self.floatingTextField.placeholderLabel.leadingAnchor.constraint(equalTo: self.floatingTextField.leadingAnchor, constant: 8),
@@ -43,10 +43,10 @@ class JEWFloatingTextFieldCodeViewBuilder: NSObject, JEWFloatingTextFieldBuilder
             self.floatingTextField.bottomLabelConstraint
             ])
         NSLayoutConstraint.activate([
-            self.floatingTextField.floatingTextField.leadingAnchor.constraint(equalTo: self.floatingTextField.leadingAnchor, constant: 8),
+            self.floatingTextField.textField.leadingAnchor.constraint(equalTo: self.floatingTextField.leadingAnchor, constant: 8),
             self.floatingTextField.trailingTextFieldConstraint,
             self.floatingTextField.topTextFieldConstraint,
-            self.floatingTextField.floatingTextField.bottomAnchor.constraint(equalTo: self.floatingTextField.bottomLineView.topAnchor, constant: 1)
+            self.floatingTextField.textField.bottomAnchor.constraint(equalTo: self.floatingTextField.bottomLineView.topAnchor, constant: 1)
             ])
         
         NSLayoutConstraint.activate([

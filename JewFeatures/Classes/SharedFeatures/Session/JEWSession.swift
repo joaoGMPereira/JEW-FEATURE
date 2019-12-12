@@ -8,28 +8,27 @@
 
 import Foundation
 
-enum ServiceType: Int {
+public enum ServiceType: Int {
     case localHost = 0
     case heroku
     case offline
 }
 
-final class JEWSession {
+public final class JEWSession {
     
     // Can't init is singleton
     private init() { }
 
-    static let session = JEWSession()
-    var user: JEWUserModel?
-    var market: MarketModel?
-    var callService: ServiceType = .heroku
+    public static let session = JEWSession()
+    public var user: JEWUserModel?
+    public var callService: ServiceType = .heroku
     
-    func isDev() -> Bool {
-        #if DEV
+    public func isDev() -> Bool {
+        //#if DEV
         return true
-        #else
-        return false
-        #endif
+        //#else
+        //return false
+        //#endif
     }
 
 

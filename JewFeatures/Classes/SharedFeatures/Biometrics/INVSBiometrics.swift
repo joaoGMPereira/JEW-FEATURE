@@ -28,7 +28,7 @@ public class JEWBiometrics: NSObject {
     }
     
     public class func authenticateWithBiometrics(reason: String, fallbackTitle: String? = "", cancelTitle: String? = "", success successBlock:@escaping AuthenticationSuccess, failure failureBlock:@escaping AuthenticationFailure) {
-        let reasonString = reason.isEmpty ? JEWBiometrics.shared.defaultBiometricsAuthenticationReason() : reason
+        let reasonString = reason.isEmpty ? JEWBiometrics.defaultBiometricsAuthenticationReason() : reason
         
         let context = LAContext()
         context.localizedFallbackTitle = fallbackTitle
@@ -41,7 +41,7 @@ public class JEWBiometrics: NSObject {
     }
     
     public class func authenticateWithPasscode(reason: String, cancelTitle: String? = "", success successBlock:@escaping AuthenticationSuccess, failure failureBlock:@escaping AuthenticationFailure) {
-        let reasonString = reason.isEmpty ? JEWBiometrics.shared.defaultPasscodeAuthenticationReason() : reason
+        let reasonString = reason.isEmpty ? JEWBiometrics.defaultPasscodeAuthenticationReason() : reason
         
         let context = LAContext()
         context.localizedCancelTitle = cancelTitle
@@ -50,16 +50,16 @@ public class JEWBiometrics: NSObject {
         JEWBiometrics.shared.evaluate(policy: LAPolicy.deviceOwnerAuthentication, with: context, reason: reasonString, success: successBlock, failure: failureBlock)
     }
     
-    public func faceIDAvailable() -> Bool {
+    public static func faceIDAvailable() -> Bool {
         let context = LAContext()
         return (context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthentication, error: nil) && context.biometryType == .faceID)
     }
     
-    public func defaultBiometricsAuthenticationReason() -> String {
+    public static func defaultBiometricsAuthenticationReason() -> String {
         return faceIDAvailable() ? BioMetricsFaceIDErrors.kFaceIdAuthenticationReason.rawValue : BioMetricsTouchIDErrors.kTouchIdAuthenticationReason.rawValue
     }
     
-    public func defaultPasscodeAuthenticationReason() -> String {
+    public static func defaultPasscodeAuthenticationReason() -> String {
         return faceIDAvailable() ? BioMetricsFaceIDErrors.kFaceIdPasscodeAuthenticationReason.rawValue : BioMetricsTouchIDErrors.kTouchIdPasscodeAuthenticationReason.rawValue
     }
     

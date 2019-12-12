@@ -8,9 +8,11 @@
 
 import Foundation
 import UIKit
-public enum JEWPopupMessageType: Int {
-    case error = 0
+public enum JEWPopupMessageType {
+    
+    case error
     case alert
+    case custom(messageColor: UIColor, backgroundColor: UIColor)
     
     public func messageColor() -> UIColor {
         switch self {
@@ -18,6 +20,8 @@ public enum JEWPopupMessageType: Int {
             return .white
         case .alert:
             return .white
+        case .custom(let messageColor, _):
+            return messageColor
         }
     }
     
@@ -27,6 +31,8 @@ public enum JEWPopupMessageType: Int {
             return .JEWRed()
         case .alert:
             return .JEWDefault()
+        case .custom(_, let backgroundColor):
+            return backgroundColor
         }
     }
 }

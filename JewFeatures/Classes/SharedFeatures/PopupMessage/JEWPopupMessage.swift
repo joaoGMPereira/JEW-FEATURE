@@ -81,25 +81,25 @@ public class JEWPopupMessage: UIView {
         showPopup(sender: sender)
     }
     
-    public func show(withAttributedMessage message:String, title:String = "", popupType: JEWPopupMessageType = .error, shouldHideAutomatically: Bool = true, sender: UIView? = nil) {
-        if let shadowLayer = self.shadowLayer {
-            shadowLayer.removeFromSuperlayer()
-        }
-        self.shadowLayer = nil
-        self.shouldHideAutomatically = shouldHideAutomatically
-        self.popupType = popupType
-        messageColor = self.popupType.messageColor()
-        popupBackgroundColor = self.popupType.backgroundColor()
-        setupMessageAttributed(withTextMessage: message, title: title)
-        setupUI()
-        calculateHeightOfPopup()
-        if hasAddedSubview == false {
-            UIApplication.shared.keyWindow?.addSubview(self)
-            hasAddedSubview = true
-            setupView()
-        }
-        showPopup(sender: sender)
-    }
+//    public func show(withAttributedMessage message:String, title:String = "", popupType: JEWPopupMessageType = .error, shouldHideAutomatically: Bool = true, sender: UIView? = nil) {
+//        if let shadowLayer = self.shadowLayer {
+//            shadowLayer.removeFromSuperlayer()
+//        }
+//        self.shadowLayer = nil
+//        self.shouldHideAutomatically = shouldHideAutomatically
+//        self.popupType = popupType
+//        messageColor = self.popupType.messageColor()
+//        popupBackgroundColor = self.popupType.backgroundColor()
+//        setupMessageAttributed(withTextMessage: message, title: title)
+//        setupUI()
+//        calculateHeightOfPopup()
+//        if hasAddedSubview == false {
+//            UIApplication.shared.keyWindow?.addSubview(self)
+//            hasAddedSubview = true
+//            setupView()
+//        }
+//        showPopup(sender: sender)
+//    }
     
     private func setupMessageAttributed(withTextMessage message:String, title:String) {
         messageAttributed = NSMutableAttributedString()

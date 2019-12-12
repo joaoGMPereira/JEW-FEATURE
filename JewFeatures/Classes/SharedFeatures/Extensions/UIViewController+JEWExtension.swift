@@ -13,5 +13,14 @@ extension UIViewController {
     public static func toString() -> String {
         return String(describing: self.self)
     }
+    
+    public var background: UIColor? {
+        set {
+            view.backgroundColor = newValue
+        }
+        get {
+            return view.backgroundColor
+        }
+    }
 }
 

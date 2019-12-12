@@ -33,7 +33,7 @@ public class JEWFloatingTextFieldFactory: NSObject {
         setupBuilders(withFloatingTextField: textField, buildersType: buildersType)
     }
     
-    private func setupBuilders(withFloatingTextField textField: JEWFloatingTextField, buildersType: [JEWFloatingTextFieldFactoryTypes], builderFormatText: JEWFloatingTextFieldFormatBuilder? = nil) {
+    private func setupBuilders(withFloatingTextField textField: JEWFloatingTextField, buildersType: [JEWFloatingTextFieldFactoryTypes]) {
         for builderType in buildersType {
             let builder = builderType.build(withFloatingTextField: textField)
             builder.setup()

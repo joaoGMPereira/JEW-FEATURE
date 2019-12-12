@@ -13,6 +13,17 @@ public protocol JEWFloatingTextFieldDelegate: class {
     func infoButtonAction(_ textField: JEWFloatingTextField)
     func toolbarAction(_ textField: JEWFloatingTextField, typeOfAction type: JEWKeyboardToolbarButton)
     func textFieldDidBeginEditing(_ textField: JEWFloatingTextField)
+    func textFieldDidEndEditing(_ textField: JEWFloatingTextField)
+}
+
+public extension JEWFloatingTextFieldDelegate {
+    func infoButtonAction(_ textField: JEWFloatingTextField) {}
+    
+    func toolbarAction(_ textField: JEWFloatingTextField, typeOfAction type: JEWKeyboardToolbarButton) {}
+    
+    func textFieldDidBeginEditing(_ textField: JEWFloatingTextField){}
+    
+    func textFieldDidEndEditing(_ textField: JEWFloatingTextField){}
 }
 
 public class JEWFloatingTextField: UIView {
@@ -28,7 +39,7 @@ public class JEWFloatingTextField: UIView {
     private static let zero: CGFloat = 0
     
     //UI
-    let floatingTextField = UITextField(frame: .zero)
+    let textField = UITextField(frame: .zero)
     let placeholderLabel = UILabel(frame: .zero)
     let bottomLineView = UIView(frame: .zero)
     let infoButton = UIButton.init(type: .infoLight)
@@ -48,7 +59,7 @@ public class JEWFloatingTextField: UIView {
     var textFieldText: String = String() {
         didSet {
             if textFieldText != String() {
-                floatingTextField.text = textFieldText
+                textField.text = textFieldText
                 openKeyboard()
             }
         }
@@ -56,6 +67,12 @@ public class JEWFloatingTextField: UIView {
     var selectedColor = UIColor.lightGray {
         didSet {
             currentlySelectedColor = selectedColor
+        }
+    }
+    
+    var textFieldTextColor = UIColor.JEWBlack() {
+        didSet {
+            textField.textColor = textFieldTextColor
         }
     }
     
@@ -71,13 +88,13 @@ public class JEWFloatingTextField: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         //setupView()
-        floatingTextField.delegate = self
+        textField.delegate = self
     }
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
        //setupView()
-        floatingTextField.delegate = self
+        textField.delegate = self
     }
     
     func updateTextFieldUI() {
@@ -89,7 +106,6 @@ public class JEWFloatingTextField: UIView {
         }
         placeholderLabel.textColor = currentlySelectedColor
         bottomLineView.backgroundColor = currentlySelectedColor
-        
     }
     
 }
@@ -129,6 +145,7 @@ extension JEWFloatingTextField: UITextFieldDelegate, JEWKeyboardToolbarDelegate 
     }
     
     public func textFieldDidEndEditing(_ textField: UITextField) {
+        delegate?.textFieldDidEndEditing(self)
     if textField.text == String() || textField.text == nil {
             closeKeyboard()
         }
@@ -146,14 +163,14 @@ extension JEWFloatingTextField: UITextFieldDelegate, JEWKeyboardToolbarDelegate 
     }
     
     func clear() {
-        self.floatingTextField.text = String()
+        self.textField.text = String()
         closeKeyboard()
     }
     
     func closeKeyboard() {
         let trailingFromInfoButton = -((frame.height * JEWFloatingTextField.eightyPercentSize) + JEWFloatingTextField.padding)
         UIView.animate(withDuration: JEWFloatingTextField.animationDuration/Double(JEWFloatingTextField.numberTwo)) { [weak self] in
-            if self?.floatingTextField.text == "" || self?.floatingTextField.text == nil {
+            if self?.textField.text == "" || self?.textField.text == nil {
                 self?.trailingLabelConstraint.constant = trailingFromInfoButton
                 self?.bottomLabelConstraint.constant = JEWFloatingTextField.zero
                 self?.topTextFieldConstraint.constant = JEWFloatingTextField.zero

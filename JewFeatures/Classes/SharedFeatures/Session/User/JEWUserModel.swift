@@ -8,14 +8,19 @@
 
 import Foundation
 
-struct JEWUserModel: JSONAble {
-    var email: String = ""
-    var uid: String = ""
-    var syncronized: Bool = false
-    var access: JEWAccessModel? = nil
+public struct JEWUserModel: JSONAble {
+    public var email: String = ""
+    public var fullName: String?
+    public var photoURL: URL?
+    public var photoImage: UIImage?
+    public var uid: String = ""
+    public var syncronized: Bool = false
+    public var access: JEWAccessModel? = nil
     
-    init(email: String, uid: String) {
+    public init(email: String, uid: String, fullName: String? = nil, photoURL: URL? = nil) {
         self.email = email
         self.uid = uid
+        self.fullName = fullName
+        self.photoURL = photoURL
     }
 }

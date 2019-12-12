@@ -8,22 +8,22 @@
 
 import Foundation
 
-struct JEWAccessModel {
-    let refreshToken: String
-    let accessToken: String
-    let expiredAt: Date
-    let userID: Int?
+public struct JEWAccessModel {
+    public let refreshToken: String
+    public let accessToken: String
+    public let expiredAt: Date
+    public let userID: Int?
 }
 
 extension JEWAccessModel: Decodable {
-    enum MyStructKeys: String, CodingKey { // declaring our keys
+    public enum MyStructKeys: String, CodingKey { // declaring our keys
         case refreshToken = "refreshToken"
         case accessToken = "accessToken"
         case expiredAt = "expiredAt"
         case userID = "userID"
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: MyStructKeys.self)
         let refreshToken: String = try container.decode(String.self, forKey: .refreshToken)
         let accessToken: String = try container.decode(String.self, forKey: .accessToken)

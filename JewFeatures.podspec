@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'JewFeatures'
-  s.version          = '0.0.1'
+  s.version          = '0.0.2'
   s.summary          = 'A short description of JewFeatures.'
 
 # This description is used to generate tags and improve search results.
@@ -43,4 +43,5 @@ TODO: Add long description of the pod here.
    s.dependency 'Alamofire'
    s.dependency 'SkeletonView'
    s.dependency 'PodAsset'
+   s.dependency 'CollectionKit'
 end

@@ -18,6 +18,7 @@ public class JEWFloatingTextFieldFormatBuilder: NSObject, JEWFloatingTextFieldBu
     public func setAll(withPlaceholder placeholder: String) -> JEWFloatingTextFieldFormatBuilder {
         return setPlaceholder(text: placeholder)
             .setSelectedColor()
+            .setTextFieldTextColor()
             .setSmallFont()
             .setBigFont()
             .setRequired()
@@ -36,6 +37,11 @@ public class JEWFloatingTextFieldFormatBuilder: NSObject, JEWFloatingTextFieldBu
         return self
     }
     
+    public func setTextFieldTextColor(color: UIColor = .JEWBlack()) -> JEWFloatingTextFieldFormatBuilder {
+        self.floatingTextField.textFieldTextColor = color
+        return self
+    }
+    
     public func setSmallFont(font: UIFont = .JEW11()) -> JEWFloatingTextFieldFormatBuilder {
         self.floatingTextField.smallFont = font
         return self
@@ -51,8 +57,8 @@ public class JEWFloatingTextFieldFormatBuilder: NSObject, JEWFloatingTextFieldBu
         return self
     }
     
-    public func setKeyboardType(type: UIKeyboardType = .numberPad) -> JEWFloatingTextFieldFormatBuilder {
-        self.floatingTextField.floatingTextField.keyboardType = type
+    public func setKeyboardType(type: UIKeyboardType = .default) -> JEWFloatingTextFieldFormatBuilder {
+        self.floatingTextField.textField.keyboardType = type
         return self
     }
     
@@ -71,7 +77,7 @@ public class JEWFloatingTextFieldFormatBuilder: NSObject, JEWFloatingTextFieldBu
             floatingTextField.placeholderLabel.text = "\(floatingTextField.placeholderLabel.text ?? String())\(JEWFloatingTextField.requiredCharacter)"
         }
         
-        if self.floatingTextField.floatingTextField.text != nil && self.floatingTextField.floatingTextField.text != String() {
+        if self.floatingTextField.textField.text != nil && self.floatingTextField.textField.text != String() {
             self.floatingTextField.openKeyboard()
         }
     }
