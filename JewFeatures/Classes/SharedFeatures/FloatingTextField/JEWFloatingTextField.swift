@@ -162,7 +162,7 @@ extension JEWFloatingTextField: UITextFieldDelegate, JEWKeyboardToolbarDelegate 
         }
     }
     
-    func clear() {
+    public func clear() {
         self.textField.text = String()
         closeKeyboard()
     }

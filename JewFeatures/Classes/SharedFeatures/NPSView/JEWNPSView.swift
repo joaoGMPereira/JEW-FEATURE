@@ -84,6 +84,12 @@ public class JEWNPSView: UIView, JEWCodeView {
         callCallBack(button: selectedButton)
     }
     
+    public func selectedButton(index: Int) {
+        if avaliationButtons.count >= index {
+            animateSelectedButton(selectedButton: avaliationButtons[index])
+        }
+    }
+    
     func animateSelectedButton(selectedButton: NPSButton) {
         selectedButton.npsIsSelected = !selectedButton.npsIsSelected
         if selectedButton.npsIsSelected {
@@ -102,10 +108,10 @@ public class JEWNPSView: UIView, JEWCodeView {
         }
     }
     
-    public func unselectButtons(notUnselectIndex: Int? = nil) {
+    public func unselectButtons(selectIndex: Int? = nil) {
         for (index, button) in avaliationButtons.enumerated() {
-            if let notUnselectIndex = notUnselectIndex {
-                if index != notUnselectIndex {
+            if let selectIndex = selectIndex {
+                if index != selectIndex {
                     button.npsIsSelected = false
                     unselectButton(button: button)
                 }

@@ -25,6 +25,8 @@ public class JEWFloatingTextFieldFormatBuilder: NSObject, JEWFloatingTextFieldBu
             .setKeyboardType()
             .setTextFieldType()
             .setTextFieldValueType()
+            .setTextFieldAutoCorrection()
+            .setTextFieldKeyboardAppearance()
     }
     
     public func setPlaceholder(text: String = String()) -> JEWFloatingTextFieldFormatBuilder {
@@ -71,6 +73,17 @@ public class JEWFloatingTextFieldFormatBuilder: NSObject, JEWFloatingTextFieldBu
         self.floatingTextField.valueTypeTextField = type
         return self
     }
+    
+    public func setTextFieldAutoCorrection(isOn: UITextAutocorrectionType = .no) -> JEWFloatingTextFieldFormatBuilder {
+        self.floatingTextField.textField.autocorrectionType = isOn
+        return self
+    }
+    
+    public func setTextFieldKeyboardAppearance(appearance: UIKeyboardAppearance = .default) -> JEWFloatingTextFieldFormatBuilder {
+        self.floatingTextField.textField.keyboardAppearance = appearance
+        return self
+    }
+    
     
     public func setup() {
         if self.floatingTextField.required {

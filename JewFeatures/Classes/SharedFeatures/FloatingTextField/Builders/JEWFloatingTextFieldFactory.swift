@@ -28,9 +28,10 @@ public class JEWFloatingTextFieldFactory: NSObject {
         self.textField = textField
     }
     
-    public func setup(buildersType: [JEWFloatingTextFieldFactoryTypes], delegate: JEWFloatingTextFieldDelegate) {
+    @discardableResult public func setup(buildersType: [JEWFloatingTextFieldFactoryTypes], delegate: JEWFloatingTextFieldDelegate) -> JEWFloatingTextFieldFactory {
         textField.delegate = delegate
         setupBuilders(withFloatingTextField: textField, buildersType: buildersType)
+        return self
     }
     
     private func setupBuilders(withFloatingTextField textField: JEWFloatingTextField, buildersType: [JEWFloatingTextFieldFactoryTypes]) {
@@ -40,12 +41,12 @@ public class JEWFloatingTextFieldFactory: NSObject {
         }
     }
     
-    public func setupFormatBuilder(builder: JEWFloatingTextFieldFormatBuilder) -> JEWFloatingTextFieldFactory {
+    @discardableResult public func setupFormatBuilder(builder: JEWFloatingTextFieldFormatBuilder) -> JEWFloatingTextFieldFactory {
         builder.setup()
         return self
     }
     
-    public func setupToolbarBuilder(builder: JEWFloatingTextFieldToolbarBuilder) -> JEWFloatingTextFieldFactory {
+    @discardableResult public func setupToolbarBuilder(builder: JEWFloatingTextFieldToolbarBuilder) -> JEWFloatingTextFieldFactory {
         builder.setup()
         return self
     }
