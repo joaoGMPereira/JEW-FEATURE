@@ -21,6 +21,14 @@ extension UIColor {
         return JEWUIColor.default.lightDefaultColor
     }
     
+    public static func JEWDarkDefault() -> UIColor {
+        return JEWUIColor.default.darkDefaultColor
+    }
+    
+    public static func JEWBackground() -> UIColor {
+        return JEWUIColor.default.backgroundColor
+    }
+    
     public static func JEWGradientColors() -> [CGColor] {
         return [UIColor.JEWDefault().cgColor, UIColor.JEWLightDefault().cgColor]
     }
@@ -48,6 +56,8 @@ extension UIColor {
 
 public class JEWUIColor: NSObject {
     static public let `default` = JEWUIColor()
-    public var defaultColor:UIColor = .JEWBlack()
-    public var lightDefaultColor:UIColor = .JEWLightGray()
+    public var defaultColor: UIColor = .JEWBlack()
+    public var lightDefaultColor: UIColor = .JEWLightGray()
+    public var darkDefaultColor: UIColor = .JEWGray()
+    public var backgroundColor: UIColor = .groupTableViewBackground
 }
