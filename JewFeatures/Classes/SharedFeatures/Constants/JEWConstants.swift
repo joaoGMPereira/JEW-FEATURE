@@ -12,12 +12,7 @@ import LocalAuthentication
 public enum JEWConstants {
     
     public enum Services: String {
-        case localHost = "http://localhost:8080/api/v1"
-        case version = "version"
-        case signUp = "/account/sign-up"
-        case signIn = "/account/sign-in"
-        case logout = "/account/logout"
-        case refreshToken = "/account/refresh-token"
+        case localHost = "http://localhost:8084/api/v1"
     }
     
     public enum Default: String {

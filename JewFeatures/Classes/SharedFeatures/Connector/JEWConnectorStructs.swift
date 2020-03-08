@@ -7,25 +7,6 @@
 
 import UIKit
 
-public enum ConnectorRoutes {
-    case signup
-    case signin
-    case logout
-    case refreshToken
-
-    public func getRoute() -> URL? {
-        switch self {
-        case .signup:
-            return JEWConnector.getURL(withRoute: JEWConstants.Services.signUp.rawValue)
-        case .signin:
-            return JEWConnector.getURL(withRoute: JEWConstants.Services.signIn.rawValue)
-        case .logout:
-            return JEWConnector.getURL(withRoute: JEWConstants.Services.logout.rawValue)
-        case .refreshToken:
-            return JEWConnector.getURL(withRoute: JEWConstants.Services.refreshToken.rawValue)
-        }
-    }
-}
 
 public enum ConnectorErrorType: Int {
     case none

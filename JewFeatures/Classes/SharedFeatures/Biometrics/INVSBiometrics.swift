@@ -90,7 +90,7 @@ public class JEWBiometricsChallenge: NSObject {
                 failureChallenge(challengeFailureType)
             }
         } else {
-            failureChallenge(ChallengeFailureType.default)
+            successChallenge()
         }
     }
     

@@ -52,6 +52,10 @@ extension UIColor {
     public static func JEWLightBlack() -> UIColor {
         return UIColor.JEWPallete(red: 105, green: 105, blue: 105)
     }
+    
+    public static func JEWAlmostWhite() -> UIColor {
+       return UIColor.JEWPallete(red: 220, green: 220, blue: 220)
+    }
 }
 
 public class JEWUIColor: NSObject {

@@ -19,47 +19,32 @@ public final class JEWConnector {
     // Can't init is singleton
     private init() { }
     
-    static let connector = JEWConnector()
-    let urlPath: String = JEWConstants.Services.localHost.rawValue
+    public static let connector = JEWConnector()
+    public var baseURL: String = JEWConstants.Services.localHost.rawValue
     public static func getURL(withRoute route: String) -> URL? {
-        let baseURL = URL(string: route)
+        let baseURL = URL(string: "\(JEWConnector.connector.baseURL)\(route)")
         return baseURL
     }
     
-    public static func getVersion() -> URL? {
-        return getURL(withRoute: JEWConstants.Services.version.rawValue)
-    }
-    
-    public func request<T: Decodable>(withRoute route: ConnectorRoutes, method: HTTPMethod = .get, parameters: JSONAble? = nil, responseClass: T.Type, headers: HTTPHeaders? = nil, shouldRetry: Bool = false, successCompletion: @escaping(SuccessResponse), errorCompletion: @escaping(ErrorCompletion)) {
+    public func request<T: Decodable>(withRoute route: String, method: HTTPMethod = .get, parameters: JSONAble? = nil, responseClass: T.Type, headers: HTTPHeaders? = nil, shouldRetry: Bool = false, successCompletion: @escaping(SuccessResponse), errorCompletion: @escaping(ErrorCompletion)) {
         
-        guard let url = route.getRoute() else {
+        guard let url = JEWConnector.getURL(withRoute: route) else {
             return
         }
         
-        refreshToken(withRoute: route, successCompletion: { (shouldUpdateHeaders) in
-            var headersUpdated = headers
-            if shouldUpdateHeaders {
-                guard let headersWithAccessToken = ["Content-Type": "application/json", "Authorization": JEWSession.session.user?.access?.accessToken] as? HTTPHeaders else {
-                    errorCompletion(ConnectorError())
-                    return
-                }
-                headersUpdated = headersWithAccessToken
-            }
-            self.requestBlock(withURL: url, method: method, parameters: parameters, responseClass: responseClass, headers: headersUpdated, successCompletion: { (decodable) in
-                successCompletion(decodable)
-            }) { (error) in
-                if shouldRetry && error.error != .none {
-                    self.request(withRoute: route, method: method, parameters: parameters, responseClass: responseClass, headers: headers, shouldRetry: false, successCompletion: successCompletion, errorCompletion: errorCompletion)
-                    return
-                }
-                errorCompletion(error)
-            }
+        self.requestBlock(withURL: url, method: method, parameters: parameters, responseClass: responseClass, headers: headers, successCompletion: { (decodable) in
+            successCompletion(decodable)
         }) { (error) in
+            if shouldRetry && error.error != .none {
+                self.request(withRoute: route, method: method, parameters: parameters, responseClass: responseClass, headers: headers, shouldRetry: false, successCompletion: successCompletion, errorCompletion: errorCompletion)
+                return
+            }
             errorCompletion(error)
         }
+        
     }
     
-    private func requestBlock<T: Decodable>(withURL url: URL, method: HTTPMethod = .get, parameters: JSONAble? = nil, responseClass: T.Type, headers: HTTPHeaders? = nil, successCompletion: @escaping(SuccessResponse), errorCompletion: @escaping(ErrorCompletion)) {
+    public func requestBlock<T: Decodable>(withURL url: URL, method: HTTPMethod = .get, parameters: JSONAble? = nil, responseClass: T.Type, headers: HTTPHeaders? = nil, successCompletion: @escaping(SuccessResponse), errorCompletion: @escaping(ErrorCompletion)) {
         Alamofire.request(url, method: method, parameters: parameters?.toDict(), encoding: JSONEncoding.default, headers: headers).validate().responseJSON { (response) in
             
             let responseResult = response.result
@@ -74,8 +59,9 @@ public final class JEWConnector {
                     }
                     return
                 }
-                catch {
-                    errorCompletion(ConnectorError(error: .none))
+                catch let error {
+                    JEWLogger.error(error.localizedDescription)
+                    errorCompletion(ConnectorError())
                     return
                 }
                 
@@ -99,33 +85,6 @@ public final class JEWConnector {
                 errorCompletion((ConnectorError(error: .none)))
                 break
             }
-        }
-    }
-    
-    private func refreshToken(withRoute route:ConnectorRoutes, successCompletion: @escaping(SuccessRefreshResponse), errorCompletion: @escaping(ErrorCompletion)) {
-        if route != .signup &&  route != .signin &&  route != .logout {
-            guard let url = ConnectorRoutes.refreshToken.getRoute() else {
-                errorCompletion(ConnectorError.init(error: .logout, message: JEWConstants.Default.invalidURL.rawValue))
-                return
-            }
-            guard let refreshToken = JEWSession.session.user?.access?.refreshToken else {
-                errorCompletion(ConnectorError.init(error: .logout, message: JEWConstants.RefreshErrors.invalidRefreshToken.rawValue))
-                return
-            }
-            guard let headers = ["Content-Type": "application/json", "Authorization": JEWSession.session.user?.access?.accessToken] as? HTTPHeaders else {
-                errorCompletion(ConnectorError.init(error: .logout, message: JEWConstants.RefreshErrors.invalidAccessToken.rawValue))
-                return
-            }
-            let refreshTokenRequest = JEWRefreshTokenRequest.init(refreshToken: refreshToken)
-            requestBlock(withURL: url, method: .post, parameters: refreshTokenRequest, responseClass: JEWAccessModel.self, headers: headers, successCompletion: { (decodable) in
-                let accessModel = decodable as? JEWAccessModel
-                JEWSession.session.user?.access = accessModel
-                successCompletion(true)
-            }) { (error) in
-                errorCompletion(ConnectorError.init(error: .expiredSession, message: JEWConstants.Default.expiredSession.rawValue))
-            }
-        } else {
-            successCompletion(false)
         }
     }
 }

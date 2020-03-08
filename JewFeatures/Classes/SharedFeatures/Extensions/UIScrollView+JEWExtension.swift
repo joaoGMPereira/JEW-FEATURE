@@ -8,10 +8,10 @@
 import Foundation
 import UIKit
 
-public extension UIScrollView {
+extension UIScrollView {
     
     // Scroll to a specific view so that it's top is at the top our scrollview
-    public func scrollToView(view:UIView, animated: Bool) {
+    func scrollToView(view:UIView, animated: Bool) {
         if let origin = view.superview {
             // Get the Y position of your child view
             let childStartPoint = origin.convert(view.frame.origin, to: self)
@@ -20,12 +20,12 @@ public extension UIScrollView {
         }
     }
     
-    public func scrollToTop(animated: Bool) {
+    func scrollToTop(animated: Bool) {
         let topOffset = CGPoint(x: 0, y: -contentInset.top)
         setContentOffset(topOffset, animated: animated)
     }
     
-    public func scrollToBottom() {
+    func scrollToBottom() {
         let bottomOffset = CGPoint(x: 0, y: contentSize.height - bounds.size.height + contentInset.bottom)
         if(bottomOffset.y > 0) {
             setContentOffset(bottomOffset, animated: true)

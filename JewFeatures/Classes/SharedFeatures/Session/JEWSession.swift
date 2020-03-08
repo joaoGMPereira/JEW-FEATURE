@@ -22,7 +22,7 @@ public final class JEWSession {
     public static let session = JEWSession()
     public var user: JEWUserModel?
     public var callService: ServiceType = .heroku
-    
+    public var publicKey: String = ""
     public func isDev() -> Bool {
         //#if DEV
         return true

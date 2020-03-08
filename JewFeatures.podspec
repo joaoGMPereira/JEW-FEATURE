@@ -44,4 +44,6 @@ TODO: Add long description of the pod here.
    s.dependency 'SkeletonView'
    s.dependency 'PodAsset'
    s.dependency 'CollectionKit'
+   s.dependency 'SwiftyRSA'
+   s.dependency 'CryptoSwift'
 end
