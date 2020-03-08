@@ -14,15 +14,20 @@ public enum ServiceType: Int {
     case offline
 }
 
-public final class JEWSession {
+public class JEWSession {
     
     // Can't init is singleton
     private init() { }
 
     public static let session = JEWSession()
     public var user: JEWUserModel?
+    public var services = JewSessionServices()
+}
+
+public class JewSessionServices {
     public var callService: ServiceType = .heroku
     public var publicKey: String = ""
+    public var token: String = ""
     public func isDev() -> Bool {
         //#if DEV
         return true
@@ -31,6 +36,4 @@ public final class JEWSession {
         //#endif
     }
 
-
-    
 }

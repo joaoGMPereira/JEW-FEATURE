@@ -9,19 +9,19 @@ import Foundation
 
 public struct JEWLogger {
     public static func info(_ text: String) {
-        if JEWSession.session.isDev() {
+        if JEWSession.session.services.isDev() {
             print("ℹ \(text)")
         }
     }
     
     public static func warning(_ text: String) {
-        if JEWSession.session.isDev() {
+        if JEWSession.session.services.isDev() {
             print("⚠ \(text)")
         }
     }
     
     public static func error(_ text: String) {
-       if JEWSession.session.isDev() {
+        if JEWSession.session.services.isDev() {
             print("🛑 \(text)")
         }
     }

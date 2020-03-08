@@ -29,7 +29,7 @@ public struct RSACrypto {
     
     private static func encrypt(string: String) -> String? {
         do {
-            let publicKeyString = JEWSession.session.publicKey.replacingOccurrences(of: "-----BEGIN PUBLIC KEY-----", with: "").replacingOccurrences(of: "-----END PUBLIC KEY-----", with: "").replacingOccurrences(of: "\n", with: "")
+            let publicKeyString = JEWSession.session.services.publicKey.replacingOccurrences(of: "-----BEGIN PUBLIC KEY-----", with: "").replacingOccurrences(of: "-----END PUBLIC KEY-----", with: "").replacingOccurrences(of: "\n", with: "")
             
             let publicKey = try PublicKey.init(base64Encoded: publicKeyString)
             

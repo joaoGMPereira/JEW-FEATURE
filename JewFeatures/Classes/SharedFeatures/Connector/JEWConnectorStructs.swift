@@ -28,10 +28,10 @@ public struct ConnectorConstants {
 }
 
 public struct ConnectorError {
-    var error: ConnectorErrorType
-    var title: String
-    let message: String
-    let shouldRetry: Bool
+    public var error: ConnectorErrorType
+    public var title: String
+    public let message: String
+    public let shouldRetry: Bool
     
     
     init(error: ConnectorErrorType = .none, title: String = ConnectorConstants.defaultErrorTitle(), message: String = ConnectorConstants.defaultErrorMessage(), shouldRetry: Bool = false) {
