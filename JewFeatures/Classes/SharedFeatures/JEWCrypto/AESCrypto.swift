@@ -106,7 +106,7 @@ public class AES256Crypter {
                     saltBytes,                                    // salt
                     salt.count,                                   // saltLen
                     CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA1),   // prf
-                    1000,                                        // rounds
+                    2048,                                        // rounds
                     &derivedBytes,                                // derivedKey
                     length)                                       // derivedKeyLen
             }
