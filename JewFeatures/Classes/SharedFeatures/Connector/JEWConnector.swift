@@ -35,7 +35,7 @@ public final class JEWConnector {
         self.requestBlock(withURL: url, method: method, parameters: parameters, responseClass: responseClass, headers: headers, successCompletion: { (decodable) in
             successCompletion(decodable)
         }) { (error) in
-            if shouldRetry && error.error != .none {
+            if shouldRetry {
                 self.request(withRoute: route, method: method, parameters: parameters, responseClass: responseClass, headers: headers, shouldRetry: false, successCompletion: successCompletion, errorCompletion: errorCompletion)
                 return
             }
@@ -47,24 +47,16 @@ public final class JEWConnector {
     public func requestBlock<T: Decodable>(withURL url: URL, method: HTTPMethod = .get, parameters: JSONAble? = nil, responseClass: T.Type, headers: HTTPHeaders? = nil, successCompletion: @escaping(SuccessResponse), errorCompletion: @escaping(ErrorCompletion)) {
         Alamofire.request(url, method: method, parameters: parameters?.toDict(), encoding: JSONEncoding.default, headers: headers).validate().responseJSON { (response) in
             
+            
+            
+            if let error = response.error {
+                errorCompletion(ConnectorError.handleError(error: error))
+                }
+             
             let responseResult = response.result
-            if responseResult.error != nil {
-                do {
-                    if let data = response.data {
-                        var apiError = try JSONDecoder().decode(ApiError.self, from: data)
-                        apiError.error = false
-                        errorCompletion(ConnectorError.init(error: .none, title: JEWFloatingTextFieldType.defaultErrorTitle(), message: apiError.reason))
-                    } else {
-                        errorCompletion(ConnectorError(error: .none))
-                    }
-                    return
-                }
-                catch let error {
-                    JEWLogger.error(error.localizedDescription)
-                    errorCompletion(ConnectorError())
-                    return
-                }
-                
+            if let error = responseResult.error {
+               errorCompletion(ConnectorError.handleError(error: error))
+
             }
             switch responseResult {
             case .success:
@@ -73,16 +65,16 @@ public final class JEWConnector {
                         let decodable = try JSONDecoder().decode(T.self, from: data)
                         successCompletion(decodable)
                     } else {
-                        errorCompletion(ConnectorError(error: .none))
+                        errorCompletion(ConnectorError.handleError(error: ConnectorError.customError()))
                     }
                     break
                 }
-                catch {
-                    errorCompletion(ConnectorError(error: .none))
+                catch(let error) {
+                    errorCompletion(ConnectorError.handleError(error: error))
                     break
                 }
-            case .failure:
-                errorCompletion((ConnectorError(error: .none)))
+            case .failure(let error):
+                errorCompletion(ConnectorError.handleError(error: error))
                 break
             }
         }
