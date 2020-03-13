@@ -70,7 +70,7 @@ public final class JEWConnector {
                 do {
                     if let data = response.data {
                         let json = try JSONSerialization.jsonObject(with: data, options: [])
-                        JEWLogger.info(json)
+                        JEWLogger.info(json, customInfo: "ResponseINFO")
                         let decodable = try JSONDecoder().decode(T.self, from: data)
                         successCompletion(decodable)
                     } else {
@@ -107,8 +107,8 @@ public final class JEWConnector {
             headerDict = "HeaderDict: \(header))\n"
         }
         
-        let requestInfo = "\n\n-----------RequestINFO-----------\n\n\(requestURL)\(parametersDict)\(methodURL)\(headerDict)\n\n-----------RequestINFO-----------\n\n"
+        let requestInfo = "\(requestURL)\(parametersDict)\(methodURL)\(headerDict)"
         
-        JEWLogger.info(requestInfo, shouldAddPreSufix: false)
+        JEWLogger.info(requestInfo, customInfo: "RequestINFO")
     }
 }
