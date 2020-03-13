@@ -8,21 +8,33 @@
 import Foundation
 
 public struct JEWLogger {
-    public static func info(_ text: String) {
+    public static func info(_ data: Any, shouldAddPreSufix: Bool = true) {
         if JEWSession.session.services.isDev() {
-            print("ℹ \(text)")
+            if shouldAddPreSufix {
+                print("\n\n-----------ℹ-----------\n\n\(data)\n\n-----------ℹ-----------\n\n")
+                return
+            }
+            print(data)
         }
     }
     
-    public static func warning(_ text: String) {
+    public static func warning(_ data: Any, shouldAddPreSufix: Bool = true) {
         if JEWSession.session.services.isDev() {
-            print("⚠ \(text)")
+            if shouldAddPreSufix {
+                print("\n\n-----------⚠-----------\n\n\(data)\n\n-----------⚠-----------\n\n")
+                return
+            }
+            print(data)
         }
     }
     
-    public static func error(_ text: String) {
+    public static func error(_ data: Any, shouldAddPreSufix: Bool = true) {
         if JEWSession.session.services.isDev() {
-            print("🛑 \(text)")
+            if shouldAddPreSufix {
+                print("\n\n-----------🛑-----------\n\n\(data)\n\n-----------🛑-----------\n\n")
+                return
+            }
+            print(data)
         }
     }
 }
