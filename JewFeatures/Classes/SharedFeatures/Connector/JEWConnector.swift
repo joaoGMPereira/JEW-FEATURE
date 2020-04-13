@@ -36,7 +36,7 @@ public final class JEWConnector {
             if headersUpdated == nil {
                headersUpdated = HTTPHeaders()
             }
-            headersUpdated?.updateValue(sessionToken, forKey: "session-token")
+            headersUpdated?.update(name: sessionToken, value: "session-token")
         }
         
         self.requestBlock(withURL: url, method: method, parameters: parameters, responseClass: responseClass, headers: headersUpdated, successCompletion: { (decodable) in
@@ -52,20 +52,18 @@ public final class JEWConnector {
     }
     
     public func requestBlock<T: Decodable>(withURL url: URL, method: HTTPMethod = .get, parameters: JSONAble? = nil, responseClass: T.Type, headers: HTTPHeaders? = nil, successCompletion: @escaping(SuccessResponse), errorCompletion: @escaping(ErrorCompletion)) {
-        
-        Alamofire.request(url, method: method, parameters: parameters?.toDict(), encoding: JSONEncoding.default, headers: headers).validate().responseJSON { (response) in
+        AF.request(url, method: method, parameters: parameters?.toDict(), encoding: JSONEncoding.default, headers: headers).validate().responseJSON { (response) in
             self.logRequestInfo(withURL: url, method: method, parameters: parameters, headers: headers)
             if let error = response.error {
                 errorCompletion(ConnectorError.handleError(error: error))
                 return
             }
              
-            let responseResult = response.result
-            if let error = responseResult.error {
+            if let error = response.error {
                errorCompletion(ConnectorError.handleError(error: error))
                 return
             }
-            switch responseResult {
+            switch response.result {
             case .success:
                 do {
                     if let data = response.data {
@@ -74,7 +72,7 @@ public final class JEWConnector {
                         let decodable = try JSONDecoder().decode(T.self, from: data)
                         successCompletion(decodable)
                     } else {
-                        let error = ConnectorError.handleError(error: ConnectorError.customError(domain: "Response Data Nil", code: -1, localizedDescription: "Response Data Nil"))
+                        let error = ConnectorError.handleError(error: ConnectorError.customError(domain: "Response Data Nil", code: -1, localizedDescription: JEWErrorMessages.errorApiDefaultMessage.rawValue))
                         JEWLogger.error(error)
                         errorCompletion(error)
                     }

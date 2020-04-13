@@ -79,7 +79,7 @@ extension JEWViewDataErrorContractProtocol {
         case .noInternetErrorCode(_):
             return JEWErrorMessages.errorApiNotConnectedToInternet.rawValue
         case .emptySecurityData(_):
-            return JEWErrorMessages.errorApiEmptySecurityData.rawValue
+            return JEWErrorMessages.errorApiDefaultMessage.rawValue
         case .idleSessionTimeout(_):
             return JEWErrorMessages.errorApiSessionTimeOut.rawValue
         case .sessionTimeout(_):

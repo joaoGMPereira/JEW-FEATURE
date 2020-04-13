@@ -9,6 +9,8 @@
 import Foundation
 import UIKit
 class JEWFloatingTextFieldCodeViewBuilder: NSObject, JEWFloatingTextFieldBuilderProtocol, JEWCodeView {
+        private static let eightyPercentSize: CGFloat = 0.8
+    private static let padding: CGFloat = 16
     
     private var floatingTextField: JEWFloatingTextField
     init(with floatingTextField: JEWFloatingTextField) {
@@ -30,7 +32,7 @@ class JEWFloatingTextFieldCodeViewBuilder: NSObject, JEWFloatingTextFieldBuilder
     }
     
     func setupConstraints() {
-        let trailingFromInfoButton = CGFloat(-8)
+        let trailingFromInfoButton: CGFloat = -8
         self.floatingTextField.trailingLabelConstraint = self.floatingTextField.placeholderLabel.trailingAnchor.constraint(equalTo: self.floatingTextField.trailingAnchor, constant: trailingFromInfoButton)
         self.floatingTextField.bottomLabelConstraint = self.floatingTextField.placeholderLabel.bottomAnchor.constraint(equalTo: self.floatingTextField.bottomLineView.topAnchor)
         self.floatingTextField.trailingTextFieldConstraint = self.floatingTextField.textField.trailingAnchor.constraint(equalTo: self.floatingTextField.trailingAnchor, constant: trailingFromInfoButton)
@@ -61,7 +63,8 @@ class JEWFloatingTextFieldCodeViewBuilder: NSObject, JEWFloatingTextFieldBuilder
         self.floatingTextField.placeholderLabel.adjustsFontSizeToFitWidth = true
         self.floatingTextField.placeholderLabel.minimumScaleFactor = 0.5
         self.floatingTextField.placeholderLabel.font = self.floatingTextField.bigFont
-        self.floatingTextField.placeholderLabel.textColor = .lightGray
-        self.floatingTextField.bottomLineView.backgroundColor = .lightGray
+        self.floatingTextField.placeholderLabel.textColor = self.floatingTextField.currentlyPlaceholderColor
+        self.floatingTextField.bottomLineView.backgroundColor = self.floatingTextField.currentlySelectedColor
+        self.floatingTextField.bottomLineView.isHidden = self.floatingTextField.hideBottomView
     }
 }

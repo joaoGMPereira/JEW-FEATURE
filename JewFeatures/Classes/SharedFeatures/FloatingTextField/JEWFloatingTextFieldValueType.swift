@@ -8,12 +8,13 @@
 
 import Foundation
 
-public enum JEWFloatingTextFieldValueType: Int {
+public enum JEWFloatingTextFieldValueType {
     
-    case none = 0
+    case none
     case currency
     case months
     case percent
+    case maxSize(size: Int)
     
     
     public func formatText(textFieldText: String, isBackSpace: Bool = false) -> String {
@@ -26,6 +27,8 @@ public enum JEWFloatingTextFieldValueType: Int {
             return textFieldText.monthFormat()
         case .percent:
             return textFieldText.percentFormat(backSpace: isBackSpace)
+        case .maxSize(let size):
+            return textFieldText.stringOfNumbersRegex(with: size)
         }
     }
 }

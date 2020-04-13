@@ -22,6 +22,9 @@ public class JEWSession {
     public static let session = JEWSession()
     public var user: JEWUserModel?
     public var services = JewSessionServices()
+    public static var bundle: Bundle {
+        return Bundle(for: JEWSession.self)
+    }
 }
 
 public class JewSessionServices {

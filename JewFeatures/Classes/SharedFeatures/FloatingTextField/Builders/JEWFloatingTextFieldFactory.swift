@@ -12,12 +12,18 @@ import UIKit
 public enum JEWFloatingTextFieldFactoryTypes {
     case CodeView
     case InfoButton
+    case format(builder: JEWFloatingTextFieldFormatBuilder)
+    case toolbar(builder: JEWFloatingTextFieldToolbarBuilder)
     func build(withFloatingTextField textField: JEWFloatingTextField) -> JEWFloatingTextFieldBuilderProtocol {
         switch self {
         case .CodeView:
             return JEWFloatingTextFieldCodeViewBuilder.init(with: textField)
         case .InfoButton:
             return JEWFloatingTextFieldInfoButtonBuilder.init(with: textField)
+        case .format(let builder):
+            return builder
+        case .toolbar(let builder):
+            return builder
         }
     }
 }
@@ -39,15 +45,5 @@ public class JEWFloatingTextFieldFactory: NSObject {
             let builder = builderType.build(withFloatingTextField: textField)
             builder.setup()
         }
-    }
-    
-    @discardableResult public func setupFormatBuilder(builder: JEWFloatingTextFieldFormatBuilder) -> JEWFloatingTextFieldFactory {
-        builder.setup()
-        return self
-    }
-    
-    @discardableResult public func setupToolbarBuilder(builder: JEWFloatingTextFieldToolbarBuilder) -> JEWFloatingTextFieldFactory {
-        builder.setup()
-        return self
     }
 }

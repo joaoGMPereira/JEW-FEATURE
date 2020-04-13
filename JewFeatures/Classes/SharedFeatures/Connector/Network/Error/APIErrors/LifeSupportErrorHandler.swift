@@ -200,6 +200,6 @@ struct LifeSupportErrorHandler {
                 return .knownApiFailures(error: .sdkTimeout(error))
             }
         }
-        return .knownApiFailures(error: ConnectorError.Enums.KnownApiFailures.failure(ConnectorError.customError(domain: "UnkownError", localizedDescription: "API unkown Error")))
+        return .knownApiFailures(error: ConnectorError.Enums.KnownApiFailures.failure(error))
     }
 }

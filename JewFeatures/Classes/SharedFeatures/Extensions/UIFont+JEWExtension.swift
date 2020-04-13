@@ -41,6 +41,14 @@ extension UIFont {
         return UIFont.boldSystemFont(ofSize: 16)
     }
     
+    public static func JEW20Bold() -> UIFont {
+        return UIFont.boldSystemFont(ofSize: 20)
+    }
+    
+    public static func JEW20() -> UIFont {
+        return UIFont.systemFont(ofSize: 20)
+    }
+    
     public static func JEW24Bold() -> UIFont {
         return UIFont.boldSystemFont(ofSize: 24)
     }
@@ -49,11 +57,11 @@ extension UIFont {
         return UIFont.systemFont(ofSize: 24)
     }
     
-    public static func JEW20Bold() -> UIFont {
-        return UIFont.boldSystemFont(ofSize: 20)
+    public static func JEW32Bold() -> UIFont {
+        return UIFont.boldSystemFont(ofSize: 32)
     }
     
-    public static func JEW20() -> UIFont {
-        return UIFont.systemFont(ofSize: 20)
+    public static func JEW32() -> UIFont {
+        return UIFont.systemFont(ofSize: 32)
     }
 }

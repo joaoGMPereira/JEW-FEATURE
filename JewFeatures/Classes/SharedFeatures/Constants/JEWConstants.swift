@@ -13,6 +13,8 @@ public enum JEWConstants {
     
     public enum Services: String {
         case localHost = "http://localhost:8084/api/v1"
+        case dev = "https://daily-rewards-node-api-dev.herokuapp.com/api/v1"
+        case prod = "https://daily-rewards-node-api.herokuapp.com/api/v1"
     }
     
     public enum Default: String {

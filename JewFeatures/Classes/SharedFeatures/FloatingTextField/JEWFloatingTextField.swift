@@ -14,6 +14,7 @@ public protocol JEWFloatingTextFieldDelegate: class {
     func toolbarAction(_ textField: JEWFloatingTextField, typeOfAction type: JEWKeyboardToolbarButton)
     func textFieldDidBeginEditing(_ textField: JEWFloatingTextField)
     func textFieldDidEndEditing(_ textField: JEWFloatingTextField)
+    func textFieldShouldChangeCharactersIn(_ textField: JEWFloatingTextField, text: String, isBackSpace: Bool)
 }
 
 public extension JEWFloatingTextFieldDelegate {
@@ -27,14 +28,11 @@ public extension JEWFloatingTextFieldDelegate {
 }
 
 public class JEWFloatingTextField: UIView {
-    
-    //Constants
+   //Constants
     static let requiredCharacter: String = "*"
     private static let animationDuration = 0.5
     private static let defaultHeight: CGFloat = 50
     private static let numberTwo: CGFloat = 2
-    private static let eightyPercentSize: CGFloat = 0.8
-    private static let padding: CGFloat = 16
     private static let minimumScale: CGFloat = 0.5
     private static let zero: CGFloat = 0
     
@@ -42,13 +40,10 @@ public class JEWFloatingTextField: UIView {
     let textField = UITextField(frame: .zero)
     let placeholderLabel = UILabel(frame: .zero)
     let bottomLineView = UIView(frame: .zero)
-    let infoButton = UIButton.init(type: .infoLight)
+    var infoButton: UIButton? = nil
     
     //Variables
     var delegate: JEWFloatingTextFieldDelegate?
-    
-    var typeTextField: JEWFloatingTextFieldType?
-    var required: Bool = false
     
     var hasError: Bool = false {
         didSet {
@@ -64,21 +59,34 @@ public class JEWFloatingTextField: UIView {
             }
         }
     }
-    var selectedColor = UIColor.lightGray {
+    var selectedColor = UIColor.white {
         didSet {
             currentlySelectedColor = selectedColor
         }
     }
     
-    var textFieldTextColor = UIColor.JEWBlack() {
+    var textFieldTextColor = UIColor.white {
         didSet {
             textField.textColor = textFieldTextColor
         }
     }
     
+    var hideBottomView: Bool = false
+    
     var valueTypeTextField: JEWFloatingTextFieldValueType?
-    var currentlySelectedColor = UIColor.lightGray
-    var smallFont = UIFont.systemFont(ofSize: 11)
+    var currentlySelectedColor = UIColor.white
+    var placeholderColor: UIColor? {
+        didSet {
+            if let placeholderColor = self.placeholderColor {
+                currentlyPlaceholderColor = placeholderColor
+                return
+            }
+            currentlyPlaceholderColor = currentlySelectedColor
+        }
+    }
+    var currentlyPlaceholderColor = UIColor.white
+    var infoButtonColor = UIColor.white
+    var smallFont = UIFont.systemFont(ofSize: 15)
     var bigFont = UIFont.systemFont(ofSize: 16)
     var bottomLabelConstraint = NSLayoutConstraint()
     var trailingLabelConstraint = NSLayoutConstraint()
@@ -93,26 +101,35 @@ public class JEWFloatingTextField: UIView {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-       //setupView()
+        //setupView()
         textField.delegate = self
     }
     
     func updateTextFieldUI() {
         currentlySelectedColor = selectedColor
         placeholderLabel.text = placeholderLabel.text?.replacingOccurrences(of: JEWFloatingTextField.requiredCharacter, with: String())
-        if hasError {
-            currentlySelectedColor = .JEWRed()
-            placeholderLabel.text = "\(placeholderLabel.text ?? String())\(JEWFloatingTextField.requiredCharacter)"
-        }
-        placeholderLabel.textColor = currentlySelectedColor
+        placeholderLabel.textColor = currentlyPlaceholderColor
         bottomLineView.backgroundColor = currentlySelectedColor
+        checkError()
     }
     
+    func checkError() {
+        if hasError {
+            let erroColor = UIColor.purple
+            placeholderLabel.textColor = erroColor
+            textField.textColor = erroColor
+            bottomLineView.backgroundColor = erroColor
+        } else {
+            placeholderLabel.textColor = currentlyPlaceholderColor
+            textField.textColor = currentlySelectedColor
+            bottomLineView.backgroundColor = currentlyPlaceholderColor
+        }
+    }
 }
 
 extension JEWFloatingTextField: UITextFieldDelegate, JEWKeyboardToolbarDelegate {
     
-    @objc func infoButtonTapped(_ sender: UIButton) {
+   @objc func infoButtonTapped(_ sender: UIButton) {
         self.delegate?.infoButtonAction(self)
     }
     
@@ -124,13 +141,15 @@ extension JEWFloatingTextField: UITextFieldDelegate, JEWKeyboardToolbarDelegate 
         let isBackSpace = string == String()
         let fullText = String.init(format: "%@%@", textField.text ?? String(), string)
         textField.text = setFullText(text: fullText, isBackSpace: isBackSpace)
-        
+        delegate?.textFieldShouldChangeCharactersIn(self, text: textField.text ?? "", isBackSpace: isBackSpace)
         if isBackSpace {
             return true
         }
         textFieldText = textField.text ?? String()
         return false
     }
+    
+    
     
     func setFullText(text: String, isBackSpace: Bool) -> String {
         guard let type = valueTypeTextField else {
@@ -146,7 +165,7 @@ extension JEWFloatingTextField: UITextFieldDelegate, JEWKeyboardToolbarDelegate 
     
     public func textFieldDidEndEditing(_ textField: UITextField) {
         delegate?.textFieldDidEndEditing(self)
-    if textField.text == String() || textField.text == nil {
+        if textField.text == String() || textField.text == nil {
             closeKeyboard()
         }
     }
@@ -156,8 +175,7 @@ extension JEWFloatingTextField: UITextFieldDelegate, JEWKeyboardToolbarDelegate 
             self?.bottomLabelConstraint.constant = -(self?.frame.height ?? JEWFloatingTextField.defaultHeight)/JEWFloatingTextField.numberTwo
             self?.topTextFieldConstraint.constant = (self?.frame.height ?? JEWFloatingTextField.defaultHeight)/JEWFloatingTextField.numberTwo
             self?.placeholderLabel.font = self?.smallFont
-            self?.placeholderLabel.textColor = self?.currentlySelectedColor
-            self?.bottomLineView.backgroundColor = self?.currentlySelectedColor
+            self?.checkError()
             self?.layoutIfNeeded()
         }
     }
@@ -168,16 +186,13 @@ extension JEWFloatingTextField: UITextFieldDelegate, JEWKeyboardToolbarDelegate 
     }
     
     func closeKeyboard() {
-        let trailingFromInfoButton = -((frame.height * JEWFloatingTextField.eightyPercentSize) + JEWFloatingTextField.padding)
         UIView.animate(withDuration: JEWFloatingTextField.animationDuration/Double(JEWFloatingTextField.numberTwo)) { [weak self] in
             if self?.textField.text == "" || self?.textField.text == nil {
-                self?.trailingLabelConstraint.constant = trailingFromInfoButton
                 self?.bottomLabelConstraint.constant = JEWFloatingTextField.zero
                 self?.topTextFieldConstraint.constant = JEWFloatingTextField.zero
                 self?.placeholderLabel.minimumScaleFactor = JEWFloatingTextField.minimumScale
                 self?.placeholderLabel.font = self?.bigFont
-                self?.placeholderLabel.textColor = .lightGray
-                self?.bottomLineView.backgroundColor = UIColor.lightGray
+                self?.checkError()
             }
             self?.endEditing(true)
             self?.layoutIfNeeded()
