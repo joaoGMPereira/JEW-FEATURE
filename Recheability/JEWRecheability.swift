@@ -17,7 +17,7 @@ public class JEWReachability {
     
     private init() { }
     public func enable() {
-        self.timerToCheck = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(JEWReachability.check), userInfo: nil, repeats: true)
+        self.timerToCheck = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(JEWReachability.check), userInfo: nil, repeats: true)
         NetworkReachabilityManager()?.startListening(onQueue: DispatchQueue.main, onUpdatePerforming: { (status) in
             switch status {
             case .unknown:

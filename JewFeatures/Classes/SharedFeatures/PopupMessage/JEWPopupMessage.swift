@@ -14,7 +14,7 @@ public protocol JEWPopupMessageDelegate {
 
 public class JEWPopupMessage: UIView {
     //MARK: Enums
-    public var popupLayout: JEWPopupMessageLayout = .bottom
+    public var popupLayout: JEWPopupMessageLayout = .top
     var popupType: JEWPopupMessageType = .alert
     private var messageColor: UIColor = JEWPopupMessageType.error.messageColor()
     private var popupBackgroundColor: UIColor = JEWPopupMessageType.error.backgroundColor()

@@ -11,6 +11,7 @@ public protocol ReloadableDelegate: class {
     func apply(changes: SectionChanges)
     func didSelected(indexpath: IndexPath, cell: UITableViewCell?)
     func didAction(editItem: ReloadableEditItem, indexPath: IndexPath, cell: UITableViewCell?)
+    func didRefresh()
 }
 
 public class ReloadableTableViewDataSource: NSObject {
@@ -19,6 +20,12 @@ public class ReloadableTableViewDataSource: NSObject {
     var items = [ReloadableItem]()
     private var editItems: [ReloadableEditItem]? = nil
     
+    public lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(ReloadableTableViewDataSource.refresh), for: UIControl.Event.valueChanged)
+        return refreshControl
+    }()
+    
     public func setup(newItems: [ReloadableItem], in tableView: UITableView, editItems: [ReloadableEditItem]? = nil) {
         let oldData = flatten(items: items)
         let newData = flatten(items: newItems)
@@ -26,6 +33,7 @@ public class ReloadableTableViewDataSource: NSObject {
         items = newItems
         self.editItems = editItems
         register(tableView: tableView)
+        setupRefreshControl(tableView: tableView)
         delegate?.apply(changes: sectionChanges)
     }
     
@@ -45,6 +53,16 @@ public class ReloadableTableViewDataSource: NSObject {
             }
         }
     }
+    
+    private func setupRefreshControl(tableView: UITableView) {
+        tableView.addSubview(refreshControl)
+        refreshControl.tintColor = UIColor.JEWDarkDefault()
+    }
+    
+    @objc private func refresh() {
+        delegate?.didRefresh()
+    }
+    
 }
 
 extension ReloadableTableViewDataSource: UITableViewDataSource {
@@ -67,7 +85,7 @@ extension ReloadableTableViewDataSource: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = items[indexPath.section]
         let cell = tableView.dequeueReusableCell(withIdentifier: item.cellType, for: indexPath) as? ReloadableCellProtocol
-
+        
         cell?.set(item: item.cellItems[indexPath.row], row: indexPath.row)
         if let cell = cell as? UITableViewCell {
             cell.selectionStyle = .none
@@ -84,26 +102,26 @@ extension ReloadableTableViewDataSource: UITableViewDataSource {
 
 extension ReloadableTableViewDataSource: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-           delegate?.didSelected(indexpath: indexPath, cell: tableView.cellForRow(at: indexPath))
-       }
-       
-       public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        delegate?.didSelected(indexpath: indexPath, cell: tableView.cellForRow(at: indexPath))
+    }
+    
+    public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return editItems?.count ?? 0 > 0
-       }
-
-       public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    }
+    
+    public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         return ReloadableEditItem.setTableViewRows(items: editItems, tableView: tableView, indexPath: indexPath, delegate: delegate)
-       }
-       
-       public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-           return tableView.isEditing ? UITableViewCell.EditingStyle.none : UITableViewCell.EditingStyle.delete
-       }
-       
-       public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-           return true
-       }
-       
-       public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-           
-       }
+    }
+    
+    public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return tableView.isEditing ? UITableViewCell.EditingStyle.none : UITableViewCell.EditingStyle.delete
+    }
+    
+    public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        
+    }
 }
