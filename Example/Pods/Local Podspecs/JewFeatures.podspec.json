@@ -1,6 +1,6 @@
 {
   "name": "JewFeatures",
-  "version": "0.1.0",
+  "version": "0.0.3",
   "summary": "A short description of JewFeatures.",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/joaoGMPereira/JewFeatures",
@@ -13,10 +13,42 @@
   },
   "source": {
     "git": "https://github.com/joaoGMPereira/JewFeatures.git",
-    "tag": "0.1.0"
+    "tag": "0.0.3"
   },
   "platforms": {
-    "ios": "8.0"
+    "ios": "11.0"
   },
-  "source_files": "JewFeatures/Classes/**/*"
+  "source_files": "JewFeatures/Classes/**/*",
+  "resource_bundles": {
+    "JewFeatures": [
+      "JewFeatures/Assets/*.json",
+      "JewFeatures/Assets/*"
+    ]
+  },
+  "dependencies": {
+    "SwiftKeychainWrapper": [
+
+    ],
+    "lottie-ios": [
+
+    ],
+    "Alamofire": [
+
+    ],
+    "SkeletonView": [
+
+    ],
+    "PodAsset": [
+
+    ],
+    "CollectionKit": [
+
+    ],
+    "SwiftyRSA": [
+
+    ],
+    "CryptoSwift": [
+
+    ]
+  }
 }
