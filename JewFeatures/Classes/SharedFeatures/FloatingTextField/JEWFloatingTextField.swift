@@ -43,15 +43,15 @@ public class JEWFloatingTextField: UIView {
     var infoButton: UIButton? = nil
     
     //Variables
-    var delegate: JEWFloatingTextFieldDelegate?
+    public var delegate: JEWFloatingTextFieldDelegate?
     
-    var hasError: Bool = false {
+    public var hasError: Bool = false {
         didSet {
             updateTextFieldUI()
         }
     }
     
-    var textFieldText: String = String() {
+    public var textFieldText: String = String() {
         didSet {
             if textFieldText != String() {
                 textField.text = textFieldText
@@ -121,7 +121,7 @@ public class JEWFloatingTextField: UIView {
             bottomLineView.backgroundColor = erroColor
         } else {
             placeholderLabel.textColor = currentlyPlaceholderColor
-            textField.textColor = currentlySelectedColor
+            textField.textColor = textFieldTextColor
             bottomLineView.backgroundColor = currentlyPlaceholderColor
         }
     }

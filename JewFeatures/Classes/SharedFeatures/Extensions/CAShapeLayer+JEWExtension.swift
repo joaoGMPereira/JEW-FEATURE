@@ -8,9 +8,9 @@
 
 import Foundation
 import UIKit
-extension CAShapeLayer {
+public extension CAShapeLayer {
     
-    static public func addCorner(withShapeLayer shapeLayer:CAShapeLayer?, withCorners corners: UIRectCorner, withRoundedCorner cornerRadius: CGFloat, andColor fillColor: UIColor, inView view:UIView, atPosition position: UInt32 = 0, andShadow shadow: Bool = true) -> CAShapeLayer? {
+    @discardableResult static func addCorner(withShapeLayer shapeLayer:CAShapeLayer?, withCorners corners: UIRectCorner, withRoundedCorner cornerRadius: CGFloat, andColor fillColor: UIColor, inView view:UIView, atPosition position: UInt32 = 0, andShadow shadow: Bool = true) -> CAShapeLayer? {
         var layer = shapeLayer
         if let shapeLayer = layer {
             shapeLayer.removeFromSuperlayer()
@@ -19,7 +19,7 @@ extension CAShapeLayer {
         return layer
     }
     
-    static public func addGradientLayer(withGradientLayer gradientLayer:CAGradientLayer?, inView view: UIView, withColorsArr colors: [CGColor], withRoundedCorner cornerRadius: CGFloat = 8) -> CAGradientLayer? {
+    @discardableResult static func addGradientLayer(withGradientLayer gradientLayer:CAGradientLayer?, inView view: UIView, withColorsArr colors: [CGColor], withRoundedCorner cornerRadius: CGFloat = 8) -> CAGradientLayer? {
         if let shapeLayer = gradientLayer {
             shapeLayer.removeFromSuperlayer()
         }
@@ -35,7 +35,7 @@ extension CAShapeLayer {
         return gradient
     }
     
-    static public func roundedShapeLayer(inCorners corners: UIRectCorner, withRoundedCorner cornerRadius: CGFloat, andColor fillColor: UIColor, inView view:UIView, atPosition position: UInt32 = 0, andShadow shadow: Bool = true) -> CAShapeLayer {
+    @discardableResult static private func roundedShapeLayer(inCorners corners: UIRectCorner, withRoundedCorner cornerRadius: CGFloat, andColor fillColor: UIColor, inView view:UIView, atPosition position: UInt32 = 0, andShadow shadow: Bool = true) -> CAShapeLayer {
         let shapeLayer = CAShapeLayer()
         shapeLayer.bounds = view.frame
         shapeLayer.position = view.center

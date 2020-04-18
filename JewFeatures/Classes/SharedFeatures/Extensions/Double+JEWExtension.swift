@@ -32,7 +32,6 @@ extension Double {
 //        guard number != 0 as NSNumber else {
 //            return "0"
 //        }
-        
         return formatter.string(from: number)!
     }
 }

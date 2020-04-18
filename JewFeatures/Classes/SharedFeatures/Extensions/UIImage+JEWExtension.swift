@@ -13,7 +13,7 @@ public extension UIImage {
     ///
     /// - Parameter color: The color to be used to fill the created image
     /// - Returns: The new image
-    public static func image(withColor color: UIColor) -> UIImage? {
+    static func image(withColor color: UIColor) -> UIImage? {
         return self.image(withColor: color, size: CGSize(width: 1.0, height: 1.0))
     }
     
@@ -23,7 +23,7 @@ public extension UIImage {
     ///   - color: The color to be used to fill the created image
     ///   - size: Final image size
     /// - Returns: A new image with given size and color
-    public static func image(withColor color: UIColor, size: CGSize) -> UIImage? {
+    static func image(withColor color: UIColor, size: CGSize) -> UIImage? {
         let rect = CGRect(origin: CGPoint(x: 0.0, y: 0.0), size: size)
         UIGraphicsBeginImageContext(rect.size)
         let context = UIGraphicsGetCurrentContext()

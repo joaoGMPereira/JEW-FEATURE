@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 public typealias FinishAnimation = (() -> Void)
-extension CALayer {
+public extension CALayer {
     
     func addShadow() {
            self.shadowOffset = CGSize(width: 0, height: 1)
@@ -56,7 +56,7 @@ extension CALayer {
            }
        }
     
-    public func animate(width: CGFloat = 1.03, height: CGFloat = 1.03, finish: FinishAnimation? = nil) {
+    func animate(width: CGFloat = 1.03, height: CGFloat = 1.03, finish: FinishAnimation? = nil) {
         UIView.animate(withDuration: 0.3, animations: {
             self.transform = CATransform3DMakeScale(width, height, 1.0)
         }) { (finished) in
@@ -69,5 +69,40 @@ extension CALayer {
                 
             }
         }
+    }
+    
+    func roundCornersRadii(topLeft: CGFloat = 0, topRight: CGFloat = 0, bottomLeft: CGFloat = 0, bottomRight: CGFloat = 0) {
+        let path = UIBezierPath()
+
+        path.move(to: CGPoint(x: topLeft, y: 0))
+        path.addLine(to: CGPoint(x: bounds.width - topRight, y: 0))
+        path.addArc(withCenter: CGPoint(x: bounds.width - topRight, y: topRight),
+                    radius: topRight,
+                    startAngle: -CGFloat.pi/2.0,
+                    endAngle: 0,
+                    clockwise: true)
+        path.addLine(to: CGPoint(x: bounds.width, y: bounds.width - bottomRight))
+        path.addArc(withCenter: CGPoint(x: bounds.width - bottomRight, y: bounds.height - bottomRight),
+                    radius: bottomRight,
+                    startAngle: 0,
+                    endAngle: CGFloat.pi/2.0,
+                    clockwise: true)
+        path.addLine(to: CGPoint(x: bottomRight, y: bounds.height))
+        path.addArc(withCenter: CGPoint(x: bottomLeft, y: bounds.height - bottomLeft),
+                    radius: bottomLeft,
+                    startAngle: CGFloat.pi/2.0,
+                    endAngle: CGFloat.pi,
+                    clockwise: true)
+        path.addLine(to: CGPoint(x: 0, y: topLeft))
+        path.addArc(withCenter: CGPoint(x: topLeft, y: topLeft),
+                    radius: topLeft,
+                    startAngle: CGFloat.pi,
+                    endAngle: CGFloat.pi/2.0,
+                    clockwise: true)
+        path.close()
+
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        self.mask = mask
     }
 }

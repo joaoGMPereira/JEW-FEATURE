@@ -12,12 +12,72 @@ import Lottie
 import SkeletonView
 import PodAsset
 
+public enum JEWLoadingButtonType {
+    case fill(color: UIColor, isRounded: Bool)
+    case gradient(colors: [CGColor], isRounded: Bool)
+    case bordered(color: UIColor, isRounded: Bool)
+    case customRounds(color: UIColor, isBordered: Bool, topLeft: CGFloat, bottomLeft: CGFloat, topRight: CGFloat, bottomRight: CGFloat)
+    
+    func setup(button: UIButton) {
+        switch self {
+        case .fill(let color, let isRounded):
+            setupFill(button: button, color: color, isRounded: isRounded)
+            break
+        case .gradient(let colors, let isRounded):
+            setupGradient(button: button, colors: colors, isRounded: isRounded)
+            break
+        case .bordered(let color, let isRounded):
+            setupBordered(button: button, color: color, isRounded: isRounded)
+            break
+        case .customRounds(let color, let isBordered, let topLeft, let bottomLeft, let topRight, let bottomRight):
+            setupCustomRounds(button: button, color: color, isBordered: isBordered, topLeft: topLeft, bottomLeft: bottomLeft, topRight: topRight, bottomRight: bottomRight)
+            break
+        }
+    }
+    
+    private func setupFill(button: UIButton, color: UIColor, isRounded: Bool) {
+        button.setTitleColor(.white, for: .normal)
+        CAShapeLayer.addCorner(withShapeLayer: nil, withCorners: [.topLeft, .topRight, .bottomLeft, .bottomRight], withRoundedCorner: isRounded ? button.frame.height/2 : 0, andColor: color, inView: button)
+    }
+    
+    private func setupGradient(button: UIButton, colors: [CGColor], isRounded: Bool) {
+        button.setTitleColor(.white, for: .normal)
+        CAShapeLayer.addGradientLayer(withGradientLayer: nil, inView: button, withColorsArr: colors, withRoundedCorner: isRounded ? button.frame.height/2 : 0)
+    }
+    
+    private func setupBordered(button: UIButton, color: UIColor, isRounded: Bool) {
+        button.setTitleColor(color, for: .normal)
+        button.layer.borderColor = color.cgColor
+        button.layer.borderWidth = 2
+        button.layer.cornerRadius = isRounded ? button.frame.height/2 : 0
+    }
+    
+    private func setupCustomRounds(button: UIButton, color: UIColor, isBordered: Bool, topLeft: CGFloat, bottomLeft: CGFloat, topRight: CGFloat, bottomRight: CGFloat) {
+        button.setTitleColor(.white, for: .normal)
+        if isBordered {
+            button.layer.borderColor = color.cgColor
+            button.layer.borderWidth = 2
+            button.setTitleColor(color, for: .normal)
+        }
+        button.backgroundColor = color
+        button.layer.roundCornersRadii(topLeft: topLeft, topRight: topRight, bottomLeft: bottomLeft, bottomRight: bottomRight)
+    }
+}
+
 public class JEWLoadingButton: UIView {
-    let button = UIButton(frame: .zero)
-    let loadingView = AnimationView()
-    var buttonAction: ((_ button: UIButton) -> ())?
-    var buttonTitle = ""
-    var loadingJson = ""
+    public let button = UIButton(frame: .zero)
+    public let loadingView = AnimationView()
+    public var buttonAction: ((_ button: UIButton) -> ())?
+    public var buttonTitle = ""
+    public var loadingJson = ""
+    
+    public func setup(type: JEWLoadingButtonType, title: String) {
+        loadingJson = JEWConstants.Resources.Lotties.animatedLoadingWhite.rawValue
+        setupView()
+        buttonTitle = title
+        button.setTitle(buttonTitle, for: .normal)
+        type.setup(button: button)
+    }
     
     public func setupFill(withColor color: UIColor = UIColor.JEWDefault(), title: String, andRounded isRounded: Bool = true) {
         loadingJson = JEWConstants.Resources.Lotties.animatedLoadingWhite.rawValue
@@ -30,10 +90,7 @@ public class JEWLoadingButton: UIView {
     }
     
     public func setupFillGradient(withColor colors: [CGColor] = UIColor.JEWGradientColors(), title: String, andRounded isRounded: Bool = true) {
-        loadingJson = JEWConstants.Resources.Lotties.animatedLoadingWhite.rawValue
-        setupView()
-        buttonTitle = title
-        button.setTitle(buttonTitle, for: .normal)
+
         button.setTitleColor(.white, for: .normal)
         let _ = CAShapeLayer.addGradientLayer(withGradientLayer: nil, inView: button, withColorsArr: colors, withRoundedCorner: isRounded ? button.frame.height/2 : 0)
     }

@@ -38,5 +38,4 @@ public class JewSessionServices {
         //return false
         //#endif
     }
-
 }

@@ -17,7 +17,7 @@ extension UIView {
          static let dashLineWidth: CGFloat = 1
      }
      
-     var subviewsRecursive: [UIView] {
+     public var subviewsRecursive: [UIView] {
          return subviews + subviews.flatMap { $0.subviewsRecursive }
      }
      
@@ -29,27 +29,27 @@ extension UIView {
      ///   - withOwner: o responsavel da view
      ///   - options: parametros opcionais
      /// - Returns: Retorna o nib da view
-     static func fromNib<T>(withOwner: Any? = nil, options: [AnyHashable: Any]? = nil) -> T? where T: UIView {
+     static public func fromNib<T>(withOwner: Any? = nil, options: [AnyHashable: Any]? = nil) -> T? where T: UIView {
          let bundle = Bundle(for: self)
          let nib = UINib(nibName: "\(self)", bundle: bundle)
          return nib.instantiate(withOwner: withOwner, options: options as? [UINib.OptionsKey: Any]).first as? T
      }
      
      /// Função para remvover o refresh control da view.
-     func removeRefreshControl() {
+     public func removeRefreshControl() {
          for case let refresh as UIRefreshControl in subviews {
              refresh.removeFromSuperview()
          }
      }
      
      /// Função para remover todas as subviews.
-     func resetSubviews() {
+     public func resetSubviews() {
          for subview in subviews {
              subview.removeFromSuperview()
          }
      }
      
-     func addBackground(color: UIColor, cornerRadius: CGFloat = 4) {
+     public func addBackground(color: UIColor, cornerRadius: CGFloat = 4) {
          let subView = UIView(frame: bounds)
          subView.backgroundColor = color
          addSubviewAttachingEdges(subView)
@@ -63,7 +63,7 @@ extension UIView {
      /// - Parameters:
      ///   - corners: Array dos cantos da view
      ///   - radius: Tamanho do raio do cantos
-     func round(corners: UIRectCorner, radius: CGFloat) {
+     public func round(corners: UIRectCorner, radius: CGFloat) {
          _ = roundExtension(corners: corners, radius: radius)
      }
      
@@ -74,7 +74,7 @@ extension UIView {
      ///   - radius: Tamanho do raio dos cantos
      ///   - borderColor: Cor da borda da view
      ///   - borderWidth: Tamanho da borda da view
-     func round(corners: UIRectCorner, radius: CGFloat, borderColor: UIColor, borderWidth: CGFloat) {
+     public func round(corners: UIRectCorner, radius: CGFloat, borderColor: UIColor, borderWidth: CGFloat) {
          let mask = roundExtension(corners: corners, radius: radius)
          addBorder(mask: mask, borderColor: borderColor, borderWidth: borderWidth)
      }
@@ -85,7 +85,7 @@ extension UIView {
      ///   - p0: posição inicial da contrução da view
      ///   - p1: posição final da contrução da view
      ///   - view: View que recebe a linha tracejada
-     func drawDottedLine(start p0: CGPoint, end p1: CGPoint) {
+     public func drawDottedLine(start p0: CGPoint, end p1: CGPoint) {
          let shapeLayer = CAShapeLayer()
          shapeLayer.strokeColor = UIColor.lightGray.cgColor
          shapeLayer.lineWidth = Values.dashLineWidth
@@ -97,7 +97,7 @@ extension UIView {
          self.layer.addSublayer(shapeLayer)
      }
      
-     func addGradient(startColor: CGColor, endColor: CGColor, startPoint: CGPoint = CGPoint(x: 0, y: 0), endPoint: CGPoint = CGPoint(x: 1, y: 1), angle:(Double)? = nil, frame: CGRect? = nil) {
+     public func addGradient(startColor: CGColor, endColor: CGColor, startPoint: CGPoint = CGPoint(x: 0, y: 0), endPoint: CGPoint = CGPoint(x: 1, y: 1), angle:(Double)? = nil, frame: CGRect? = nil) {
          
          guard !(self.layer.sublayers ?? []).contains(where: {$0 is CAGradientLayer}) else { return }
          let gradient = CAGradientLayer()
@@ -107,10 +107,10 @@ extension UIView {
              let EndXOffset = 0.25
              let EndYOffset = 0.5
              let angleNormalized = angle/360.0
-             let startX = pow(sin((2 * M_PI * ((angleNormalized + StartXOffset) / 2.0))), 2.0)
-             let startY = pow(sin(2 * M_PI * (angleNormalized/2)), 2.0)
-             let endX = pow(sin(2 * M_PI * (angleNormalized + EndXOffset)), 2)
-             let endY = pow(sin(2 * M_PI * (angleNormalized + EndYOffset)), 2)
+            let startX = pow(sin((2 * .pi * ((angleNormalized + StartXOffset) / 2.0))), 2.0)
+             let startY = pow(sin(2 * .pi * (angleNormalized/2)), 2.0)
+             let endX = pow(sin(2 * .pi * (angleNormalized + EndXOffset)), 2)
+             let endY = pow(sin(2 * .pi * (angleNormalized + EndYOffset)), 2)
              gradient.startPoint = CGPoint(x: startX, y: startY)
              gradient.endPoint = CGPoint(x: endX, y: endY)
          } else {
@@ -127,7 +127,7 @@ extension UIView {
      }
      
      
-     func setupPhotoView(withName name: String? = nil, withImage imageName: String? = nil, color: UIColor) -> UIView {
+     public func setupPhotoView(withName name: String? = nil, withImage imageName: String? = nil, color: UIColor) -> UIView {
          if let name = name {
              let nameLabel = UILabel(frame: .zero)
              nameLabel.textColor = color
@@ -148,7 +148,7 @@ extension UIView {
          return self
      }
      
-     func isAnimated(isHidden: Bool, finalAlpha: CGFloat = 1, duration: Double = 0.3, completion: (() -> ())? = nil) {
+     public func isAnimated(isHidden: Bool, finalAlpha: CGFloat = 1, duration: Double = 0.3, completion: (() -> ())? = nil) {
          
          UIView.animate(withDuration: duration, animations: { [weak self] in
              self?.isHidden = isHidden
@@ -265,5 +265,41 @@ extension UIView {
         if let height = height {
            self.heightAnchor.constraint(equalToConstant: height).isActive = true
         }
+    }
+    
+    
+    func roundCornersRadii(topLeft: CGFloat = 0, topRight: CGFloat = 0, bottomLeft: CGFloat = 0, bottomRight: CGFloat = 0) {
+        let path = UIBezierPath()
+
+        path.move(to: CGPoint(x: topLeft, y: 0))
+        path.addLine(to: CGPoint(x: bounds.width - topRight, y: 0))
+        path.addArc(withCenter: CGPoint(x: bounds.width - topRight, y: topRight),
+                    radius: topRight,
+                    startAngle: -CGFloat.pi/2.0,
+                    endAngle: 0,
+                    clockwise: true)
+        path.addLine(to: CGPoint(x: bounds.width, y: bounds.width - bottomRight))
+        path.addArc(withCenter: CGPoint(x: bounds.width - bottomRight, y: bounds.height - bottomRight),
+                    radius: bottomRight,
+                    startAngle: 0,
+                    endAngle: CGFloat.pi/2.0,
+                    clockwise: true)
+        path.addLine(to: CGPoint(x: bottomRight, y: bounds.height))
+        path.addArc(withCenter: CGPoint(x: bottomLeft, y: bounds.height - bottomLeft),
+                    radius: bottomLeft,
+                    startAngle: CGFloat.pi/2.0,
+                    endAngle: CGFloat.pi,
+                    clockwise: true)
+        path.addLine(to: CGPoint(x: 0, y: topLeft))
+        path.addArc(withCenter: CGPoint(x: topLeft, y: topLeft),
+                    radius: topLeft,
+                    startAngle: CGFloat.pi,
+                    endAngle: CGFloat.pi/2.0,
+                    clockwise: true)
+        path.close()
+
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        self.layer.mask = mask
     }
 }

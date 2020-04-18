@@ -8,6 +8,7 @@
 import Foundation
 
 public enum LifeSupportAlertType {
+    case information
     case error
     case warning
     case success

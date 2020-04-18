@@ -9,12 +9,12 @@
 import Foundation
 import UIKit
 
-extension UIViewController {
-    public static func toString() -> String {
+public extension UIViewController {
+    static func toString() -> String {
         return String(describing: self.self)
     }
     
-    public var background: UIColor? {
+    var background: UIColor? {
         set {
             view.backgroundColor = newValue
         }
