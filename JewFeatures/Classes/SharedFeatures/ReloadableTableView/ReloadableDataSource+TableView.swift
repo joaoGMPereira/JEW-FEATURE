@@ -1,49 +1,24 @@
 //
-//  MarketModel.swift
+//  ReloadableDataSource+TableView.swift
 //  JewFeatures
 //
-//  Created by Joao Gabriel Pereira on 14/04/20.
+//  Created by Joao Gabriel Pereira on 18/04/20.
 //
 
 import Foundation
 
-public protocol ReloadableDelegate: class {
-    func apply(changes: SectionChanges)
-    func didSelected(indexpath: IndexPath, cell: UITableViewCell?)
-    func didAction(editItem: ReloadableEditItem, indexPath: IndexPath, cell: UITableViewCell?)
-    func didRefresh()
-}
-
-public class ReloadableTableViewDataSource: NSObject {
+public extension ReloadableDataSource {
     
-    public weak var delegate: ReloadableDelegate?
-    var items = [ReloadableItem]()
-    private var editItems: [ReloadableEditItem]? = nil
-    
-    public lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(ReloadableTableViewDataSource.refresh), for: UIControl.Event.valueChanged)
-        return refreshControl
-    }()
-    
-    public func setup(newItems: [ReloadableItem], in tableView: UITableView, editItems: [ReloadableEditItem]? = nil) {
-        let oldData = flatten(items: items)
-        let newData = flatten(items: newItems)
-        let sectionChanges = DiffCalculator.calculate(oldItems: oldData, newItems: newData)
-        items = newItems
-        self.editItems = editItems
+    func setup(newItems: [ReloadableItem], in tableView: UITableView, editItems: [ReloadableEditItem]? = nil) {
+        setup(newItems: newItems, editItems: editItems)
         register(tableView: tableView)
         setupRefreshControl(tableView: tableView)
         delegate?.apply(changes: sectionChanges)
     }
     
-    private func flatten(items: [ReloadableItem]) -> [ReloadableSection<CellItem>] {
-        let reloadableItems = items
-            .enumerated()
-            .map { ReloadableSection(key: $0.element.cellType.className, value: $0.element.cellItems
-                .enumerated()
-                .map { ReloadableCell(key: $0.element.id, value: $0.element, index: $0.offset)  }, index: $0.offset) }
-        return reloadableItems
+    func setupRefreshControl(tableView: UITableView) {
+        tableView.addSubview(refreshControl)
+        refreshControl.tintColor = UIColor.JEWDarkDefault()
     }
     
     private func register(tableView: UITableView) {
@@ -53,19 +28,10 @@ public class ReloadableTableViewDataSource: NSObject {
             }
         }
     }
-    
-    private func setupRefreshControl(tableView: UITableView) {
-        tableView.addSubview(refreshControl)
-        refreshControl.tintColor = UIColor.JEWDarkDefault()
-    }
-    
-    @objc private func refresh() {
-        delegate?.didRefresh()
-    }
-    
 }
 
-extension ReloadableTableViewDataSource: UITableViewDataSource {
+
+extension ReloadableDataSource: UITableViewDataSource {
     public func numberOfSections(in tableView: UITableView) -> Int {
         return items.count
     }
@@ -99,8 +65,7 @@ extension ReloadableTableViewDataSource: UITableViewDataSource {
     }
 }
 
-
-extension ReloadableTableViewDataSource: UITableViewDelegate {
+extension ReloadableDataSource: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         delegate?.didSelected(indexpath: indexPath, cell: tableView.cellForRow(at: indexPath))
     }
