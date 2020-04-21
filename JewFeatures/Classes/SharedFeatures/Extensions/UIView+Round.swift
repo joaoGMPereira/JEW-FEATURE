@@ -91,19 +91,28 @@ public extension UIView {
     ///   - borderWidth: Tamanho da borda da view
     func round(corners: UIRectCorner = .allCorners, radius: CGFloat, backgroundColor: UIColor = .clear, borderColor: UIColor = .clear, borderWidth: CGFloat = 0, withShadow shadow: Bool = false) {
         removeAllLayers()
-        var mask = roundExtension(corners: corners, radius: radius)
+        var mask = roundExtension(corners: corners, radius: radius, backgroundColor: backgroundColor)
         if shadow {
-            mask = addShadow(mask: mask, backgroundColor: backgroundColor)
+            mask = addShadow(mask: mask)
             
         }
         self.layer.insertSublayer(mask, at: 0)
-       addBorder(mask: mask, borderColor: borderColor, borderWidth: borderWidth)
+        if borderWidth > 0 {
+            addBorder(mask: mask, borderColor: borderColor, borderWidth: borderWidth)
+        }
         
+    }
+    
+    func rounded(corners: UIRectCorner, radius: CGFloat) {
+        let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        layer.mask = mask
     }
     
     // MARK: - Private Methods
     
-    private func roundExtension(corners: UIRectCorner, radius: CGFloat) -> CAShapeLayer {
+    private func roundExtension(corners: UIRectCorner, radius: CGFloat, backgroundColor: UIColor = .clear) -> CAShapeLayer {
         let path = UIBezierPath(roundedRect: bounds,
                                 byRoundingCorners: corners,
                                 cornerRadii: CGSize(width: radius, height: radius))
@@ -111,7 +120,7 @@ public extension UIView {
         mask.bounds = frame
         mask.position = center
         mask.path = path.cgPath
-        layer.mask = mask
+        mask.fillColor = backgroundColor.cgColor
         return mask
     }
     
@@ -131,10 +140,9 @@ public extension UIView {
         layer.addSublayer(borderLayer)
     }
     
-    private func addShadow(mask: CAShapeLayer, backgroundColor: UIColor = .clear) -> CAShapeLayer {
+    private func addShadow(mask: CAShapeLayer) -> CAShapeLayer {
         let shadowLayer = mask
         shadowLayer.shadowColor = UIColor.darkGray.cgColor
-        shadowLayer.fillColor = backgroundColor.cgColor
         shadowLayer.shadowPath = shadowLayer.path
         shadowLayer.shadowOffset = CGSize(width: 1.0, height: 1.0)
         shadowLayer.shadowOpacity = 0.4
