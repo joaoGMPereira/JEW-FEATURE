@@ -37,12 +37,12 @@ public enum JEWLoadingButtonType {
     
     private func setupFill(button: UIButton, color: UIColor, isRounded: Bool) {
         button.setTitleColor(.white, for: .normal)
-        CAShapeLayer.addCorner(withShapeLayer: nil, withCorners: [.topLeft, .topRight, .bottomLeft, .bottomRight], withRoundedCorner: isRounded ? button.frame.height/2 : 0, andColor: color, inView: button)
+        button.round(radius: isRounded ? button.frame.height/2 : 0, backgroundColor: color, withShadow: true)
     }
     
     private func setupGradient(button: UIButton, colors: [CGColor], isRounded: Bool) {
         button.setTitleColor(.white, for: .normal)
-        CAShapeLayer.addGradientLayer(withGradientLayer: nil, inView: button, withColorsArr: colors, withRoundedCorner: isRounded ? button.frame.height/2 : 0)
+        button.addGradient(colors: colors, cornerRadius: isRounded ? button.frame.height/2 : 0)
     }
     
     private func setupBordered(button: UIButton, color: UIColor, isRounded: Bool) {
@@ -60,7 +60,7 @@ public enum JEWLoadingButtonType {
             button.setTitleColor(color, for: .normal)
         }
         button.backgroundColor = color
-        button.layer.roundCornersRadii(topLeft: topLeft, topRight: topRight, bottomLeft: bottomLeft, bottomRight: bottomRight)
+        button.roundCornersRadii(topLeft: topLeft, topRight: topRight, bottomLeft: bottomLeft, bottomRight: bottomRight)
     }
 }
 
@@ -85,14 +85,13 @@ public class JEWLoadingButton: UIView {
         buttonTitle = title
         button.setTitle(buttonTitle, for: .normal)
         button.setTitleColor(color, for: .normal)
-        let _ = CAShapeLayer.addCorner(withShapeLayer: nil, withCorners: [.topLeft, .topRight, .bottomLeft, .bottomRight], withRoundedCorner: isRounded ? button.frame.height/2 : 0, andColor: color, inView: button)
+        button.round(radius: isRounded ? button.frame.height/2 : 0, backgroundColor: color, withShadow: true)
         
     }
     
     public func setupFillGradient(withColor colors: [CGColor] = UIColor.JEWGradientColors(), title: String, andRounded isRounded: Bool = true) {
-
         button.setTitleColor(.white, for: .normal)
-        let _ = CAShapeLayer.addGradientLayer(withGradientLayer: nil, inView: button, withColorsArr: colors, withRoundedCorner: isRounded ? button.frame.height/2 : 0)
+        button.addGradient(colors: colors, cornerRadius: isRounded ? button.frame.height/2 : 0)
     }
     
     public func setupBorded(withColor color: UIColor = UIColor.JEWDefault(), lottie: JEWConstants.Resources.Lotties = .animatedLoadingBlack, title: String, andRounded isRounded: Bool = true) {

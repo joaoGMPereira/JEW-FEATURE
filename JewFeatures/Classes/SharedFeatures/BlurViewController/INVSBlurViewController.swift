@@ -35,7 +35,7 @@ public class INVSBlurViewController: UIViewController {
             }
             self.view.layoutIfNeeded()
             self.contentView.backgroundColor = .clear
-            let _ = CAShapeLayer.addCorner(withShapeLayer: nil, withCorners: [.topLeft, .topRight, .bottomLeft, .bottomRight], withRoundedCorner: cornerRadius, andColor: color, inView: contentView)
+            contentView.round(radius: cornerRadius, backgroundColor: color, withShadow: true)
         }
         // Do any additional setup after loading the view.
     }

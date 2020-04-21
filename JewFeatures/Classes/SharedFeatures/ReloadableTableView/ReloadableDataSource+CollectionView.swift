@@ -22,6 +22,7 @@ public extension ReloadableDataSource {
     }
     
     func register(collectionView: UICollectionView) {
+
         items.forEach { (item) in
             for cellItem in item.cellItems {
                 collectionView.register(UINib(nibName: item.cellType, bundle: cellItem.bundle), forCellWithReuseIdentifier: item.cellType)
@@ -31,7 +32,7 @@ public extension ReloadableDataSource {
 }
 
 
-extension ReloadableDataSource: UICollectionViewDataSource {
+extension ReloadableDataSource: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return items.count
     }

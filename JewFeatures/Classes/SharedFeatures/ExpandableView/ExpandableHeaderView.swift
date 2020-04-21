@@ -103,7 +103,7 @@ public class ExpandableView: UIView {
         ]
         NSLayoutConstraint.activate(imageConstraints)
         layoutIfNeeded()
-        iconImageView.setupRounded(borderColor: .white)
+        iconImageView.round(radius: iconImageView.frame.width/2, backgroundColor: .white)
         iconImageView.isUserInteractionEnabled = true
         let tapImage = UITapGestureRecognizer.init(target: self, action: #selector(imageAction(_:)))
         iconImageView.addGestureRecognizer(tapImage)

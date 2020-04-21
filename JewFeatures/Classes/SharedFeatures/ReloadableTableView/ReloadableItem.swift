@@ -14,11 +14,11 @@ public protocol ReloadableItem {
 
 public struct CellItem: Equatable {
     public var value: CustomStringConvertible
-    public var object: Decodable
+    public var object: Any
     public var id: String
     public var bundle: Bundle
     
-    public init(value: CustomStringConvertible, object: Decodable, id: String, bundle: Bundle) {
+    public init(value: CustomStringConvertible, object: Any, id: String, bundle: Bundle) {
         self.value = value
         self.object = object
         self.id = id

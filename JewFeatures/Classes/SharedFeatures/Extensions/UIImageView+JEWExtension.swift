@@ -7,6 +7,8 @@
 
 import Foundation
 
+var imageCache = NSCache<AnyObject, AnyObject>()
+
 public extension UIImageView {
     func downloaded(from url: URL, contentMode mode: UIView.ContentMode = .scaleAspectFit, completionCallback: @escaping  (() -> ())) {
         URLSession.shared.dataTask(with: url) { data, response, error in
@@ -17,7 +19,7 @@ public extension UIImageView {
                 let image = UIImage(data: data)
                 else {
                     DispatchQueue.main.async {
-                        self.image = UIImage(named: "noImage")
+                         self.image = UIImage(named: "noImage", in: JEWSession.bundle, compatibleWith: nil)
                         completionCallback()
                     }
                     return
@@ -25,14 +27,22 @@ public extension UIImageView {
             }
             DispatchQueue.main.async() {
                 self.image = image
+                imageCache.setObject(image, forKey: url.absoluteString as AnyObject)
                 completionCallback()
             }
         }.resume()
     }
-    func downloaded(from link: String, contentMode mode: UIView.ContentMode = .scaleAspectFit, completionCallback: @escaping  (() -> ())) {
+    func downloaded(from link: String?, contentMode mode: UIView.ContentMode = .scaleAspectFit, completionCallback: @escaping  (() -> ())) {
+        
+        if let cacheImage = imageCache.object(forKey: link as AnyObject) as? UIImage {
+            self.image = cacheImage
+            completionCallback()
+            return
+        }
+        
         self.contentMode = mode
-        guard let url = URL(string: link) else {
-            self.image = UIImage(named: "noImage")
+        guard let url = URL(string: link ?? String()) else {
+            self.image = UIImage(named: "noImage", in: JEWSession.bundle, compatibleWith: nil)
             completionCallback()
             return
         }

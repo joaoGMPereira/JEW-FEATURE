@@ -26,7 +26,7 @@ extension ExpandableView {
         }
         UIView.animate(withDuration: ExpandableViewConstants.animationDuration) {
             self.layoutIfNeeded()
-            self.iconImageView.setupRounded(borderColor: .white)
+            self.iconImageView.round(radius: self.iconImageView.frame.height, backgroundColor: .white)
         }
     }
     

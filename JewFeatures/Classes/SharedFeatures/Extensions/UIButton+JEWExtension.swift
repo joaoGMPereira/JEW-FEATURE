@@ -45,7 +45,7 @@ extension UIButton {
         }
     }
     
-    open override var isEnabled: Bool{
+    open override var isEnabled: Bool {
         didSet {
             UIView.animate(withDuration: 1.2, animations: {
                 self.alpha = self.isEnabled ? 1.0 : 0.7

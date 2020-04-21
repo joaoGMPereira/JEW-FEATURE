@@ -51,7 +51,7 @@ public class JEWPresentBaseViewController: UIViewController {
             topNavigationBarConstraint.constant = view.safeAreaInsets.top
             UIView.animate(withDuration: 1.6) {
                 self.view.layoutIfNeeded()
-                self.shadowLayer = CAShapeLayer.addCorner(withShapeLayer: self.shadowLayer, withCorners: [.topLeft, .topRight, .bottomLeft, .bottomRight], withRoundedCorner: 1, andColor: .JEWLightGray(), inView: self.navigationBarView)
+                self.navigationBarView.round(radius: 1, backgroundColor: .JEWLightGray(), withShadow: true)
             }
     }
     

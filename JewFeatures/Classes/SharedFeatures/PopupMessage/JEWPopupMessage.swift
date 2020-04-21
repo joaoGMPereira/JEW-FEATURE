@@ -66,7 +66,7 @@ public class JEWPopupMessage: UIView {
         self.frame.origin.x = (parentViewController.view.frame.width - popupLayout.width())/2
         
         UIView.animate(withDuration: 1) {
-            self.shadowLayer = CAShapeLayer.addCorner(withShapeLayer: self.shadowLayer, withCorners: self.popupLayout.roundCorners(), withRoundedCorner: self.popupLayout.cornerRadius(), andColor: self.popupBackgroundColor, inView: self)
+            self.round(corners: self.popupLayout.roundCorners(), radius: self.popupLayout.cornerRadius(), backgroundColor: self.popupBackgroundColor, withShadow: true)
         }
     }
     

@@ -60,9 +60,28 @@ extension ReloadableDataSource: UITableViewDataSource {
         return UITableViewCell()
     }
     
-    public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return items[section].sectionTitle
+    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let sectionTitle = items[section].sectionTitle else {
+            return nil
+        }
+        let titleLabel = UILabel.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 50))
+        titleLabel.font = .JEW24Bold()
+        titleLabel.textColor = .JEWBlack()
+        titleLabel.text = sectionTitle
+        titleLabel.backgroundColor = .JEWLightGray()
+        let separator = UIView.init(frame: CGRect.init(x: 15, y: 49, width: tableView.frame.width - 15, height: 1))
+        separator.backgroundColor = .JEWGray()
+        titleLabel.addSubview(separator)
+        return titleLabel
     }
+    
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if items[section].sectionTitle == nil {
+            return 0
+        }
+        return 50
+    }
+    
 }
 
 extension ReloadableDataSource: UITableViewDelegate {

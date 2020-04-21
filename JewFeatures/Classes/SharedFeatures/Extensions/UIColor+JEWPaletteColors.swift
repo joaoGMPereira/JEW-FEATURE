@@ -41,6 +41,10 @@ extension UIColor {
         return UIColor.JEWPallete(red: 239, green: 239, blue: 244)
     }
     
+    public static func JEWDarkGray() -> UIColor {
+        return UIColor.JEWPallete(red: 200, green: 200, blue: 209)
+    }
+    
     public static func JEWLightGray() -> UIColor {
         return UIColor.JEWPallete(red: 247, green: 247, blue: 247)
     }
