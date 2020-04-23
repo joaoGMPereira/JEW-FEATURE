@@ -162,16 +162,26 @@ extension String {
         return amountWithoutPrefix
     }
     
-    public func convertFormattedToInt() -> Int {
-        let intValue = (self.stringOfNumbersRegex() as NSString).intValue
-        let number = NSNumber(value: (intValue))
-        return number.intValue
+    public func convertToInt() -> Int {
+        let formatter = NumberFormatter()
+        formatter.locale = Locale(identifier: "pt_BR") // USA:
+        formatter.numberStyle = .decimal
+        let number = formatter.number(from: self)
+        return number?.intValue ?? 0
     }
     
     public func convertFormattedToDouble() -> Double {
         let double = (self.stringOfNumbersRegex() as NSString).doubleValue
         let number = NSNumber(value: (double / 100))
         return number.doubleValue
+    }
+    
+    public func convertToFloat() -> Float {
+        let formatter = NumberFormatter()
+        formatter.locale = Locale(identifier: "pt_BR") // USA:
+        formatter.numberStyle = .decimal
+        let number = formatter.number(from: self)
+        return number?.floatValue ?? 0
     }
     
     public func checkSignal() -> String {

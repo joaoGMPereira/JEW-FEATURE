@@ -110,6 +110,19 @@ public extension UIView {
         layer.mask = mask
     }
     
+    func roundAllCorners(borderColor: UIColor, cornerRadius: CGFloat? = nil) {
+        var radius = frame.width/2
+        if let cornerRadius = cornerRadius {
+            radius = cornerRadius
+        }
+        layer.borderWidth = 2
+        layer.masksToBounds = false
+        layer.borderColor = borderColor.cgColor
+        layer.cornerRadius = radius
+        clipsToBounds = true
+        
+    }
+    
     // MARK: - Private Methods
     
     private func roundExtension(corners: UIRectCorner, radius: CGFloat, backgroundColor: UIColor = .clear) -> CAShapeLayer {

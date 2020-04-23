@@ -51,6 +51,10 @@ public class JEWFloatingTextField: UIView {
         }
     }
     
+    public var placeHolderText:String {
+        return placeholderLabel.text ?? String()
+    }
+    
     public var textFieldText: String = String() {
         didSet {
             if textFieldText != String() {

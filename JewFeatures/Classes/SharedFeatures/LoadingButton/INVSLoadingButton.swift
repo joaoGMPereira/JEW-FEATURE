@@ -161,25 +161,23 @@ extension JEWLoadingButton: JEWCodeView {
             button.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             button.topAnchor.constraint(equalTo: self.topAnchor),
             button.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-            ])
+        ])
         NSLayoutConstraint.activate([
             loadingView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             loadingView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             loadingView.heightAnchor.constraint(equalToConstant: 40),
             loadingView.widthAnchor.constraint(equalToConstant: 40)
-            ])
+        ])
     }
     
     public func setupAdditionalConfiguration() {
         self.layoutIfNeeded()
-        if let bundle = PodAsset.bundle(forPod: JEWConstants.Resources.podsJewFeature.rawValue) {
-        let loadAnimation = Animation.named(loadingJson, bundle: bundle)
-            loadingView.animation = loadAnimation
-            loadingView.contentMode = .scaleAspectFit
-            loadingView.animationSpeed = 1.0
-            loadingView.loopMode = .loop
-            loadingView.alpha = 0.0
-        }
+        let loadAnimation = Animation.named(loadingJson, bundle: JEWSession.bundle)
+        loadingView.animation = loadAnimation
+        loadingView.contentMode = .scaleAspectFit
+        loadingView.animationSpeed = 1.0
+        loadingView.loopMode = .loop
+        loadingView.alpha = 0.0
         self.button.addTarget(self, action: #selector(buttonClicked(_:)), for: .touchUpInside)
     }
 }

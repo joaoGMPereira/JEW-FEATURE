@@ -107,6 +107,7 @@ public extension UIView {
         let darkBlur = UIBlurEffect(style: style)
         let blurView = UIVisualEffectView(effect: darkBlur)
         blurView.frame = self.bounds
+        blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.addSubview(blurView)
     }
     func animateBorderLayerColor(toColor: UIColor, duration: Double) {
