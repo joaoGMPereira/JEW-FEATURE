@@ -172,12 +172,14 @@ extension JEWLoadingButton: JEWCodeView {
     
     public func setupAdditionalConfiguration() {
         self.layoutIfNeeded()
-        let loadAnimation = Animation.named(loadingJson, bundle: JEWSession.bundle)
-        loadingView.animation = loadAnimation
-        loadingView.contentMode = .scaleAspectFit
-        loadingView.animationSpeed = 1.0
-        loadingView.loopMode = .loop
-        loadingView.alpha = 0.0
+        if let bundle = PodAsset.bundle(forPod: JEWConstants.Resources.podsJewFeature.rawValue) {
+            let loadAnimation = Animation.named(loadingJson, bundle: bundle)
+            loadingView.animation = loadAnimation
+            loadingView.contentMode = .scaleAspectFit
+            loadingView.animationSpeed = 1.0
+            loadingView.loopMode = .loop
+            loadingView.alpha = 0.0
+        }
         self.button.addTarget(self, action: #selector(buttonClicked(_:)), for: .touchUpInside)
     }
 }

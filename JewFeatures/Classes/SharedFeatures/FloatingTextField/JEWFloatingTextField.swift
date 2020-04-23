@@ -149,8 +149,11 @@ extension JEWFloatingTextField: UITextFieldDelegate, JEWKeyboardToolbarDelegate 
         if isBackSpace {
             return true
         }
-        textFieldText = textField.text ?? String()
         return false
+    }
+
+    public func textFieldDidChangeSelection(_ textField: UITextField) {
+        textFieldText = textField.text ?? String()
     }
     
     

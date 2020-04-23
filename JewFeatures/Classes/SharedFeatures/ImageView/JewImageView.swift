@@ -58,10 +58,10 @@ public class JEWImageView: UIView {
         }))
         alert.addAction(UIAlertAction(title: "Cancelar", style: .default, handler: nil))
 
-        alert.view.tintColor = .JEWDefault()
+        alert.view.tintColor = .white
 
         if let subview = (alert.view.subviews.first?.subviews.first?.subviews.first) {
-             subview.backgroundColor = .JEWBackground()
+             subview.backgroundColor = .JEWDarkDefault()
         }
 
         viewController.present(alert, animated: true, completion: nil)
@@ -110,7 +110,6 @@ extension JEWImageView: JEWCodeView {
             imageButton.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])
         imageButton.backgroundColor = .clear
-        imageButton.roundAllCorners(borderColor: .JEWDarkDefault(), cornerRadius: 8)
     }
     
     public func setupAdditionalConfiguration() {
