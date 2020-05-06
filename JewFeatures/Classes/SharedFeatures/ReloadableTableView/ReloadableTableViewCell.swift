@@ -9,13 +9,12 @@ import UIKit
 
 public class ReloadableTableViewCell: UITableViewCell, ReloadableCellProtocol, ReloadableDelegate {
     
-    public var items: [CellItem]?
     public var item: CellItem?
     var datasource = ReloadableDataSource()
     
     @IBOutlet weak var collectionView: UICollectionView!
     public func set(item: CellItem?, row: Int) {
-       // configView()
+        // configView()
         self.item = item
         if let reloadableSection = item?.object as? ReloadableItem {
             collectionView.dataSource = datasource
@@ -28,8 +27,8 @@ public class ReloadableTableViewCell: UITableViewCell, ReloadableCellProtocol, R
         layoutIfNeeded()
     }
     
-    private func configView() {
-        layoutIfNeeded()
+    public func didSelected() {
+        
     }
     
     public override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
@@ -38,27 +37,33 @@ public class ReloadableTableViewCell: UITableViewCell, ReloadableCellProtocol, R
     }
     
     public func apply(changes: SectionChanges) {
-          self.collectionView.performBatchUpdates({
-          self.collectionView.deleteSections(changes.deletes)
-          self.collectionView.insertSections(changes.inserts)
-          
-          self.collectionView.reloadItems(at: changes.updates.reloads)
-          self.collectionView.insertItems(at: changes.updates.inserts)
-          self.collectionView.deleteItems(at: changes.updates.deletes)
-            self.collectionView.layoutIfNeeded()
-        })
-          
-      }
-      
-      public func didSelected(indexpath: IndexPath, cell: UITableViewCell?) {
-          
-      }
-      
-      public func didAction(editItem: ReloadableEditItem, indexPath: IndexPath, cell: UITableViewCell?) {
-          
-      }
-      
-      public func didRefresh() {
-      }
+        DispatchQueue.main.async {
+            self.collectionView.performBatchUpdates({
+                self.collectionView.deleteSections(changes.deletes)
+                self.collectionView.insertSections(changes.inserts)
+                
+                self.collectionView.reloadItems(at: changes.updates.reloads)
+                self.collectionView.insertItems(at: changes.updates.inserts)
+                self.collectionView.deleteItems(at: changes.updates.deletes)
+                self.collectionView.layoutIfNeeded()
+            })
+        }
+        
+    }
+    
+    public func didSelected(indexpath: IndexPath, cell: ReloadableCellProtocol?) {
+        
+    }
+    
+    public func didAction(editItem: ReloadableEditItem, indexPath: IndexPath, cell: UITableViewCell?) {
+        
+    }
+    
+    public func didRefresh() {
+    }
+    
+    public func top(section: IndexPath) {
+        
+    }
     
 }

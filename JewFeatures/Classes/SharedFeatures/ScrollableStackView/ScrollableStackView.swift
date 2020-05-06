@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class ScrollableStackView: UIScrollView {
+open class ScrollableStackView: UIScrollView {
     public var stackView = UIStackView(frame: .zero)
     public var hasUpdatedLayoutCallback: ((_ width: CGFloat) -> ())?
     public override init(frame: CGRect) {
@@ -43,7 +43,7 @@ public class ScrollableStackView: UIScrollView {
         }
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

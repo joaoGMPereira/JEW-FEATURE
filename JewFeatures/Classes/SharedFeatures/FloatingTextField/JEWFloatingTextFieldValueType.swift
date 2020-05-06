@@ -8,13 +8,32 @@
 
 import Foundation
 
-public enum JEWFloatingTextFieldValueType {
+public enum JEWFloatingTextFieldValueType: Decodable {
     
     case none
     case currency
     case months
     case percent
     case maxSize(size: Int)
+    
+    enum CodingKeys: Int, CodingKey {
+      case none, currency, months, percent, maxSize
+    }
+    
+    public init(from decoder: Decoder) throws {
+      let container = try decoder.container(keyedBy: CodingKeys.self)
+        if (try container.decodeIfPresent(Int.self, forKey: .none)) != nil {
+        self = .none
+        } else if (try container.decodeIfPresent(Int.self, forKey: .currency)) != nil {
+        self = .currency
+        } else if (try container.decodeIfPresent(Int.self, forKey: .months)) != nil {
+        self = .months
+        } else if (try container.decodeIfPresent(Int.self, forKey: .percent)) != nil {
+        self = .percent
+      } else {
+        self = .maxSize(size: try container.decode(Int.self, forKey: .maxSize))
+      }
+    }
     
     
     public func formatText(textFieldText: String, isBackSpace: Bool = false) -> String {

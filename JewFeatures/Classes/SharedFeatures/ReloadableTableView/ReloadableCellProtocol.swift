@@ -9,6 +9,6 @@ import Foundation
 
 public protocol ReloadableCellProtocol {
     var item: CellItem? { get }
-    var items: [CellItem]? { get }
     func set(item: CellItem?, row: Int)
+    func didSelected()
 }

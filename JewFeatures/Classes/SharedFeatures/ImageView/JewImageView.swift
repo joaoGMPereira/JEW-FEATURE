@@ -16,16 +16,16 @@ public class JEWImageView: UIView {
     public var imageButton = UIButton(frame: .zero)
     
     private var size = CGSize(width: 150, height: 150)
-    private var autoSetupImage = true
+    private var cornerRadius: CGFloat = 0
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
         
     }
     
-    public func setup(with size: CGSize, cornerRadius: CGFloat = 8, autoSetupImage: Bool = true) {
+    public func setup(with size: CGSize, cornerRadius: CGFloat = 8) {
         self.size = size
-        self.autoSetupImage = autoSetupImage
+        self.cornerRadius = cornerRadius
         setupChallengeImage()
         setupView()
     }
@@ -83,9 +83,7 @@ public class JEWImageView: UIView {
 extension JEWImageView: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.originalImage] as? UIImage {
-            if autoSetupImage {
-                imageButton.setImage(image, for: .normal)
-            }
+            imageButton.setImage(image, for: .normal)
             imageButton.imageView?.clipsToBounds = false
             if let hasSelectedImageCallback = hasSelectedImageCallback {
                 hasSelectedImageCallback(image)
@@ -104,12 +102,14 @@ extension JEWImageView: JEWCodeView {
     
     public func setupConstraints() {
         NSLayoutConstraint.activate([
-            imageButton.widthAnchor.constraint(equalToConstant: size.width),
-            imageButton.heightAnchor.constraint(equalToConstant: size.height),
-            imageButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            imageButton.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            imageButton.leadingAnchor.constraint(equalTo: leadingAnchor),
+            imageButton.trailingAnchor.constraint(equalTo: trailingAnchor),
+            imageButton.topAnchor.constraint(equalTo: topAnchor),
+            imageButton.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
         imageButton.backgroundColor = .clear
+        imageButton.roundAllCorners(borderColor: .JEWDarkDefault(), cornerRadius: cornerRadius)
+        self.round(radius: cornerRadius, backgroundColor: .white, withShadow: true)
     }
     
     public func setupAdditionalConfiguration() {

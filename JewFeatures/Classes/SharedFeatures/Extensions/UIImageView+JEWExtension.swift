@@ -14,7 +14,6 @@ public extension UIImageView {
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard
                 let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
-                let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
                 let data = data, error == nil,
                 let image = UIImage(data: data)
                 else {
@@ -33,17 +32,21 @@ public extension UIImageView {
         }.resume()
     }
     func downloaded(from link: String?, contentMode mode: UIView.ContentMode = .scaleAspectFit, completionCallback: @escaping  (() -> ())) {
+        self.contentMode = mode
         
         if let cacheImage = imageCache.object(forKey: link as AnyObject) as? UIImage {
-            self.image = cacheImage
-            completionCallback()
+            DispatchQueue.main.async {
+                self.image = cacheImage
+                completionCallback()
+            }
             return
         }
         
-        self.contentMode = mode
         guard let url = URL(string: link ?? String()) else {
-            self.image = UIImage(named: "noImage", in: JEWSession.bundle, compatibleWith: nil)
-            completionCallback()
+            DispatchQueue.main.async {
+                self.image = UIImage(named: "noImage", in: JEWSession.bundle, compatibleWith: nil)
+                completionCallback()
+            }
             return
         }
         downloaded(from: url, contentMode: mode, completionCallback: completionCallback)

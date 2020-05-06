@@ -170,18 +170,20 @@ extension String {
         return number?.intValue ?? 0
     }
     
-    public func convertFormattedToDouble() -> Double {
-        let double = (self.stringOfNumbersRegex() as NSString).doubleValue
-        let number = NSNumber(value: (double / 100))
-        return number.doubleValue
-    }
-    
-    public func convertToFloat() -> Float {
+    public func convertToDouble() -> Double? {
         let formatter = NumberFormatter()
         formatter.locale = Locale(identifier: "pt_BR") // USA:
         formatter.numberStyle = .decimal
         let number = formatter.number(from: self)
-        return number?.floatValue ?? 0
+        return number?.doubleValue
+    }
+    
+    public func convertToFloat() -> Float? {
+        let formatter = NumberFormatter()
+        formatter.locale = Locale(identifier: "pt_BR") // USA:
+        formatter.numberStyle = .decimal
+        let number = formatter.number(from: self)
+        return number?.floatValue
     }
     
     public func checkSignal() -> String {

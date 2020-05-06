@@ -9,9 +9,10 @@ import Foundation
 
 public protocol ReloadableDelegate: class {
     func apply(changes: SectionChanges)
-    func didSelected(indexpath: IndexPath, cell: UITableViewCell?)
+    func didSelected(indexpath: IndexPath, cell: ReloadableCellProtocol?)
     func didAction(editItem: ReloadableEditItem, indexPath: IndexPath, cell: UITableViewCell?)
     func didRefresh()
+    func top(section: IndexPath)
 }
 
 public class ReloadableDataSource: NSObject {

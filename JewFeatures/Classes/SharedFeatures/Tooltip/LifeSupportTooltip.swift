@@ -95,7 +95,7 @@ extension LifeSupportTooltip: LifeSupportTooltipSetupProtocol {
         guard let config = config else {
             return UIControl(frame: .zero)
         }
-        var tooltipView = UIControl(frame: frame)
+        let tooltipView = UIControl(frame: frame)
         configure(withTooltipView: tooltipView, config: config)
         return tooltipView
     }
@@ -133,7 +133,7 @@ extension LifeSupportTooltip: LifeSupportTooltipSetupProtocol {
     
     func configure(withArrowView arrowView: UIView) {
         arrowView.backgroundColor = self.config?.backgroundColor
-        arrowView.transform = CGAffineTransform(rotationAngle: CGFloat(-45.0 * M_PI/180.0))
+        arrowView.transform = CGAffineTransform(rotationAngle: CGFloat(-45.0 * .pi/180.0))
     }
 }
 
@@ -168,7 +168,7 @@ extension LifeSupportTooltip: LifeSupportTooltipConfigProtocol {
 
 extension LifeSupportTooltip: LifeSupportTooltipTextProtocol {
     func hasValid(string: String) -> Bool {
-        return string != nil && string.count > 0
+        return string.count > 0
     }
     
     func hasValidTitle() -> Bool {
@@ -186,7 +186,7 @@ extension LifeSupportTooltip: LifeSupportTooltipTextProtocol {
     }
     
     func attributedStringFullText() -> NSAttributedString {
-        var mutableAttributedText = NSMutableAttributedString()
+        let mutableAttributedText = NSMutableAttributedString()
         guard let config = config else {
             return mutableAttributedText
         }
@@ -279,7 +279,7 @@ extension LifeSupportTooltip: LifeSupportTooltipCalculationProtocol {
     }
     
     func messageRect() -> CGRect {
-        guard let config = config, let anchorView = self.anchorView, let superview = self.superview else {
+        guard let config = config, let _ = self.anchorView, let _ = self.superview else {
             return .zero
         }
         
@@ -356,7 +356,7 @@ extension LifeSupportTooltip: LifeSupportTooltipCalculationProtocol {
         guard let config = config, let tooltipView = self.tooltipView else {
             return .zero
         }
-        var initialX = (self.hypotenuse() - config.arrowHeight)/2
+        let initialX = (self.hypotenuse() - config.arrowHeight)/2
         var origin = CGPoint(x: initialX + config.offsetArrowX, y: -(config.arrowHeight/2))
         switch config.position {
         case .topRight:

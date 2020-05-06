@@ -183,7 +183,7 @@ extension JEWPopupMessage: JEWCodeView {
         NSLayoutConstraint.activate([
             closeButton.leadingAnchor.constraint(equalTo: textMessageLabel.trailingAnchor, constant: 8),
             closeButton.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -8),
-            closeButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 15),
+            closeButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor),
             closeButton.heightAnchor.constraint(equalToConstant: 30),
             closeButton.widthAnchor.constraint(equalToConstant: 30)
         ])

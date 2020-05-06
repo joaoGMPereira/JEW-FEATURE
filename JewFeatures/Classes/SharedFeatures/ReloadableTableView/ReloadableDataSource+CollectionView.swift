@@ -9,10 +9,12 @@ import Foundation
 
 public extension ReloadableDataSource {
     
-    func setup(newItems: [ReloadableItem], in collectionView: UICollectionView, editItems: [ReloadableEditItem]? = nil) {
+    func setup(newItems: [ReloadableItem], in collectionView: UICollectionView, editItems: [ReloadableEditItem]? = nil, hasRefreshControl: Bool = false) {
         setup(newItems: newItems, editItems: editItems)
         register(collectionView: collectionView)
-        setupRefreshControl(collectionView: collectionView)
+        if hasRefreshControl {
+            setupRefreshControl(collectionView: collectionView)
+        }
         delegate?.apply(changes: sectionChanges)
     }
     
@@ -32,13 +34,30 @@ public extension ReloadableDataSource {
 }
 
 
-extension ReloadableDataSource: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension ReloadableDataSource: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
         return items.count
     }
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items[section].cellItems.count
     }
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return .zero
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return .zero
+    }
+    
+    
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+//        return CGFloat()// Your Value
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+//         return CGFloat()// Your Value
+//        }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let item = items[indexPath.section]
@@ -50,4 +69,11 @@ extension ReloadableDataSource: UICollectionViewDataSource, UICollectionViewDele
         }
         return UICollectionViewCell()
     }
+    
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as? ReloadableCellProtocol
+        cell?.didSelected()
+        delegate?.didSelected(indexpath: indexPath, cell: cell)
+        
+     }
 }

@@ -37,7 +37,7 @@ public class JEWFloatingTextField: UIView {
     private static let zero: CGFloat = 0
     
     //UI
-    let textField = UITextField(frame: .zero)
+    public let textField = UITextField(frame: .zero)
     let placeholderLabel = UILabel(frame: .zero)
     let bottomLineView = UIView(frame: .zero)
     var infoButton: UIButton? = nil

@@ -95,7 +95,6 @@ public class JEWFloatingTextFieldFormatBuilder: NSObject, JEWFloatingTextFieldBu
            if self.floatingTextField.textField.text != nil && self.floatingTextField.textField.text != String() {
                self.floatingTextField.openKeyboard()
            }
-           self.floatingTextField.textField.tintColor = .white
        }
        
 }

@@ -9,10 +9,12 @@ import Foundation
 
 public extension ReloadableDataSource {
     
-    func setup(newItems: [ReloadableItem], in tableView: UITableView, editItems: [ReloadableEditItem]? = nil) {
+    func setup(newItems: [ReloadableItem], in tableView: UITableView, editItems: [ReloadableEditItem]? = nil, hasRefreshControl: Bool = false) {
         setup(newItems: newItems, editItems: editItems)
         register(tableView: tableView)
-        setupRefreshControl(tableView: tableView)
+        if hasRefreshControl {
+            setupRefreshControl(tableView: tableView)
+        }
         delegate?.apply(changes: sectionChanges)
     }
     
@@ -86,7 +88,7 @@ extension ReloadableDataSource: UITableViewDataSource {
 
 extension ReloadableDataSource: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.didSelected(indexpath: indexPath, cell: tableView.cellForRow(at: indexPath))
+        delegate?.didSelected(indexpath: indexPath, cell: tableView.cellForRow(at: indexPath) as? ReloadableCellProtocol)
     }
     
     public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -107,5 +109,17 @@ extension ReloadableDataSource: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         
+    }
+    
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if let tableView = scrollView as? UITableView, let section = tableView.indexPathsForVisibleRows?.first {
+            delegate?.top(section: section)
+        }
+    }
+    
+    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        if let tableView = scrollView as? UITableView, let section = tableView.indexPathsForVisibleRows?.first {
+            delegate?.top(section: section)
+        }
     }
 }
