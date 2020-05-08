@@ -98,3 +98,28 @@ public extension UIImage {
         return newImage
     }
 }
+
+
+public extension UIImage {
+    // Convert to Data
+    @discardableResult func addImageToFileManager(id: String) -> URL? {
+        if let data = self.jpeg(.highest) {
+            // Create URL
+            let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            let url = documents.appendingPathComponent(id)
+            
+            do {
+                // Write to Disk
+                try data.write(to: url)
+                
+                // Store URL in User Defaults
+                return url
+                
+            } catch {
+                return nil
+            }
+        }
+        return nil
+    }
+}
+

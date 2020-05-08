@@ -17,13 +17,13 @@ public enum JEWPopupMessageLayout {
         var defaultHeight: CGFloat = 60
         switch self {
         case .top:
-            defaultHeight = 90
+            defaultHeight = 110
             break
         case .paddingTop:
             defaultHeight = 60
             break
         case .bottom:
-            defaultHeight = 90
+            defaultHeight = 110
             break
         case .paddingBottom:
             defaultHeight = 60
@@ -97,7 +97,7 @@ public enum JEWPopupMessageLayout {
     }
     
     func cornerRadius() -> CGFloat {
-        var radius: CGFloat = 200
+        var radius: CGFloat = 2
         switch self {
         case .top, .bottom:
             radius = 4

@@ -7,10 +7,26 @@
 
 import Foundation
 import Alamofire
+
+public struct JEWReachabilityConfig {
+    public let title: String
+    public let message: String
+    public let alertType: JEWPopupMessageType
+    public let shouldHideAutomatically: Bool
+    
+    public init(title: String, message: String, alertType: JEWPopupMessageType, shouldHideAutomatically: Bool = false) {
+        self.title = title
+        self.message = message
+        self.alertType = alertType
+        self.shouldHideAutomatically = shouldHideAutomatically
+    }
+}
+
 public class JEWReachability {
     // Can't init is singleton
     
     public static let recheability = JEWReachability()
+    public var config: JEWReachabilityConfig?
     var timerToCheck = Timer()
     var popupView: JEWPopupMessage?
     var topViewController: UIViewController?
@@ -35,10 +51,12 @@ public class JEWReachability {
         NetworkReachabilityManager()?.stopListening()
     }
     
-    @objc public func check() {
+    @discardableResult @objc public func check() -> Bool {
         if let isReachable = NetworkReachabilityManager()?.isReachable {
             isReachable ? isConnected() : isDisconnect()
+            return isReachable
         }
+        return false
     }
     
     func isConnected() {
@@ -47,7 +65,7 @@ public class JEWReachability {
     
     func isDisconnect() {
         checkViewController()
-        popupView?.show(withTextMessage: "Verifique sua conexão com a internet.", title: "Você está desconectado!\n", popupType: .error, shouldHideAutomatically: false, sender: nil)
+        popupView?.show(withTextMessage: config?.message ?? "Verifique sua conexão com a internet.", title: config?.title ?? "Você está desconectado!\n", popupType: config?.alertType ?? .error, shouldHideAutomatically: config?.shouldHideAutomatically ?? false)
     }
     
     private func checkViewController() {

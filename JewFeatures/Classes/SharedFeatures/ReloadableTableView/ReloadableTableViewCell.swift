@@ -8,7 +8,7 @@
 import UIKit
 
 public class ReloadableTableViewCell: UITableViewCell, ReloadableCellProtocol, ReloadableDelegate {
-    
+
     public var item: CellItem?
     var datasource = ReloadableDataSource()
     
@@ -33,7 +33,11 @@ public class ReloadableTableViewCell: UITableViewCell, ReloadableCellProtocol, R
     
     public override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
         self.collectionView.layoutIfNeeded()
-        return self.collectionView.collectionViewLayout.collectionViewContentSize
+        var size = self.collectionView.collectionViewLayout.collectionViewContentSize
+        if let item = item?.object as? ReloadableItem, let height = item.height {
+            size.height = height
+        }
+        return size
     }
     
     public func apply(changes: SectionChanges) {
@@ -65,5 +69,10 @@ public class ReloadableTableViewCell: UITableViewCell, ReloadableCellProtocol, R
     public func top(section: IndexPath) {
         
     }
+    
+    public func reachBottomEnd() {
+    }
+       
+       
     
 }

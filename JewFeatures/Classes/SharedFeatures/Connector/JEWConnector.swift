@@ -8,7 +8,6 @@
 
 import Foundation
 import Alamofire
-public typealias SuccessResponse = (Decodable) -> ()
 public typealias FinishResponse = () -> ()
 public typealias SuccessRefreshResponse = (_ shouldUpdateHeaders: Bool) -> ()
 public typealias ErrorCompletion = (ConnectorError) -> ()
@@ -27,7 +26,7 @@ public final class JEWConnector {
     }
     public var sessionToken: String? = nil
     
-    public func request<T: Decodable>(withRoute route: String, method: HTTPMethod = .get, parameters: JSONAble? = nil, responseClass: T.Type, headers: HTTPHeaders? = nil, shouldRetry: Bool = false, successCompletion: @escaping(SuccessResponse), errorCompletion: @escaping(ErrorCompletion)) {
+    public func request<T: Decodable>(withRoute route: String, method: HTTPMethod = .get, parameters: JSONAble? = nil, headers: HTTPHeaders? = nil, shouldRetry: Bool = false, successCompletion: @escaping((T) -> ()), errorCompletion: @escaping(ErrorCompletion)) {
         var headersUpdated = headers
         guard let url = JEWConnector.getURL(withRoute: route) else {
             return
@@ -39,11 +38,11 @@ public final class JEWConnector {
             headersUpdated?.update(name: sessionToken, value: "session-token")
         }
         
-        self.requestBlock(withURL: url, method: method, parameters: parameters, responseClass: responseClass, headers: headersUpdated, successCompletion: { (decodable) in
+        self.requestBlock(withURL: url, method: method, parameters: parameters, headers: headersUpdated, successCompletion: { (decodable: T) in
             successCompletion(decodable)
         }) { (error) in
             if shouldRetry {
-                self.request(withRoute: route, method: method, parameters: parameters, responseClass: responseClass, headers: headers, shouldRetry: false, successCompletion: successCompletion, errorCompletion: errorCompletion)
+                self.request(withRoute: route, method: method, parameters: parameters, headers: headers, shouldRetry: false, successCompletion: successCompletion, errorCompletion: errorCompletion)
                 return
             }
             errorCompletion(error)
@@ -51,7 +50,7 @@ public final class JEWConnector {
         
     }
     
-    public func requestBlock<T: Decodable>(withURL url: URL, method: HTTPMethod = .get, parameters: JSONAble? = nil, responseClass: T.Type, headers: HTTPHeaders? = nil, successCompletion: @escaping(SuccessResponse), errorCompletion: @escaping(ErrorCompletion)) {
+    public func requestBlock<T: Decodable>(withURL url: URL, method: HTTPMethod = .get, parameters: JSONAble? = nil, headers: HTTPHeaders? = nil, successCompletion: @escaping((T) -> ()), errorCompletion: @escaping(ErrorCompletion)) {
         AF.request(url, method: method, parameters: parameters?.toDict(), encoding: JSONEncoding.default, headers: headers).validate().responseJSON { (response) in
             self.logRequestInfo(withURL: url, method: method, parameters: parameters, headers: headers)
             if let error = response.error {

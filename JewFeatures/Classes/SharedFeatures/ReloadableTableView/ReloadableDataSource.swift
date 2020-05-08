@@ -13,6 +13,7 @@ public protocol ReloadableDelegate: class {
     func didAction(editItem: ReloadableEditItem, indexPath: IndexPath, cell: UITableViewCell?)
     func didRefresh()
     func top(section: IndexPath)
+    func reachBottomEnd()
 }
 
 public class ReloadableDataSource: NSObject {
@@ -29,12 +30,11 @@ public class ReloadableDataSource: NSObject {
     }()
     
     func setup(newItems: [ReloadableItem], editItems: [ReloadableEditItem]? = nil) {
-        
-        let oldData = flatten(items: items)
-        let newData = flatten(items: newItems)
-        sectionChanges = DiffCalculator.calculate(oldItems: oldData, newItems: newData)
-        items = newItems
-        self.editItems = editItems
+            let oldData = self.flatten(items: self.items)
+            let newData = self.flatten(items: newItems)
+            self.sectionChanges = DiffCalculator.calculate(oldItems: oldData, newItems: newData)
+            self.items = newItems
+            self.editItems = editItems
     }
     
     func flatten(items: [ReloadableItem]) -> [ReloadableSection<CellItem>] {

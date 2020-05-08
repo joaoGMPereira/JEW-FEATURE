@@ -10,6 +10,7 @@ public protocol ReloadableItem {
     var sectionTitle: String? { get }
     var cellItems: [CellItem] { get }
     var cellType: String { get }
+    var height: CGFloat? { get }
 }
 
 public struct CellItem: Equatable {

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension String {
+public extension String {
     
     
     private enum Constants {
@@ -47,14 +47,14 @@ extension String {
     /// - Parameters:
     ///   - target: size da string
     ///   - selector: Selector chamado pelo observer.
-    public func stringOfNumbersRegex(with size:Int? = nil) -> String {
+    func stringOfNumbersRegex(with size:Int? = nil) -> String {
         var amountWithPrefix = self
         let regex = try! NSRegularExpression(pattern: "[^0-9]", options: .caseInsensitive)
         amountWithPrefix = String(regex.stringByReplacingMatches(in: amountWithPrefix, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSMakeRange(0, self.count), withTemplate: "").prefix(size ?? self.count))
         return amountWithPrefix
     }
     
-    public func accountFormat() -> String {
+    func accountFormat() -> String {
         
         var accountJustNumbers = self
         
@@ -70,7 +70,7 @@ extension String {
         return formattedAccount
     }
     
-    public func getAbbreviationName() -> String {
+    func getAbbreviationName() -> String {
         var abbreviationName = String()
 
         let names = self.split(separator: " ")
@@ -83,14 +83,14 @@ extension String {
         return abbreviationName.uppercased()
     }
     
-    public func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
+    func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
         let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
         let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil)
         
         return ceil(boundingBox.height)
     }
     
-    public func width(withConstrainedHeight height: CGFloat, font: UIFont) -> CGFloat {
+    func width(withConstrainedHeight height: CGFloat, font: UIFont) -> CGFloat {
         let constraintRect = CGSize(width: .greatestFiniteMagnitude, height: height)
         let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [.font: font], context: nil)
         
@@ -98,7 +98,7 @@ extension String {
     }
     
     // formatting text for currency textField
-    public func percentFormat(backSpace: Bool = false) -> String {
+    func percentFormat(backSpace: Bool = false) -> String {
         var number: NSNumber!
         let formatter = NumberFormatter.currencyDefault()
         formatter.numberStyle = .currencyAccounting
@@ -128,7 +128,7 @@ extension String {
         return stringWithSymbol
     }
     
-    public func currencyFormat(backSpace: Bool = false) -> String {
+    func currencyFormat(backSpace: Bool = false) -> String {
         
         var number: NSNumber!
         let formatter = NumberFormatter.currencyDefault()
@@ -152,7 +152,7 @@ extension String {
         return formatter.string(from: number)!
     }
     
-    public func monthFormat() -> String {
+    func monthFormat() -> String {
         
         var amountWithoutPrefix = self
         
@@ -162,7 +162,7 @@ extension String {
         return amountWithoutPrefix
     }
     
-    public func convertToInt() -> Int {
+    func convertToInt() -> Int {
         let formatter = NumberFormatter()
         formatter.locale = Locale(identifier: "pt_BR") // USA:
         formatter.numberStyle = .decimal
@@ -170,7 +170,7 @@ extension String {
         return number?.intValue ?? 0
     }
     
-    public func convertToDouble() -> Double? {
+    func convertToDouble() -> Double? {
         let formatter = NumberFormatter()
         formatter.locale = Locale(identifier: "pt_BR") // USA:
         formatter.numberStyle = .decimal
@@ -178,7 +178,7 @@ extension String {
         return number?.doubleValue
     }
     
-    public func convertToFloat() -> Float? {
+    func convertToFloat() -> Float? {
         let formatter = NumberFormatter()
         formatter.locale = Locale(identifier: "pt_BR") // USA:
         formatter.numberStyle = .decimal
@@ -186,7 +186,7 @@ extension String {
         return number?.floatValue
     }
     
-    public func checkSignal() -> String {
+    func checkSignal() -> String {
         if self != "" {
             if self.first == "-" {
                 return "-"
@@ -196,10 +196,80 @@ extension String {
         return "+"
     }
     
-    public func isValidEmail() -> Bool {
+    func isValidEmail() -> Bool {
         let regex: String
         regex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}"
         return NSPredicate(format: "SELF MATCHES %@", regex).evaluate(with: self)
     }
     
+    func getInDefaults<T: Decodable>(completion: @escaping ((T?) -> ())) {
+        if let codable = UserDefaults.standard.object(forKey: self) as? Data {
+            let decoder = JSONDecoder()
+            if let decodable = try? decoder.decode(T.self, from: codable) {
+                completion(decodable)
+            }
+            return
+        }
+        completion(nil)
+    }
+    
+    
+    func downloaded(completionCallback: @escaping  ((UIImage?, String) -> ())) {
+        
+        if let cacheImage = imageCache.object(forKey: self as NSString)  {
+            DispatchQueue.main.async {
+               // self.image = cacheImage
+                completionCallback(cacheImage, self)
+            }
+            return
+        }
+        
+        guard let url = URL(string: self) else {
+            DispatchQueue.main.async {
+                let imageNotFound = UIImage(named: "noImage", in: JEWSession.bundle, compatibleWith: nil)
+                //self.image = imageNotFound
+                completionCallback(imageNotFound, self)
+            }
+            return
+        }
+        downloaded(with: url, completionCallback: completionCallback)
+    }
+    
+    private func downloaded(with url: URL, completionCallback: @escaping  ((UIImage?, String) -> ())) {
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard
+                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                let data = data, error == nil,
+                let image = UIImage(data: data)
+                else {
+                    DispatchQueue.main.async {
+                        let imageNotFound = UIImage(named: "noImage", in: JEWSession.bundle, compatibleWith: nil)
+                        // self.image = imageNotFound
+                        completionCallback(imageNotFound, url.absoluteString)
+                    }
+                    return
+                    
+            }
+            DispatchQueue.main.async() {
+               // self.image = image
+                imageCache.setObject(image, forKey: url.absoluteString as NSString)
+                completionCallback(image, url.absoluteString)
+            }
+        }.resume()
+    }
+    
+    func getImageFromFileManager(completion: @escaping ((UIImage?) -> ())) {
+        
+        let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
+        let nsUserDomainMask    = FileManager.SearchPathDomainMask.userDomainMask
+        let paths               = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+        if let dirPath          = paths.first
+        {
+           let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent(self)
+           let image    = UIImage(contentsOfFile: imageURL.path)
+            DispatchQueue.main.async {
+                completion(image)
+            }
+        }
+    }
 }

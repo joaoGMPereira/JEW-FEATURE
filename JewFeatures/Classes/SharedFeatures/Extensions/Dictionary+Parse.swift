@@ -9,11 +9,11 @@ import Foundation
 
 
 extension Dictionary {
-    public func parseTo<T: Decodable>(responseClass: T.Type, successCompletion: @escaping(SuccessResponse), errorCompletion: @escaping(String) -> ()) {
+    public func parseTo<T: Decodable>(successCompletion: @escaping((T) -> ()), errorCompletion: @escaping(String) -> ()) {
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: self, options: [])
             let decodable = try JSONDecoder().decode(T.self, from: jsonData)
-            JEWLogger.info(self, customInfo:"\(responseClass)")
+            JEWLogger.info(self, customInfo:"\(T.self)")
             successCompletion(decodable)
         } catch let error {
             JEWLogger.error(error)

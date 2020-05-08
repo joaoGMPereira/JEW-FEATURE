@@ -91,8 +91,10 @@ public extension UIView {
     func isAnimated(isHidden: Bool, finalAlpha: CGFloat = 1, duration: Double = 0.3, completion: (() -> ())? = nil) {
         
         UIView.animate(withDuration: duration, animations: { [weak self] in
-            self?.isHidden = isHidden
-            self?.alpha = isHidden ? 0 : finalAlpha
+            DispatchQueue.main.async {
+                self?.isHidden = isHidden
+                self?.alpha = isHidden ? 0 : finalAlpha
+            }
         }) { (finished) in
             if let completion = completion {
                 completion()
@@ -128,9 +130,11 @@ public extension UIView {
         layer.backgroundColor = toColor.cgColor
     }
     
-    func setupEdgeConstraints(parent: UIView, useSafeLayout: Bool = false) {
-        setupConstraints(parent: parent, top: 0, bottom: 0, leading: 0, trailing: 0, useSafeLayout: useSafeLayout)
+    func setupEdgeConstraints(parent: UIView, padding: CGFloat = 0, useSafeLayout: Bool = false) {
+        setupConstraints(parent: parent, top: padding, bottom: -padding, leading: padding, trailing: -padding, useSafeLayout: useSafeLayout)
     }
+    
+    
     
     func setupConstraints(parent: UIView, top: CGFloat? = nil, bottom: CGFloat? = nil, topBottom: CGFloat? = nil, bottomTop: CGFloat? = nil, leading: CGFloat? = nil, leadingTrailing: CGFloat? = nil, trailing: CGFloat? = nil, trailingLeading: CGFloat? = nil, centerX: CGFloat? = nil, centerY: CGFloat? = nil, width: CGFloat? = nil, height: CGFloat? = nil, useSafeLayout: Bool = false) {
         translatesAutoresizingMaskIntoConstraints = false

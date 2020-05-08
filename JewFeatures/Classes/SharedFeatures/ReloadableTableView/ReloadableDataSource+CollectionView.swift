@@ -20,12 +20,11 @@ public extension ReloadableDataSource {
     
     func setupRefreshControl(collectionView: UICollectionView) {
         collectionView.addSubview(refreshControl)
-        refreshControl.tintColor = UIColor.JEWDarkDefault()
+        refreshControl.tintColor = UIColor.JEWDefault()
     }
     
     func register(collectionView: UICollectionView) {
-
-        items.forEach { (item) in
+        self.items.forEach { (item) in
             for cellItem in item.cellItems {
                 collectionView.register(UINib(nibName: item.cellType, bundle: cellItem.bundle), forCellWithReuseIdentifier: item.cellType)
             }
@@ -50,15 +49,6 @@ extension ReloadableDataSource: UICollectionViewDataSource, UICollectionViewDele
         return .zero
     }
     
-    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-//        return CGFloat()// Your Value
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//         return CGFloat()// Your Value
-//        }
-    
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let item = items[indexPath.section]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: item.cellType, for: indexPath) as? ReloadableCellProtocol
@@ -75,5 +65,15 @@ extension ReloadableDataSource: UICollectionViewDataSource, UICollectionViewDele
         cell?.didSelected()
         delegate?.didSelected(indexpath: indexPath, cell: cell)
         
-     }
+    }
+    
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let height = scrollView.frame.size.height
+        let contentYoffset = scrollView.contentOffset.y
+        let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+        if distanceFromBottom < height {
+            delegate?.reachBottomEnd()
+        }
+    }
 }

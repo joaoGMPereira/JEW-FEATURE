@@ -140,7 +140,7 @@ class DiffCalculator {
 }
 
 
-extension Array where Element: Hashable {
+public extension Array where Element: Hashable {
    
     /// Remove duplicates from the array, preserving the items order
     func filterDuplicates() -> Array<Element> {
