@@ -1,43 +1,18 @@
 PODS:
-  - Alamofire (5.1.0)
-  - CollectionKit (2.4.0):
-    - CollectionKit/Core (= 2.4.0)
-  - CollectionKit/Core (2.4.0)
-  - JewFeatures/CommonKit (0.3.0)
-  - JewFeatures/UIKit (0.3.0):
-    - Alamofire
-    - CollectionKit
+  - JewFeatures/CommonKit (1.0.0)
+  - JewFeatures/SessionKit (1.0.0):
     - JewFeatures/CommonKit
-    - lottie-ios
-    - PodAsset
-    - SkeletonView
-  - lottie-ios (3.1.8)
-  - PodAsset (1.0.0)
-  - SkeletonView (1.8.7)
 
 DEPENDENCIES:
-  - JewFeatures/UIKit (from `../`)
-
-SPEC REPOS:
-  trunk:
-    - Alamofire
-    - CollectionKit
-    - lottie-ios
-    - PodAsset
-    - SkeletonView
+  - JewFeatures/SessionKit (from `../`)
 
 EXTERNAL SOURCES:
   JewFeatures:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Alamofire: 9d5c5f602928e512395b30950c5984eca840093c
-  CollectionKit: 8f01e7629185bb81072c4aa734d105df5c2d1c8b
-  JewFeatures: 360e776797be3bb8fae13b42258ed4adaa36436a
-  lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
-  PodAsset: c2c2b20013c1edf698fea2bacba6e75a638537a2
-  SkeletonView: ba5370f41280b2f0a76918bb143c1294232bb4f4
+  JewFeatures: e06cca710631793f731c648a727c3bf8049ad58a
 
-PODFILE CHECKSUM: 6563262f89aab401c7c19715ba493298e3ebaff5
+PODFILE CHECKSUM: 72edaa42de705d1f194ab28e010085f504591f70
 
 COCOAPODS: 1.8.4
