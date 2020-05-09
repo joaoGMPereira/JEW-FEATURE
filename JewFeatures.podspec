@@ -44,6 +44,10 @@ TODO: Add long description of the pod here.
   s.subspec "CommonKit" do |commonKit|
   commonKit.source_files = "JewFeatures/Classes/CommonKit/**/*"
   end
+  
+  s.subspec "LoggerKit" do |loggerKit|
+  loggerKit.source_files = "JewFeatures/Classes/LoggerKit/**/*"
+  end
 #  s.subspec "Extensions" do |extensions|
 #  extensions.source_files = "myproject/optional/*"
 #  # MyOptionalModule depends on "Core" ^^
