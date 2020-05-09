@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
     s.name             = 'JewFeatures'
-    s.version          = '0.3.0'
+    s.version          = '1.0.0'
     s.summary          = 'A module with a handful of things, such as Connectors with Alamofire, UIComponents, Extensions and Loggers'
     
     # This description is used to generate tags and improve search results.
