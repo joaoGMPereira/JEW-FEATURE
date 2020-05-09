@@ -9,6 +9,7 @@
 import Foundation
 import LocalAuthentication
 
+public typealias JEWCompletion = () -> ()
 public enum JEWConstants {
     
     public enum Services: String {

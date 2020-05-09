@@ -25,7 +25,7 @@ public class JEWConnectorHelpers: NSObject {
         return errorViewController
     }
     
-    public static func presentErrorRememberedUserLogged(lastViewController: UIViewController, message: String = JEWConstants.RefreshErrors.message.rawValue, title: String = JEWConstants.Default.title.rawValue, height: CGFloat = 150, width: CGFloat = 300, cornerRadius: CGFloat = 8, lottie: JEWConstants.Resources.Lotties = .animatedLoadingBlack, shouldRetry: Bool = false, successCompletion: @escaping(FinishResponse), errorCompletion:@escaping(FinishResponse)) {
+    public static func presentErrorRememberedUserLogged(lastViewController: UIViewController, message: String = JEWConstants.RefreshErrors.message.rawValue, title: String = JEWConstants.Default.title.rawValue, height: CGFloat = 150, width: CGFloat = 300, cornerRadius: CGFloat = 8, lottie: JEWConstants.Resources.Lotties = .animatedLoadingBlack, shouldRetry: Bool = false, successCompletion: @escaping(JEWCompletion), errorCompletion:@escaping(JEWCompletion)) {
         let errorViewController = setupAlertController(lastViewController: lastViewController, message: message, title: title, height: height, width: width, cornerRadius: cornerRadius, lottie: lottie)
         
         errorViewController.confirmCallback = { (button) -> () in
@@ -39,7 +39,7 @@ public class JEWConnectorHelpers: NSObject {
         }
     }
     
-    public static func presentErrorGoToSettingsRememberedUserLogged(lastViewController: UIViewController, message: String, title: String = JEWConstants.Default.title.rawValue, height: CGFloat = 150, width: CGFloat = 300, cornerRadius: CGFloat = 8, lottie: JEWConstants.Resources.Lotties = .animatedLoadingBlack, finishCompletion:@escaping(FinishResponse)) {
+    public static func presentErrorGoToSettingsRememberedUserLogged(lastViewController: UIViewController, message: String, title: String = JEWConstants.Default.title.rawValue, height: CGFloat = 150, width: CGFloat = 300, cornerRadius: CGFloat = 8, lottie: JEWConstants.Resources.Lotties = .animatedLoadingBlack, finishCompletion:@escaping(JEWCompletion)) {
         let errorViewController = setupAlertController(lastViewController: lastViewController, message: message, title: title, height: height, width: width, cornerRadius: cornerRadius, lottie: lottie)
         
         errorViewController.confirmCallback = { (button) -> () in

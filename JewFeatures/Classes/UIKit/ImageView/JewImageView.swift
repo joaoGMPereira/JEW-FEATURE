@@ -23,15 +23,15 @@ public class JEWImageView: UIView {
         
     }
     
-    public func setup(with size: CGSize, cornerRadius: CGFloat = 8) {
+    public func setup(with size: CGSize, cornerRadius: CGFloat = 8, bundle: Bundle) {
         self.size = size
         self.cornerRadius = cornerRadius
-        setupChallengeImage()
+        setupChallengeImage(bundle: bundle)
         setupView()
     }
     
-    func setupChallengeImage() {
-        imageButton.setImage(UIImage(named: "edit", in: JEWSession.bundle, compatibleWith: nil), for: .normal)
+    func setupChallengeImage(bundle: Bundle) {
+        imageButton.setImage(UIImage(named: "edit", in: bundle, compatibleWith: nil), for: .normal)
         imageButton.tintColor = .JEWDarkDefault()
         imageButton.addTarget(self, action: #selector(changeImage(_:)), for: .touchUpInside)
     }

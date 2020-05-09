@@ -9,8 +9,8 @@ import Foundation
 import SwiftyRSA
 
 public struct RSACrypto {
-    public static func encrypt(data: JSONAble) -> String? {
-        if let base64String = dataToBase64(data: data), let encryptedString = encrypt(string: base64String) {
+    public static func encrypt(publicKey: String, data: JSONAble) -> String? {
+        if let base64String = dataToBase64(data: data), let encryptedString = encrypt(key: publicKey, string: base64String) {
             return encryptedString
         }
         return nil
@@ -27,9 +27,9 @@ public struct RSACrypto {
         }
     }
     
-    private static func encrypt(string: String) -> String? {
+    private static func encrypt(key: String, string: String) -> String? {
         do {
-            let publicKeyString = JEWSession.session.services.publicKey.replacingOccurrences(of: "-----BEGIN PUBLIC KEY-----", with: "").replacingOccurrences(of: "-----END PUBLIC KEY-----", with: "").replacingOccurrences(of: "\n", with: "")
+            let publicKeyString = key.replacingOccurrences(of: "-----BEGIN PUBLIC KEY-----", with: "").replacingOccurrences(of: "-----END PUBLIC KEY-----", with: "").replacingOccurrences(of: "\n", with: "")
             
             let publicKey = try PublicKey.init(base64Encoded: publicKeyString)
             

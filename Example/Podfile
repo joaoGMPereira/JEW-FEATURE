@@ -1,7 +1,7 @@
 use_frameworks!
 
 target 'JewFeatures_Example' do
-  pod 'JewFeatures/CommonKit', :path => '../'
+  pod 'JewFeatures/UIKit', :path => '../'
 end
 
 post_install do |installer|
@@ -11,3 +11,4 @@ post_install do |installer|
     end
   end
 end
+  

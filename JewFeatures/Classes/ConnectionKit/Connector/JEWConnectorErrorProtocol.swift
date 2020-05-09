@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol JEWConnectorErrorProtocol {
-    func displayErrorDefault(titleError: String, messageError:String, shouldHideAutomatically: Bool, popupType: JEWPopupMessageType)
+    func displayErrorDefault(titleError: String, messageError:String, shouldHideAutomatically: Bool)
     func displayErrorAuthentication(titleError: String, messageError: String, shouldRetry: Bool)
     func displayErrorSettings(titleError: String, messageError: String)
     func displayErrorLogout(titleError: String, messageError: String)

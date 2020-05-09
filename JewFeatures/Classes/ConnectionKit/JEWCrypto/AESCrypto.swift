@@ -9,12 +9,6 @@
 import Foundation
 import CommonCrypto
 
-protocol Randomizer {
-    static func randomIv() -> String
-    static func randomSalt() -> String
-    static func randomKey() -> String
-}
-
 protocol Crypter {
     func encrypt(_ digest: Data) -> String?
     func decrypt(_ encrypted: Data) throws -> Data
@@ -30,15 +24,14 @@ public struct JewAESCrypto: JSONAble {
 }
 
 public class AES256Crypter {
-    static let standardChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
     private var key: Data = Data()
     private var iv: Data = Data()
     public static let crypto = AES256Crypter()
     public static func create() -> JewAESCrypto? {
         do {
-        let salt = AES256Crypter.randomSalt()
-        let iv = AES256Crypter.randomIv()
-        let key = AES256Crypter.randomKey()
+        let salt = String.randomSalt()
+        let iv = String.randomIv()
+        let key = String.randomKey()
         let secretKey = try AES256Crypter.createKey(password: key.randomData(), salt: salt.randomData())
         let secretIv = iv.randomData()
         
@@ -135,34 +128,6 @@ extension AES256Crypter: Crypter {
     
     public func decrypt(_ encrypted: Data) throws -> Data {
         return try crypt(input: encrypted, operation: CCOperation(kCCDecrypt))
-    }
-    
-}
-
-extension AES256Crypter: Randomizer {
-    
-    static func randomIv() -> String {
-        return randomString(count: kCCBlockSizeAES128)
-    }
-    
-    static func randomSalt() -> String {
-        return randomString(count: 8)
-    }
-    
-    static func randomKey() -> String {
-        return randomString(count: 16)
-    }
-    
-    private static func randomString(count: Int) -> String {
-        var salt = String()
-        
-        while salt.count < count {
-            let index = Int.random(in: 0...(standardChars.count-1))
-            if index < standardChars.count - 1 {
-                salt.append(standardChars[index])
-            }
-        }
-        return salt
     }
     
 }

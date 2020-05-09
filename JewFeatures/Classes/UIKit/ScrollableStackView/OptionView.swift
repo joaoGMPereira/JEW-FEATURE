@@ -9,13 +9,13 @@
 import UIKit
 
 public enum OptionType {
-    case biometric
+    case biometric(isFaceID: Bool)
     case notification
     
     public func title() -> String {
         switch self {
-            case .biometric:
-                return JEWBiometrics.faceIDAvailable() ? JEWConstants.EnableBiometricViewController.enableFaceId.rawValue : JEWConstants.EnableBiometricViewController.enableTouchId.rawValue
+        case .biometric(let isFaceID):
+                return isFaceID ? JEWConstants.EnableBiometricViewController.enableFaceId.rawValue : JEWConstants.EnableBiometricViewController.enableTouchId.rawValue
             case .notification:
                 return "Habilitar Notificação"
         }

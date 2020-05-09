@@ -40,7 +40,7 @@ public class ReloadableDataSource: NSObject {
     func flatten(items: [ReloadableItem]) -> [ReloadableSection<CellItem>] {
         let reloadableItems = items
             .enumerated()
-            .map { ReloadableSection(key: $0.element.sectionTitle ?? AES256Crypter.randomKey(), value: $0.element.cellItems
+            .map { ReloadableSection(key: $0.element.sectionTitle ?? String.randomKey(), value: $0.element.cellItems
                 .enumerated()
                 .map { ReloadableCell(key: $0.element.id, value: $0.element, index: $0.offset)  }, index: $0.offset) }
         return reloadableItems

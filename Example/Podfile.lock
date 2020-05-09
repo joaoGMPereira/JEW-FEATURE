@@ -3,37 +3,28 @@ PODS:
   - CollectionKit (2.4.0):
     - CollectionKit/Core (= 2.4.0)
   - CollectionKit/Core (2.4.0)
-  - CryptoSwift (1.3.1)
-  - JewFeatures/CommonKit (0.0.3):
+  - JewFeatures/CommonKit (0.3.0)
+  - JewFeatures/UIKit (0.3.0):
     - Alamofire
     - CollectionKit
-    - CryptoSwift
+    - JewFeatures/CommonKit
     - lottie-ios
     - PodAsset
     - SkeletonView
-    - SwiftKeychainWrapper
-    - SwiftyRSA
   - lottie-ios (3.1.8)
   - PodAsset (1.0.0)
   - SkeletonView (1.8.7)
-  - SwiftKeychainWrapper (3.4.0)
-  - SwiftyRSA (1.5.0):
-    - SwiftyRSA/ObjC (= 1.5.0)
-  - SwiftyRSA/ObjC (1.5.0)
 
 DEPENDENCIES:
-  - JewFeatures/CommonKit (from `../`)
+  - JewFeatures/UIKit (from `../`)
 
 SPEC REPOS:
   trunk:
     - Alamofire
     - CollectionKit
-    - CryptoSwift
     - lottie-ios
     - PodAsset
     - SkeletonView
-    - SwiftKeychainWrapper
-    - SwiftyRSA
 
 EXTERNAL SOURCES:
   JewFeatures:
@@ -42,14 +33,11 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: 9d5c5f602928e512395b30950c5984eca840093c
   CollectionKit: 8f01e7629185bb81072c4aa734d105df5c2d1c8b
-  CryptoSwift: f12f037f6d0fcd6d48c96db0071b653de64e6c4d
-  JewFeatures: bec3fc231b96e90e3efe7c52f32b8ad8b9c6cd4f
+  JewFeatures: 32c99421b238b9b26e0ac93604d6289c990fc670
   lottie-ios: 48fac6be217c76937e36e340e2d09cf7b10b7f5f
   PodAsset: c2c2b20013c1edf698fea2bacba6e75a638537a2
   SkeletonView: ba5370f41280b2f0a76918bb143c1294232bb4f4
-  SwiftKeychainWrapper: 6fc49fbf7d4a6b0772917acb0e53a1639f6078d6
-  SwiftyRSA: 6e528fb1b1a87d5111c48081083b141d6d65f1cf
 
-PODFILE CHECKSUM: ff8ad0bb845f4b96feaed2672a7d95563833dcdc
+PODFILE CHECKSUM: 6563262f89aab401c7c19715ba493298e3ebaff5
 
 COCOAPODS: 1.8.4

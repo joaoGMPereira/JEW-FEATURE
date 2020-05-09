@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import CommonCrypto
 
 extension String {
     
@@ -48,4 +48,34 @@ extension String {
         let data = Data(self.utf8)
         return data
     }
+}
+
+
+extension String {
+    
+    static func randomIv() -> String {
+        return randomString(count: kCCBlockSizeAES128)
+    }
+    
+    static func randomSalt() -> String {
+        return randomString(count: 8)
+    }
+    
+    static func randomKey() -> String {
+        return randomString(count: 16)
+    }
+    
+    private static func randomString(count: Int) -> String {
+        let standardChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890"
+        var salt = String()
+        
+        while salt.count < count {
+            let index = Int.random(in: 0...(standardChars.count-1))
+            if index < standardChars.count - 1 {
+                salt.append(standardChars[index])
+            }
+        }
+        return salt
+    }
+    
 }
