@@ -40,6 +40,7 @@ Pod::Spec.new do |s|
     s.subspec "JEWKit" do |jewKit|
         jewKit.dependency "JewFeatures/ConnectionKit"
         jewKit.dependency "JewFeatures/UIKit"
+        jewKit.dependency "JewFeatures/SessionKit"
     end
     
     
@@ -49,6 +50,10 @@ Pod::Spec.new do |s|
     
     s.subspec "LoggerKit" do |loggerKit|
         loggerKit.source_files = "JewFeatures/Classes/LoggerKit/**/*"
+    end
+    
+    s.subspec "SessionKit" do |sessionKit|
+        sessionKit.source_files = "JewFeatures/Classes/SessionKit/**/*"
     end
     
     s.subspec "ConnectionKit" do |connectionKit|
