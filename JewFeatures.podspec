@@ -29,20 +29,21 @@ TODO: Add long description of the pod here.
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '11.0'
+  s.swift_version   = '5.0'
   s.resource_bundles = {
       'JewFeatures' => ['JewFeatures/Assets/*.json', 'JewFeatures/Assets/*']
   }
   
-  s.default_subspec = "Complete"
-  s.subspec "Complete" do |complete|
+  s.default_subspec = "JEWKit"
+  s.subspec "JEWKit" do |complete|
   complete.ios.deployment_target = '11.0'
   complete.source_files = 'JewFeatures/Classes/**/*'
   end
   
-#  
-#  s.subspec "Core" do |core|
-#  core.source_files = "myproject/core/*"
-#  end
+  
+  s.subspec "CommonKit" do |commonKit|
+  commonKit.source_files = "JewFeatures/Classes/CommonKit/**/*"
+  end
 #  s.subspec "Extensions" do |extensions|
 #  extensions.source_files = "myproject/optional/*"
 #  # MyOptionalModule depends on "Core" ^^

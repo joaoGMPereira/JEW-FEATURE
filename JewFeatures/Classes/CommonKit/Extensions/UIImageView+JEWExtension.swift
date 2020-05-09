@@ -18,9 +18,7 @@ public extension UIImageView {
                 let image = UIImage(data: data)
                 else {
                     DispatchQueue.main.async {
-                        let imageNotFound = UIImage(named: "noImage", in: JEWSession.bundle, compatibleWith: nil)
-                        // self.image = imageNotFound
-                        completionCallback(imageNotFound, url.absoluteString)
+                        completionCallback(nil, url.absoluteString)
                     }
                     return
                     
@@ -45,9 +43,7 @@ public extension UIImageView {
         
         guard let url = URL(string: link) else {
             DispatchQueue.main.async {
-                let imageNotFound = UIImage(named: "noImage", in: JEWSession.bundle, compatibleWith: nil)
-                //self.image = imageNotFound
-                completionCallback(imageNotFound, link)
+                completionCallback(nil, link)
             }
             return
         }

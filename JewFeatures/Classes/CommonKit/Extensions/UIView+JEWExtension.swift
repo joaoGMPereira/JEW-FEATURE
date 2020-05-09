@@ -67,7 +67,7 @@ public extension UIView {
         self.layer.addSublayer(shapeLayer)
     }
     
-    func setupPhotoView(withName name: String? = nil, withImage imageName: String? = nil, color: UIColor) -> UIView {
+    func setupPhotoView(withName name: String? = nil, withImage imageName: String? = nil, bundle: Bundle, color: UIColor) -> UIView {
         if let name = name {
             let nameLabel = UILabel(frame: .zero)
             nameLabel.textColor = color
@@ -78,7 +78,7 @@ public extension UIView {
         }
         
         if let imageName = imageName {
-            let nameImage = UIImage(named: imageName, in: JEWSession.bundle, compatibleWith: nil)
+            let nameImage = UIImage(named: imageName, in: bundle, compatibleWith: nil)
             let nameImageView = UIImageView(frame: .zero)
             nameImageView.image = nameImage
             nameImageView.tintColor = color

@@ -226,9 +226,7 @@ public extension String {
         
         guard let url = URL(string: self) else {
             DispatchQueue.main.async {
-                let imageNotFound = UIImage(named: "noImage", in: JEWSession.bundle, compatibleWith: nil)
-                //self.image = imageNotFound
-                completionCallback(imageNotFound, self)
+                completionCallback(nil, self)
             }
             return
         }
@@ -243,9 +241,7 @@ public extension String {
                 let image = UIImage(data: data)
                 else {
                     DispatchQueue.main.async {
-                        let imageNotFound = UIImage(named: "noImage", in: JEWSession.bundle, compatibleWith: nil)
-                        // self.image = imageNotFound
-                        completionCallback(imageNotFound, url.absoluteString)
+                        completionCallback(nil, url.absoluteString)
                     }
                     return
                     
