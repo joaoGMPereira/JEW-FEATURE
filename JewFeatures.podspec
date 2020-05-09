@@ -29,12 +29,26 @@ TODO: Add long description of the pod here.
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '11.0'
-
-  s.source_files = 'JewFeatures/Classes/**/*'
-  
   s.resource_bundles = {
       'JewFeatures' => ['JewFeatures/Assets/*.json', 'JewFeatures/Assets/*']
   }
+  
+  s.default_subspec = "Complete"
+  s.subspec "Complete" do |complete|
+  complete.ios.deployment_target = '11.0'
+  complete.source_files = 'JewFeatures/Classes/**/*'
+  end
+  
+#  
+#  s.subspec "Core" do |core|
+#  core.source_files = "myproject/core/*"
+#  end
+#  s.subspec "Extensions" do |extensions|
+#  extensions.source_files = "myproject/optional/*"
+#  # MyOptionalModule depends on "Core" ^^
+#  extensions.dependency "Core"
+#  end
+  
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
