@@ -134,8 +134,6 @@ public extension UIView {
         setupConstraints(parent: parent, top: padding, bottom: -padding, leading: padding, trailing: -padding, useSafeLayout: useSafeLayout)
     }
     
-    
-    
     func setupConstraints(parent: UIView, top: CGFloat? = nil, bottom: CGFloat? = nil, topBottom: CGFloat? = nil, bottomTop: CGFloat? = nil, leading: CGFloat? = nil, leadingTrailing: CGFloat? = nil, trailing: CGFloat? = nil, trailingLeading: CGFloat? = nil, centerX: CGFloat? = nil, centerY: CGFloat? = nil, width: CGFloat? = nil, height: CGFloat? = nil, useSafeLayout: Bool = false) {
         translatesAutoresizingMaskIntoConstraints = false
         

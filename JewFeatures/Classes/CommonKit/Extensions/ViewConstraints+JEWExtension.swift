@@ -209,7 +209,7 @@ extension UIView {
         }
         
         if let bottom = bottomGreaterThanOrEqualTo {
-            bottomAnchor.constraint(greaterThanOrEqualTo: bottom, constant: paddingBottom)
+            bottomAnchor.constraint(greaterThanOrEqualTo: bottom, constant: paddingBottom).isActive = true
         }
     }
     

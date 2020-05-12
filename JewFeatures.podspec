@@ -21,20 +21,16 @@ Pod::Spec.new do |s|
     TODO: Add long description of the pod here.
     DESC
     
-    s.homepage         = 'https://github.com/joaoGMPereira/JewFeatures'
+    s.homepage         = 'https://github.com/joaoGMPereira/JEW-FEATURE'
     # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
     s.license          = { :type => 'MIT', :file => 'LICENSE' }
     s.author           = { 'Joao Gabriel de Medeiros Pereira' => 'gah.mp1@gmail.com' }
-    s.source           = { :git => 'https://github.com/joaoGMPereira/JewFeatures.git', :tag => s.version.to_s }
+    s.source           = { :git => 'https://github.com/joaoGMPereira/JEW-FEATURE.git', :tag => s.version.to_s }
     # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
     
     
     s.ios.deployment_target = '11.0'
     s.swift_version   = '5.0'
-    
-    s.resource_bundles = {
-        'JewFeatures' => ['JewFeatures/Assets/*.json', 'JewFeatures/Assets/*']
-    }
     
     s.default_subspec = "JEWKit"
     s.subspec "JEWKit" do |jewKit|
@@ -54,6 +50,7 @@ Pod::Spec.new do |s|
     
     s.subspec "SessionKit" do |sessionKit|
         sessionKit.source_files = "JewFeatures/Classes/SessionKit/**/*"
+        sessionKit.dependency "JewFeatures/CommonKit"
     end
     
     s.subspec "ConnectionKit" do |connectionKit|
@@ -74,5 +71,8 @@ Pod::Spec.new do |s|
         uiKit.dependency 'PodAsset'
         uiKit.dependency 'CollectionKit'
         uiKit.dependency "JewFeatures/CommonKit"
+        uiKit.resource_bundles = {
+            'JewFeatures' => ['JewFeatures/Assets/*.json', 'JewFeatures/Assets/*']
+        }
     end
 end
