@@ -45,20 +45,28 @@ extension LoadingView: JEWCodeView {
     
     public func setupAdditionalConfiguration() {
         animatedView.horizontalMode = true
-        animatedView.startLocation = 0
-        animatedView.endLocation = 1
         animatedView.colors = [UIColor.white.cgColor, UIColor.JEWDefault().cgColor]
         animatedView.setup()
     }
     
-    public func start() {
-        heightConstraint.constant = height
-        layoutIfNeeded()
+    public func start(animated: Bool = false) {
         self.leadingConstraint.constant = 0
         self.trailingConstraint.constant = -frame.width
         self.layoutIfNeeded()
         self.shouldAnimate = true
+        changeHeight(animated: animated)
         moveRight()
+    }
+    
+    private func changeHeight(animated: Bool) {
+        self.heightConstraint.constant = height
+        if animated {
+            UIView.animate(withDuration: 0.5) {
+                self.layoutIfNeeded()
+            }
+            return
+        }
+        self.layoutIfNeeded()
     }
     
     public func stop() {
@@ -74,12 +82,11 @@ extension LoadingView: JEWCodeView {
     func moveRight() {
         if shouldAnimate {
             self.trailingConstraint.constant = 0
-            self.heightConstraint.constant = height
-            UIView.animate(withDuration: 5, delay: 0.1, options: .curveEaseInOut, animations: {
+            UIView.animate(withDuration: 1, delay: 0.1, options: .curveEaseInOut, animations: {
                 self.layoutIfNeeded()
             }) { (finished) in
                 self.leadingConstraint.constant = self.frame.width
-                UIView.animate(withDuration: 5, animations: {
+                UIView.animate(withDuration: 0.5, animations: {
                     self.layoutIfNeeded()
                 }) { _ in
                     self.leadingConstraint.constant = 0
