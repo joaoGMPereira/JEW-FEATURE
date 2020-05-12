@@ -32,10 +32,6 @@ Pod::Spec.new do |s|
     s.ios.deployment_target = '11.0'
     s.swift_version   = '5.0'
     
-    s.resource_bundles = {
-        'JewFeatures' => ['JewFeatures/Assets/*.json', 'JewFeatures/Assets/*']
-    }
-    
     s.default_subspec = "JEWKit"
     s.subspec "JEWKit" do |jewKit|
         jewKit.dependency "JewFeatures/ConnectionKit"
@@ -54,6 +50,7 @@ Pod::Spec.new do |s|
     
     s.subspec "SessionKit" do |sessionKit|
         sessionKit.source_files = "JewFeatures/Classes/SessionKit/**/*"
+        sessionKit.dependency "JewFeatures/CommonKit"
     end
     
     s.subspec "ConnectionKit" do |connectionKit|
@@ -74,5 +71,8 @@ Pod::Spec.new do |s|
         uiKit.dependency 'PodAsset'
         uiKit.dependency 'CollectionKit'
         uiKit.dependency "JewFeatures/CommonKit"
+        uiKit.resource_bundles = {
+            'JewFeatures' => ['JewFeatures/Assets/*.json', 'JewFeatures/Assets/*']
+        }
     end
 end

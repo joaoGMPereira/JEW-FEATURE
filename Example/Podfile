@@ -1,7 +1,7 @@
 use_frameworks!
 
 target 'JewFeatures_Example' do
-  pod 'JewFeatures/SessionKit', :path => '../'
+  pod 'JewFeatures', :path => '../'
 end
 
 post_install do |installer|
