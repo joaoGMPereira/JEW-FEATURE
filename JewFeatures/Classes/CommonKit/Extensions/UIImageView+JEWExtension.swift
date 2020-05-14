@@ -31,7 +31,9 @@ public extension UIImageView {
         }.resume()
     }
     func downloaded(from link: String, contentMode mode: UIView.ContentMode = .scaleAspectFit, completionCallback: @escaping  ((UIImage?, String) -> ())) {
-        self.contentMode = mode
+        DispatchQueue.main.async {
+            self.contentMode = mode
+        }
         
         if let cacheImage = imageCache.object(forKey: link as NSString)  {
             DispatchQueue.main.async {

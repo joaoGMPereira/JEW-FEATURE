@@ -35,6 +35,17 @@ public extension UIView {
         return nib.instantiate(withOwner: withOwner, options: options as? [UINib.OptionsKey: Any]).first as? T
     }
     
+    static func addColorfulViews(quantity: Int) -> [UIView] {
+        var viewstest = [UIView]()
+        for _ in 0...quantity {
+            let view = UIView.init(frame: .zero)
+            view.setupConstraints(parent: view, height: 50)
+            view.backgroundColor = .JEWPallete(red: CGFloat.random(in: 0...255), green: CGFloat.random(in: 0...255), blue: CGFloat.random(in: 0...255))
+            viewstest.append(view)
+        }
+        return viewstest
+    }
+    
     /// Função para remvover o refresh control da view.
     func removeRefreshControl() {
         for case let refresh as UIRefreshControl in subviews {

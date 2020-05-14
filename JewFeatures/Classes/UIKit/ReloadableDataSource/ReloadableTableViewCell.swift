@@ -11,6 +11,7 @@ public class ReloadableTableViewCell: UITableViewCell, ReloadableCellProtocol, R
 
     public var item: CellItem?
     var datasource = ReloadableDataSource()
+    weak var delegate: ReloadableDelegate?
     
     @IBOutlet weak var collectionView: UICollectionView!
     public func set(item: CellItem?, row: Int) {
@@ -20,7 +21,9 @@ public class ReloadableTableViewCell: UITableViewCell, ReloadableCellProtocol, R
             collectionView.dataSource = datasource
             collectionView.delegate = datasource
             datasource.setup(newItems: [reloadableSection], in: collectionView)
-            datasource.delegate = reloadableSection.delegate ?? self
+            datasource.delegate = self
+            delegate = reloadableSection.delegate
+            
         }
         if let flow = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flow.estimatedItemSize = CGSize.init(width: 1, height: 1)
@@ -53,11 +56,10 @@ public class ReloadableTableViewCell: UITableViewCell, ReloadableCellProtocol, R
                 self.collectionView.layoutIfNeeded()
             })
         }
-        
     }
     
     public func didSelected(indexpath: IndexPath, cell: ReloadableCellProtocol?) {
-        
+        delegate?.didSelected(indexpath: indexpath, cell: cell)
     }
     
     public func didAction(editItem: ReloadableEditItem, indexPath: IndexPath, cell: UITableViewCell?) {
