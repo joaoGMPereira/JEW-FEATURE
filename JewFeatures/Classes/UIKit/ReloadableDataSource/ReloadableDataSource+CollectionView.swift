@@ -53,7 +53,9 @@ extension ReloadableDataSource: UICollectionViewDataSource, UICollectionViewDele
         let item = items[indexPath.section]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: item.cellType, for: indexPath) as? ReloadableCellProtocol
         
-        cell?.set(item: item.cellItems[indexPath.row], row: indexPath.row)
+        if item.cellItems.indices.contains(indexPath.row) {
+            cell?.set(item: item.cellItems[indexPath.row], row: indexPath.row)
+        }
         if let cell = cell as? UICollectionViewCell {
             return cell
         }
@@ -65,15 +67,5 @@ extension ReloadableDataSource: UICollectionViewDataSource, UICollectionViewDele
         cell?.didSelected()
         delegate?.didSelected(indexpath: indexPath, cell: cell)
         
-    }
-    
-    
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let height = scrollView.frame.size.height
-        let contentYoffset = scrollView.contentOffset.y
-        let distanceFromBottom = scrollView.contentSize.height - contentYoffset
-        if distanceFromBottom < height {
-            delegate?.reachBottomEnd()
-        }
     }
 }

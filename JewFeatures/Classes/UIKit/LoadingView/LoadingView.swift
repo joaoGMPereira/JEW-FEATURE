@@ -82,7 +82,7 @@ extension LoadingView: JEWCodeView {
     func moveRight() {
         if shouldAnimate {
             self.trailingConstraint.constant = 0
-            UIView.animate(withDuration: 1, delay: 0.1, options: .curveEaseInOut, animations: {
+            UIView.animate(withDuration: 1, delay: 0, options: .curveEaseInOut, animations: {
                 self.layoutIfNeeded()
             }) { (finished) in
                 self.leadingConstraint.constant = self.frame.width

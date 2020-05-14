@@ -72,7 +72,7 @@ public extension String {
     
     func getAbbreviationName() -> String {
         var abbreviationName = String()
-
+        
         let names = self.split(separator: " ")
         if let firstLetter = names.first?.first {
             abbreviationName.append(firstLetter)
@@ -218,7 +218,7 @@ public extension String {
         
         if let cacheImage = imageCache.object(forKey: self as NSString)  {
             DispatchQueue.main.async {
-               // self.image = cacheImage
+                // self.image = cacheImage
                 completionCallback(cacheImage, self)
             }
             return
@@ -247,22 +247,37 @@ public extension String {
                     
             }
             DispatchQueue.main.async() {
-               // self.image = image
+                // self.image = image
                 imageCache.setObject(image, forKey: url.absoluteString as NSString)
                 completionCallback(image, url.absoluteString)
             }
         }.resume()
     }
     
+    func checkIfImageExistsFileManager() -> Bool {
+        
+        let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
+        let nsUserDomainMask = FileManager.SearchPathDomainMask.userDomainMask
+        let paths = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+        if let dirPath = paths.first
+        {
+            let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent(self)
+            let image    = UIImage(contentsOfFile: imageURL.path)
+            return image != nil
+        }
+        return false
+    }
+    
+    
     func getImageFromFileManager(completion: @escaping ((UIImage?) -> ())) {
         
         let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
-        let nsUserDomainMask    = FileManager.SearchPathDomainMask.userDomainMask
-        let paths               = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
-        if let dirPath          = paths.first
+        let nsUserDomainMask = FileManager.SearchPathDomainMask.userDomainMask
+        let paths = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
+        if let dirPath = paths.first
         {
-           let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent(self)
-           let image    = UIImage(contentsOfFile: imageURL.path)
+            let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent(self)
+            let image    = UIImage(contentsOfFile: imageURL.path)
             DispatchQueue.main.async {
                 completion(image)
             }

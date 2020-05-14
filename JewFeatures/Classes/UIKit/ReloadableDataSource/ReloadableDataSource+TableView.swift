@@ -110,23 +110,4 @@ extension ReloadableDataSource: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         
     }
-    
-    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if let tableView = scrollView as? UITableView, let section = tableView.indexPathsForVisibleRows?.first {
-            delegate?.top(section: section)
-        }
-        let height = scrollView.frame.size.height * 2
-        let contentoffsetY = scrollView.contentOffset.y
-        let distanceFromBottom = scrollView.contentSize.height - contentoffsetY
-        
-        if distanceFromBottom < height {
-            delegate?.reachBottomEnd()
-        }
-    }
-    
-    //    public func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-    //        if let tableView = scrollView as? UITableView, let section = tableView.indexPathsForVisibleRows?.first {
-    //            delegate?.top(section: section)
-    //        }
-    //    }
 }

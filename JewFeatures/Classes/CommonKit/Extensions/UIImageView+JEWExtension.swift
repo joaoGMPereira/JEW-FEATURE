@@ -35,7 +35,6 @@ public extension UIImageView {
         
         if let cacheImage = imageCache.object(forKey: link as NSString)  {
             DispatchQueue.main.async {
-               // self.image = cacheImage
                 completionCallback(cacheImage, link)
             }
             return
@@ -48,21 +47,5 @@ public extension UIImageView {
             return
         }
         downloaded(from: url, contentMode: mode, completionCallback: completionCallback)
-    }
-    
-    func getImageFromFileManager(urlString: String) {
-        
-        let nsDocumentDirectory = FileManager.SearchPathDirectory.documentDirectory
-        let nsUserDomainMask    = FileManager.SearchPathDomainMask.userDomainMask
-        let paths               = NSSearchPathForDirectoriesInDomains(nsDocumentDirectory, nsUserDomainMask, true)
-        if let dirPath          = paths.first
-        {
-           let imageURL = URL(fileURLWithPath: dirPath).appendingPathComponent(urlString)
-           let image    = UIImage(contentsOfFile: imageURL.path)
-            DispatchQueue.main.async {
-                self.image = image
-            }
-           // Do whatever you want with the image
-        }
     }
 }

@@ -7,9 +7,9 @@
 
 import Foundation
 
-public struct JEWLogger {
-    var isDev = false
-    static let logger = JEWLogger()
+public class JEWLogger {
+    public var isDev = false
+    public static let logger = JEWLogger()
     public static func info(_ data: Any, customInfo: String = "ℹ") {
         if JEWLogger.logger.isDev {
                 print("\n\n-----------\(customInfo)-----------\n\n\(data)\n\n-----------\(customInfo)-----------\n\n")

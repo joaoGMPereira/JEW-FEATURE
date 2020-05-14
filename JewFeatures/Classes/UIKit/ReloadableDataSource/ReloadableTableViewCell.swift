@@ -18,8 +18,9 @@ public class ReloadableTableViewCell: UITableViewCell, ReloadableCellProtocol, R
         self.item = item
         if let reloadableSection = item?.object as? ReloadableItem {
             collectionView.dataSource = datasource
+            collectionView.delegate = datasource
             datasource.setup(newItems: [reloadableSection], in: collectionView)
-            datasource.delegate = self
+            datasource.delegate = reloadableSection.delegate ?? self
         }
         if let flow = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flow.estimatedItemSize = CGSize.init(width: 1, height: 1)

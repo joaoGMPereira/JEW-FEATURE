@@ -11,6 +11,7 @@ public protocol ReloadableItem {
     var cellItems: [CellItem] { get }
     var cellType: String { get }
     var height: CGFloat? { get }
+    var delegate: ReloadableDelegate? { get set }
 }
 
 public struct CellItem: Equatable {
