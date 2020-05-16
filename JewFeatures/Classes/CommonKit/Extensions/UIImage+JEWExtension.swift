@@ -53,8 +53,8 @@ public extension UIImage {
     }
     
     
-    func compressTo(_ expectedSizeInMb:Int) -> Data? {
-        let sizeInBytes = expectedSizeInMb * 1024 * 1024
+    func compressTo(_ expectedSizeInMb:Float) -> Data? {
+        let sizeInBytes = Int(expectedSizeInMb * 1024 * 1024)
         var needCompress:Bool = true
         var imgData:Data?
         var compressingValue:CGFloat = 1.0

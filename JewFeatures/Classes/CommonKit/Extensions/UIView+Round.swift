@@ -10,35 +10,41 @@ import UIKit
 
 public extension UIView {
     
-    func addGradient(colors: [CGColor], startPoint: CGPoint = CGPoint(x: 0, y: 0), endPoint: CGPoint = CGPoint(x: 1, y: 1), angle:(Double)? = nil, frame: CGRect? = nil, cornerRadius: CGFloat = 0) {
-           removeAllLayers()
-           let gradient = CAGradientLayer()
-           
-           if let angle = angle {
-               let StartXOffset = 0.75
-               let EndXOffset = 0.25
-               let EndYOffset = 0.5
-               let angleNormalized = angle/360.0
-               let startX = pow(sin((2 * .pi * ((angleNormalized + StartXOffset) / 2.0))), 2.0)
-               let startY = pow(sin(2 * .pi * (angleNormalized/2)), 2.0)
-               let endX = pow(sin(2 * .pi * (angleNormalized + EndXOffset)), 2)
-               let endY = pow(sin(2 * .pi * (angleNormalized + EndYOffset)), 2)
-               gradient.startPoint = CGPoint(x: startX, y: startY)
-               gradient.endPoint = CGPoint(x: endX, y: endY)
-           } else {
-               gradient.startPoint = startPoint
-               gradient.endPoint = endPoint
-           }
-           gradient.colors = colors
-           gradient.frame = self.bounds
-           gradient.cornerRadius = cornerRadius
-           if let frame = frame {
-               gradient.frame = frame
-           }
-           
-           self.layer.insertSublayer(gradient, at: 0)
-       }
-       
+    func addGradient(colors: [CGColor], startPoint: CGPoint = CGPoint(x: 0, y: 0), endPoint: CGPoint = CGPoint(x: 1, y: 1), angle:(Double)? = nil, frame: CGRect? = nil, cornerRadius: CGFloat = 0, shadow: Bool = false) {
+        removeAllLayers()
+        let gradient = CAGradientLayer()
+        
+        if let angle = angle {
+            let StartXOffset = 0.75
+            let EndXOffset = 0.25
+            let EndYOffset = 0.5
+            let angleNormalized = angle/360.0
+            let startX = pow(sin((2 * .pi * ((angleNormalized + StartXOffset) / 2.0))), 2.0)
+            let startY = pow(sin(2 * .pi * (angleNormalized/2)), 2.0)
+            let endX = pow(sin(2 * .pi * (angleNormalized + EndXOffset)), 2)
+            let endY = pow(sin(2 * .pi * (angleNormalized + EndYOffset)), 2)
+            gradient.startPoint = CGPoint(x: startX, y: startY)
+            gradient.endPoint = CGPoint(x: endX, y: endY)
+        } else {
+            gradient.startPoint = startPoint
+            gradient.endPoint = endPoint
+        }
+        gradient.colors = colors
+        gradient.frame = self.bounds
+        gradient.cornerRadius = cornerRadius
+        if let frame = frame {
+            gradient.frame = frame
+        }
+        if shadow {
+            layer.shadowColor = UIColor.darkGray.cgColor
+            layer.shadowOffset = CGSize(width: 1.0, height: 1.0)
+            layer.shadowOpacity = 0.4
+            layer.shadowRadius = 1
+            layer.masksToBounds = false
+        }
+        
+        self.layer.insertSublayer(gradient, at: 0)
+    }
     
     func addBackground(color: UIColor, cornerRadius: CGFloat = 4) {
         let subView = UIView(frame: bounds)

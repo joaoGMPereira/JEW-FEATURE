@@ -102,10 +102,8 @@ public extension UIView {
     func isAnimated(isHidden: Bool, finalAlpha: CGFloat = 1, duration: Double = 0.3, completion: (() -> ())? = nil) {
         
         UIView.animate(withDuration: duration, animations: { [weak self] in
-            DispatchQueue.main.async {
-                self?.isHidden = isHidden
-                self?.alpha = isHidden ? 0 : finalAlpha
-            }
+            self?.isHidden = isHidden
+            self?.alpha = isHidden ? 0 : finalAlpha
         }) { (finished) in
             if let completion = completion {
                 completion()
@@ -197,17 +195,17 @@ public extension UIView {
     
     // retrieves all constraints that mention the view
     func getAllConstraints() -> [NSLayoutConstraint] {
-
+        
         // array will contain self and all superviews
         var views = [self]
-
+        
         // get all superviews
         var view = self
         while let superview = view.superview {
             views.append(superview)
             view = superview
         }
-
+        
         // transform views to constraints and filter only those
         // constraints that include the view itself
         return views.flatMap({ $0.constraints }).filter { constraint in
@@ -224,22 +222,22 @@ public extension UIView {
     func getWidthConstraints() -> [NSLayoutConstraint] {
         return getAllConstraints().filter( {
             ($0.firstAttribute == .width && $0.firstItem as? UIView == self) ||
-            ($0.secondAttribute == .width && $0.secondItem as? UIView == self)
+                ($0.secondAttribute == .width && $0.secondItem as? UIView == self)
         } )
     }
-
+    
     // Example 2: Change width constraint(s) of this view to a specific value
     // Make sure that we are looking at an equality constraint (not inequality)
     // and that the constraint is not against another view
     func changeWidth(to value: CGFloat) {
-
+        
         getAllConstraints().filter( {
             $0.firstAttribute == .width &&
                 $0.relation == .equal &&
                 $0.secondAttribute == .notAnAttribute
         } ).forEach( {$0.constant = value })
     }
-
+    
     // Example 3: Change leading constraints only where this view is
     // mentioned first. We could also filter leadingMargin, left, or leftMargin
     func changeLeading(to value: CGFloat) {

@@ -8,33 +8,34 @@
 import UIKit
 
 public extension UILabel {
-    static func createLabel(text: String, color: UIColor, font: UIFont) -> UILabel {
+    static func createLabel(text: String, color: UIColor, font: UIFont, textAlignment: NSTextAlignment = .center) -> UILabel {
         let label = UILabel(frame: .zero)
         label.textAlignment = .center
         label.numberOfLines = 2
         label.text = text
+        label.textAlignment = textAlignment
         label.textColor = color
         label.font = font
-        label.sizeToFit()
+
         return label
     }
     
-    static func createLabel(attributedText: NSAttributedString) -> UILabel {
+    static func createLabel(attributedText: NSAttributedString, textAlignment: NSTextAlignment = .center) -> UILabel {
         let label = UILabel(frame: .zero)
         label.textAlignment = .center
         label.numberOfLines = 2
         label.attributedText = attributedText
-        label.sizeToFit()
+        label.textAlignment = textAlignment
         return label
     }
     
-    static func createLabel(priceWithDiscount:String, price: String) -> UILabel {
+    static func createLabel(priceWithDiscount:String, price: String, textAlignment: NSTextAlignment = .center) -> UILabel {
         let mutableAttributedString = NSMutableAttributedString()
         let priceWithDiscountAttributedString = NSAttributedString.init(string: "\(priceWithDiscount) ", attributes: [NSAttributedString.Key.font : UIFont.JEW16Bold(), NSAttributedString.Key.foregroundColor : UIColor.JEWBlack()])
         let priceAttributedString = NSAttributedString.init(string: price, attributes: [NSAttributedString.Key.font : UIFont.JEW16(), NSAttributedString.Key.foregroundColor : UIColor.JEWLightBlack(), NSAttributedString.Key.strikethroughStyle : NSUnderlineStyle.single.rawValue])
         mutableAttributedString.append(priceWithDiscountAttributedString)
         mutableAttributedString.append(priceAttributedString)
         
-        return createLabel(attributedText: mutableAttributedString)
+        return createLabel(attributedText: mutableAttributedString, textAlignment: textAlignment)
     }
 }

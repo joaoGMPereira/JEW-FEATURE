@@ -48,6 +48,15 @@ public class JEWPopupMessage: UIView {
     var delegate: JEWPopupMessageDelegate?
     
     
+    public init() {
+        if let topViewController =  UIViewController.top, topViewController.className != self.parentViewController.className  {
+            hasAddedSubview = false
+            self.parentViewController = topViewController
+        }
+        popupWidth = popupLayout.width()
+        super.init(frame: CGRect.init(x: (parentViewController.view.frame.width - popupLayout.width())/2, y: popupLayout.hidePosition(popupHeight: popupHeight), width: popupWidth, height: popupHeight))
+        
+    }
     
     public init(parentViewController:UIViewController) {
         if parentViewController.className != self.parentViewController.className {
@@ -75,6 +84,11 @@ public class JEWPopupMessage: UIView {
     }
     
     public func show(withTextMessage message:String, title:String = "", popupType: JEWPopupMessageType = .error, shouldHideAutomatically: Bool = true, sender: UIView? = nil) {
+        setup(withTextMessage: message, title: title, popupType: popupType, shouldHideAutomatically: shouldHideAutomatically)
+        show()
+    }
+    
+    public func setup(withTextMessage message:String, title:String = "", popupType: JEWPopupMessageType = .error, shouldHideAutomatically: Bool = true) {
         if let shadowLayer = self.shadowLayer {
             shadowLayer.removeFromSuperlayer()
         }
@@ -87,13 +101,16 @@ public class JEWPopupMessage: UIView {
         setupMessageAttributed(withTextMessage: message, title: title)
         setupUI()
         calculateHeightOfPopup()
+    }
+    
+    public func show() {
         if hasAddedSubview == false {
             UIApplication.shared.keyWindow?.addSubview(self)
             hasAddedSubview = true
             setupView()
             
         }
-        showPopup(sender: sender)
+        showPopup()
     }
     
     private func setupMessageAttributed(withTextMessage message:String, title:String) {
@@ -134,17 +151,12 @@ public class JEWPopupMessage: UIView {
         }
     }
     
-    private func showPopup(sender: UIView?) {
+    private func showPopup() {
         self.alpha = 1
         heightLabelConstraint.constant = self.popupHeight * 0.95
         UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.6, options: .curveEaseOut, animations: {
             self.frame.size.height = self.popupHeight
             self.frame.origin.y = self.popupLayout.showPosition(popupHeight: self.popupHeight)
-            self.sender = sender
-            if let sender = sender {
-                self.frame.origin.y = sender.superview?.convert(CGPoint.init(x: 0, y: sender.frame.minY), to: self.superview).y ?? self.popupLayout.showPosition()
-            }
-            
         }) { (finished) in
             if self.shouldHideAutomatically {
                 self.timerToHide = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(JEWPopupMessage.hide), userInfo: nil, repeats: false)
@@ -196,4 +208,23 @@ extension JEWPopupMessage: JEWCodeView {
         textMessageLabel.numberOfLines = 0
     }
     
+}
+
+
+public class JEWPopupMessageFactory: JEWPopupMessageDelegate {
+    public static let factory = JEWPopupMessageFactory()
+    public var popups = [JEWPopupMessage]()
+    
+    public func showPopups() {
+        if let popup = popups.first {
+            popup.delegate = self
+            popup.show()
+        }
+    }
+    
+    
+    public func didFinishDismissPopupMessage(withPopupMessage popupMessage: JEWPopupMessage) {
+        JEWPopupMessageFactory.factory.popups.removeFirst()
+        showPopups()
+    }
 }
