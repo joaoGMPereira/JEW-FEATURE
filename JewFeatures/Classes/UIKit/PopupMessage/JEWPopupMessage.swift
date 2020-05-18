@@ -209,22 +209,3 @@ extension JEWPopupMessage: JEWCodeView {
     }
     
 }
-
-
-public class JEWPopupMessageFactory: JEWPopupMessageDelegate {
-    public static let factory = JEWPopupMessageFactory()
-    public var popups = [JEWPopupMessage]()
-    
-    public func showPopups() {
-        if let popup = popups.first {
-            popup.delegate = self
-            popup.show()
-        }
-    }
-    
-    
-    public func didFinishDismissPopupMessage(withPopupMessage popupMessage: JEWPopupMessage) {
-        JEWPopupMessageFactory.factory.popups.removeFirst()
-        showPopups()
-    }
-}
