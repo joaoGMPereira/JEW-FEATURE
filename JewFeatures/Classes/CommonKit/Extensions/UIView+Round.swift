@@ -97,12 +97,18 @@ public extension UIView {
     ///   - borderWidth: Tamanho da borda da view
     func round(corners: UIRectCorner = .allCorners, radius: CGFloat, backgroundColor: UIColor = .clear, borderColor: UIColor = .clear, borderWidth: CGFloat = 0, withShadow shadow: Bool = false) {
         removeAllLayers()
-        var mask = roundExtension(corners: corners, radius: radius, backgroundColor: backgroundColor)
-        if shadow {
-            mask = addShadow(mask: mask)
-            
-        }
-        self.layer.insertSublayer(mask, at: 0)
+        
+        let mask = CAShapeLayer()
+        
+        mask.path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius)).cgPath
+        mask.fillColor = backgroundColor.cgColor
+        mask.shadowPath = mask.path
+        mask.shadowColor = shadow ? UIColor.darkGray.cgColor : UIColor.clear.cgColor
+        mask.shadowOffset = CGSize(width: 1.0, height: 1.0)
+        mask.shadowOpacity = 0.4
+        mask.shadowRadius = 1
+        
+        layer.insertSublayer(mask, at: 0)
         if borderWidth > 0 {
             addBorder(mask: mask, borderColor: borderColor, borderWidth: borderWidth)
         }
@@ -129,19 +135,6 @@ public extension UIView {
         
     }
     
-    // MARK: - Private Methods
-    
-    private func roundExtension(corners: UIRectCorner, radius: CGFloat, backgroundColor: UIColor = .clear) -> CAShapeLayer {
-        let path = UIBezierPath(roundedRect: bounds,
-                                byRoundingCorners: corners,
-                                cornerRadii: CGSize(width: radius, height: radius))
-        let mask = CAShapeLayer()
-        mask.bounds = frame
-        mask.position = center
-        mask.path = path.cgPath
-        mask.fillColor = backgroundColor.cgColor
-        return mask
-    }
     
     private func removeAllLayers() {
         layer.sublayers?.removeAll(where: { (layer) -> Bool in
@@ -158,14 +151,5 @@ public extension UIView {
         borderLayer.frame = bounds
         layer.addSublayer(borderLayer)
     }
-    
-    private func addShadow(mask: CAShapeLayer) -> CAShapeLayer {
-        let shadowLayer = mask
-        shadowLayer.shadowColor = UIColor.darkGray.cgColor
-        shadowLayer.shadowPath = shadowLayer.path
-        shadowLayer.shadowOffset = CGSize(width: 1.0, height: 1.0)
-        shadowLayer.shadowOpacity = 0.4
-        shadowLayer.shadowRadius = 1
-        return shadowLayer
-    }
+
 }
