@@ -1,13 +1,13 @@
 //
-//  LifeSupportToolTip.swift
-//  LifeSupport
+//  JEWToolTip.swift
+//  JEW
 //
 //  Created by Joao Gabriel Medeiros Perei on 09/02/20.
 //
 
 import Foundation
 
-enum LifeSupportTooltipPosition {
+public enum JEWTooltipPosition {
     case topRight
     case topLeft
     case bottomRight
@@ -20,45 +20,53 @@ enum LifeSupportTooltipPosition {
     case centerBottom
 }
 
-struct LifeSupportTooltipConfig {
-    var title: String = ""
-    var text: String = ""
-    var titleColor: UIColor = .white
-    var textColor: UIColor = UIColor.white.withAlphaComponent(0.6)
-    var titleFont: UIFont = .systemFont(ofSize: 13)
-    var textFont: UIFont = .systemFont(ofSize: 12)
-    var backgroundColor: UIColor = UIColor.init(red: 82/255, green: 34/255, blue: 107/255, alpha: 1)
-    var cornerRadius: CGFloat = 5
-    var animated: Bool = true
-    var position: LifeSupportTooltipPosition = .topRight
-    var offsetArrowX: CGFloat = 8
-    var offsetArrowY: CGFloat = 8
-    var arrowHeight: CGFloat = 6
-    var lineBreakMode: NSLineBreakMode = NSLineBreakMode.byWordWrapping
-    var padding: UIEdgeInsets = UIEdgeInsets.init(top: 12, left: 12, bottom: 12, right: 12)
-    var marginInset: UIEdgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
+public struct JEWTooltipConfig {
+    public var customView: UIView?
+    public var height: CGFloat?
+    public var title: String = String()
+    public var text: String = String()
+    public var titleColor: UIColor = .white
+    public var textColor: UIColor = UIColor.white.withAlphaComponent(0.6)
+    public var titleFont: UIFont = .systemFont(ofSize: 13)
+    public var textFont: UIFont = .systemFont(ofSize: 12)
+    public var backgroundColor: UIColor = UIColor.init(red: 82/255, green: 34/255, blue: 107/255, alpha: 1)
+    public var cornerRadius: CGFloat = 5
+    public var shadow: Bool = false
+    public var animated: Bool = true
+    public var position: JEWTooltipPosition = .topRight
+    public var offsetArrowX: CGFloat = 8
+    public var offsetArrowY: CGFloat = 8
+    public var arrowHeight: CGFloat = 6
+    public var lineBreakMode: NSLineBreakMode = NSLineBreakMode.byWordWrapping
+    public var padding: UIEdgeInsets = UIEdgeInsets.init(top: 12, left: 12, bottom: 12, right: 12)
+    public var marginInset: UIEdgeInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
+    
+    public init() {
+        
+    }
 
 }
 
-typealias LifeSupportTooltipCompletion = ((_ tooltip: UIControl) -> ())
+public typealias JEWTooltipCompletion = ((_ tooltip: UIControl) -> ())
 
-class LifeSupportTooltip: NSObject, LifeSupportTooltipProtocol {
+public class JEWTooltip: NSObject, JEWTooltipProtocol {
     
-    var tooltipView: UIControl? = nil
+    public var tooltipView: UIControl? = nil
+    private var customView: UIView? = nil
     private var messageLabel: UILabel? = nil
     private var arrowView: UIView? = nil
     private var anchorView: UIView? = nil
     private var superview: UIView? = nil
-    private var config: LifeSupportTooltipConfig? = nil
-    private var showCompletion: LifeSupportTooltipCompletion? = nil
-    private var dismissCompletion: LifeSupportTooltipCompletion? = nil
+    private var config: JEWTooltipConfig? = nil
+    private var showCompletion: JEWTooltipCompletion? = nil
+    private var dismissCompletion: JEWTooltipCompletion? = nil
     
     
-    func show(withSuperview superview: UIView, anchorView: UIView, config: LifeSupportTooltipConfig) {
+    public func show(withSuperview superview: UIView, anchorView: UIView, config: JEWTooltipConfig) {
         show(withSuperview: superview, anchorView: anchorView, config: config, showCompletion: nil, dismissCompletion: nil)
     }
     
-    func show(withSuperview superview: UIView, anchorView: UIView, config: LifeSupportTooltipConfig, showCompletion: LifeSupportTooltipCompletion?, dismissCompletion: LifeSupportTooltipCompletion?) {
+    public func show(withSuperview superview: UIView, anchorView: UIView, config: JEWTooltipConfig, showCompletion: JEWTooltipCompletion?, dismissCompletion: JEWTooltipCompletion?) {
         self.showCompletion = showCompletion
         self.dismissCompletion = dismissCompletion
         self.config = config
@@ -68,30 +76,43 @@ class LifeSupportTooltip: NSObject, LifeSupportTooltipProtocol {
         self.show(animated: config.animated)
     }
     
-    func dismiss(animated: Bool) {
+    public func dismiss(animated: Bool) {
         dismissTooltip(animated: animated)
     }
 }
 
-extension LifeSupportTooltip: LifeSupportTooltipSetupProtocol {
-    func show(animated: Bool) {
+extension JEWTooltip: JEWTooltipSetupProtocol {
+    public func show(animated: Bool) {
         setup()
         showTooltip(animated: animated)
     }
     
-    func setup() {
+    public func setup() {
         let tooltipView = setupTooltipView(withFrame: self.tooltipRect())
         self.superview?.addSubview(tooltipView)
         self.tooltipView = tooltipView
-        let messageLabel = setupMessageLabel(withFrame: self.messageRect())
-        tooltipView.addSubview(messageLabel)
-        self.messageLabel = messageLabel
+        setupContentView(tooltipView: tooltipView)
         let arrowView = self.arrowView(withFrame: self.arrowViewRect())
         tooltipView.insertSubview(arrowView, at: 0)
         self.arrowView = arrowView
+        tooltipView.addTarget(self, action: #selector(tapDismissToolTip), for: .touchUpInside)
+    
     }
     
-    func setupTooltipView(withFrame frame: CGRect) -> UIControl {
+    func setupContentView(tooltipView: UIControl) {
+        guard let customView = config?.customView else {
+            let messageLabel = setupMessageLabel(withFrame: self.contentRect())
+            tooltipView.addSubview(messageLabel)
+            self.messageLabel = messageLabel
+            return
+        }
+        customView.frame = self.contentRect()
+        tooltipView.addSubview(customView)
+        self.customView = customView
+        
+    }
+    
+    public func setupTooltipView(withFrame frame: CGRect) -> UIControl {
         guard let config = config else {
             return UIControl(frame: .zero)
         }
@@ -101,13 +122,12 @@ extension LifeSupportTooltip: LifeSupportTooltipSetupProtocol {
     }
     
     
-    func configure(withTooltipView tooltipView: UIControl, config: LifeSupportTooltipConfig) {
+    public func configure(withTooltipView tooltipView: UIControl, config: JEWTooltipConfig) {
         tooltipView.translatesAutoresizingMaskIntoConstraints = false
-        tooltipView.backgroundColor = config.backgroundColor
-        tooltipView.layer.cornerRadius = config.cornerRadius
+        tooltipView.round(radius: config.cornerRadius, backgroundColor: config.backgroundColor, withShadow: config.shadow)
     }
     
-    func setupMessageLabel(withFrame frame: CGRect) -> UILabel {
+    public func setupMessageLabel(withFrame frame: CGRect) -> UILabel {
         guard let config = config else {
             return UILabel.init(frame: .zero)
         }
@@ -116,7 +136,7 @@ extension LifeSupportTooltip: LifeSupportTooltipSetupProtocol {
         return messageLabel
     }
     
-    func configure(withMessageLabel messageLabel: UILabel, config: LifeSupportTooltipConfig) {
+    public func configure(withMessageLabel messageLabel: UILabel, config: JEWTooltipConfig) {
         messageLabel.numberOfLines = 0
         messageLabel.backgroundColor = UIColor.clear
         messageLabel.adjustsFontSizeToFitWidth = true
@@ -125,37 +145,41 @@ extension LifeSupportTooltip: LifeSupportTooltipSetupProtocol {
         messageLabel.minimumScaleFactor = 0.9
     }
     
-    func arrowView(withFrame frame: CGRect) -> UIView {
+    public func arrowView(withFrame frame: CGRect) -> UIView {
         let arrowView = UIView(frame: frame)
         configure(withArrowView: arrowView)
         return arrowView
     }
     
-    func configure(withArrowView arrowView: UIView) {
+    public func configure(withArrowView arrowView: UIView) {
         arrowView.backgroundColor = self.config?.backgroundColor
         arrowView.transform = CGAffineTransform(rotationAngle: CGFloat(-45.0 * .pi/180.0))
     }
+    
+    @objc func tapDismissToolTip() {
+        self.dismiss(animated: true)
+    }
 }
 
-extension LifeSupportTooltip: LifeSupportTooltipConfigProtocol {
-    func changeConfig(config: LifeSupportTooltipConfig) {
+extension JEWTooltip: JEWTooltipConfigProtocol {
+    public func changeConfig(config: JEWTooltipConfig) {
         self.config = config
         if (tooltipView != nil) {
             reloadTooltip()
         }
     }
     
-    func currentConfiguration() -> LifeSupportTooltipConfig? {
+    public func currentConfiguration() -> JEWTooltipConfig? {
         return self.config
     }
     
-    func reloadTooltip() {
+    public func reloadTooltip() {
         if let tooltipView = tooltipView, let config = config {
             tooltipView.frame = tooltipRect()
             configure(withTooltipView: tooltipView, config: config)
         }
         if let messageLabel = messageLabel, let config = config {
-            messageLabel.frame = messageRect()
+            messageLabel.frame = contentRect()
             configure(withMessageLabel: messageLabel, config: config)
         }
         if let arrowView = arrowView {
@@ -166,26 +190,26 @@ extension LifeSupportTooltip: LifeSupportTooltipConfigProtocol {
 }
 
 
-extension LifeSupportTooltip: LifeSupportTooltipTextProtocol {
-    func hasValid(string: String) -> Bool {
+extension JEWTooltip: JEWTooltipTextProtocol {
+    public func hasValid(string: String) -> Bool {
         return string.count > 0
     }
     
-    func hasValidTitle() -> Bool {
+    public func hasValidTitle() -> Bool {
         guard let title = self.config?.title else {
             return false
         }
         return self.hasValid(string: title)
     }
     
-    func hasValidText() -> Bool {
+    public func hasValidText() -> Bool {
         guard let text = self.config?.text else {
             return false
         }
         return self.hasValid(string: text)
     }
     
-    func attributedStringFullText() -> NSAttributedString {
+    public func attributedStringFullText() -> NSAttributedString {
         let mutableAttributedText = NSMutableAttributedString()
         guard let config = config else {
             return mutableAttributedText
@@ -207,13 +231,13 @@ extension LifeSupportTooltip: LifeSupportTooltipTextProtocol {
 }
 
 
-extension LifeSupportTooltip: LifeSupportTooltipCalculationProtocol {
+extension JEWTooltip: JEWTooltipCalculationProtocol {
     
-    func tooltipRect() -> CGRect {
+    public func tooltipRect() -> CGRect {
         guard let config = config, let anchorView = anchorView, let superview = superview else {
             return .zero
         }
-        var boundingRect = messageRect()
+        var boundingRect = contentRect()
         boundingRect.size.width += config.padding.left + config.padding.right
         boundingRect.size.width = fmax(boundingRect.size.width, minWidth())
         boundingRect.size.height += config.padding.bottom + config.padding.top
@@ -244,21 +268,21 @@ extension LifeSupportTooltip: LifeSupportTooltipCalculationProtocol {
         return boundingRect
     }
     
-    func hypotenuse() -> CGFloat {
+    public func hypotenuse() -> CGFloat {
         guard let arrowHeight = self.config?.arrowHeight else {
             return  CGFloat.leastNonzeroMagnitude
         }
         return CGFloat(hypotf(Float(arrowHeight), Float(arrowHeight)))
     }
     
-    func minWidth() -> CGFloat {
+    public func minWidth() -> CGFloat {
         guard let config = config else {
             return CGFloat.leastNonzeroMagnitude
         }
         return config.cornerRadius + config.padding.left + config.padding.right + self.hypotenuse()
     }
     
-    func maxWidth() -> CGFloat {
+    public func maxWidth() -> CGFloat {
         guard let config = config, let anchorView = self.anchorView, let superview = self.superview else {
             return .leastNonzeroMagnitude
         }
@@ -278,12 +302,24 @@ extension LifeSupportTooltip: LifeSupportTooltipCalculationProtocol {
         return CGFloat(fmaxf(Float(self.minWidth()), Float(maxWidth)))
     }
     
-    func messageRect() -> CGRect {
+    public func contentRect() -> CGRect {
         guard let config = config, let _ = self.anchorView, let _ = self.superview else {
             return .zero
         }
-        
         let maxWidth = self.maxWidth() - config.padding.left - config.padding.right
+        if let customView = config.customView, let height = config.height {
+            var boudingRect: CGRect = customView.frame
+            boudingRect.origin.x += config.padding.left
+            boudingRect.origin.y += config.padding.top
+            boudingRect.size.width = ceil(maxWidth)
+            boudingRect.size.height = ceil(height)
+            return boudingRect
+        }
+        return messageRect(maxWidth: maxWidth, config: config)
+    }
+    
+    private func messageRect(maxWidth: CGFloat, config: JEWTooltipConfig) -> CGRect {
+        
         var boudingRect = self.attributedStringFullText().boundingRect(with: CGSize.init(width: maxWidth, height: .greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil)
         boudingRect.origin.x += config.padding.left
         boudingRect.origin.y += config.padding.top
@@ -292,7 +328,7 @@ extension LifeSupportTooltip: LifeSupportTooltipCalculationProtocol {
         return boudingRect
     }
     
-    func leftTopPositionArrowRect() -> CGRect {
+    public func leftTopPositionArrowRect() -> CGRect {
         guard let config = config else {
             return .zero
         }
@@ -302,7 +338,7 @@ extension LifeSupportTooltip: LifeSupportTooltipCalculationProtocol {
         return CGRect.init(x: origin.x, y: origin.y, width: config.arrowHeight, height: config.arrowHeight)
     }
     
-    func rightTopPositionArrowRect() -> CGRect {
+    public func rightTopPositionArrowRect() -> CGRect {
         guard let config = config, let tooltipView = self.tooltipView else {
             return .zero
         }
@@ -312,7 +348,7 @@ extension LifeSupportTooltip: LifeSupportTooltipCalculationProtocol {
         return CGRect.init(x: origin.x, y: origin.y, width: config.arrowHeight, height: config.arrowHeight)
     }
     
-    func leftBottomPositionArrowRect() -> CGRect {
+    public func leftBottomPositionArrowRect() -> CGRect {
         guard let config = config, let tooltipView = self.tooltipView else {
             return .zero
         }
@@ -322,7 +358,7 @@ extension LifeSupportTooltip: LifeSupportTooltipCalculationProtocol {
         return CGRect.init(x: origin.x, y: origin.y, width: config.arrowHeight, height: config.arrowHeight)
     }
     
-    func rightBottomPositionArrowRect() -> CGRect {
+    public func rightBottomPositionArrowRect() -> CGRect {
         guard let config = config, let tooltipView = self.tooltipView else {
             return .zero
         }
@@ -332,7 +368,7 @@ extension LifeSupportTooltip: LifeSupportTooltipCalculationProtocol {
         return CGRect.init(x: origin.x, y: origin.y, width: config.arrowHeight, height: config.arrowHeight)
     }
     
-    func centerBottomPositionArrowRect() -> CGRect {
+    public func centerBottomPositionArrowRect() -> CGRect {
         guard let config = config, let tooltipView = self.tooltipView else {
             return .zero
         }
@@ -342,7 +378,7 @@ extension LifeSupportTooltip: LifeSupportTooltipCalculationProtocol {
         return CGRect.init(x: origin.x, y: origin.y, width: config.arrowHeight, height: config.arrowHeight)
     }
     
-    func centerTopPositionArrowRect() -> CGRect {
+    public func centerTopPositionArrowRect() -> CGRect {
         guard let config = config, let tooltipView = self.tooltipView else {
             return .zero
         }
@@ -352,7 +388,7 @@ extension LifeSupportTooltip: LifeSupportTooltipCalculationProtocol {
         return CGRect.init(x: origin.x, y: origin.y, width: config.arrowHeight, height: config.arrowHeight)
     }
     
-    func arrowViewRect() -> CGRect {
+    public func arrowViewRect() -> CGRect {
         guard let config = config, let tooltipView = self.tooltipView else {
             return .zero
         }
@@ -392,7 +428,7 @@ extension LifeSupportTooltip: LifeSupportTooltipCalculationProtocol {
     
 }
 
-extension LifeSupportTooltip: LifeSupportTooltipAnimationProtocol {
+extension JEWTooltip: JEWTooltipAnimationProtocol {
     func showTooltip(animated: Bool) {
         if animated {
             self.tooltipView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)

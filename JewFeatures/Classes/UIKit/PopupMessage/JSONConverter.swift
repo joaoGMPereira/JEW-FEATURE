@@ -47,4 +47,10 @@ public struct JSONConverter {
            completion(nil, nil)
         }
     }
+    
+    public static func object<T: Decodable>(any: Any) -> T? {
+        let data = (try? JSONSerialization.data(withJSONObject: any, options: [])) ?? Data()
+        let decoded = try? JSONDecoder().decode(T.self, from: data)
+        return decoded as T?
+    }
 }

@@ -12,6 +12,14 @@ public protocol ReloadableItem {
     var cellType: String { get }
     var height: CGFloat? { get }
     var delegate: ReloadableDelegate? { get set }
+    
+    func showSectionTitle() -> Bool
+}
+
+public extension ReloadableItem {
+    func showSectionTitle() -> Bool {
+        return true
+    }
 }
 
 public struct CellItem: Equatable {

@@ -29,7 +29,6 @@ public extension JEWFloatingTextFieldDelegate {
 
 public class JEWFloatingTextField: UIView {
    //Constants
-    static let requiredCharacter: String = "*"
     private static let animationDuration = 0.5
     private static let defaultHeight: CGFloat = 50
     private static let numberTwo: CGFloat = 2
@@ -75,6 +74,8 @@ public class JEWFloatingTextField: UIView {
         }
     }
     
+    var textFieldErrorColor = UIColor.red
+    
     var hideBottomView: Bool = false
     
     var valueTypeTextField: JEWFloatingTextFieldValueType?
@@ -111,22 +112,18 @@ public class JEWFloatingTextField: UIView {
     
     func updateTextFieldUI() {
         currentlySelectedColor = selectedColor
-        placeholderLabel.text = placeholderLabel.text?.replacingOccurrences(of: JEWFloatingTextField.requiredCharacter, with: String())
         placeholderLabel.textColor = currentlyPlaceholderColor
-        bottomLineView.backgroundColor = currentlySelectedColor
+        textField.textColor = textFieldTextColor
+        bottomLineView.backgroundColor = currentlyPlaceholderColor
         checkError()
     }
     
     func checkError() {
         if hasError {
-            let erroColor = UIColor.purple
-            placeholderLabel.textColor = erroColor
-            textField.textColor = erroColor
-            bottomLineView.backgroundColor = erroColor
-        } else {
-            placeholderLabel.textColor = currentlyPlaceholderColor
-            textField.textColor = textFieldTextColor
-            bottomLineView.backgroundColor = currentlyPlaceholderColor
+            let errorColor = textFieldErrorColor
+            placeholderLabel.textColor = errorColor
+            textField.textColor = errorColor
+            bottomLineView.backgroundColor = errorColor
         }
     }
 }

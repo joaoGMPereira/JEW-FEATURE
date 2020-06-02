@@ -54,7 +54,9 @@ extension ReloadableDataSource: UITableViewDataSource {
         let item = items[indexPath.section]
         let cell = tableView.dequeueReusableCell(withIdentifier: item.cellType, for: indexPath) as? ReloadableCellProtocol
         
-        cell?.set(item: item.cellItems[indexPath.row], row: indexPath.row)
+        if item.cellItems.indices.contains(indexPath.row) {
+            cell?.set(item: item.cellItems[indexPath.row], row: indexPath.row)
+        }
         if let cell = cell as? UITableViewCell {
             cell.selectionStyle = .none
             return cell
@@ -63,7 +65,7 @@ extension ReloadableDataSource: UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let sectionTitle = items[section].sectionTitle else {
+        guard let sectionTitle = items[section].sectionTitle, items[section].showSectionTitle() else {
             return nil
         }
         let titleLabel = UILabel.init(frame: CGRect.init(x: 0, y: 0, width: tableView.frame.width, height: 50))
@@ -78,10 +80,10 @@ extension ReloadableDataSource: UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if items[section].sectionTitle == nil {
-            return 0
+        if (items[section].sectionTitle != nil), items[section].showSectionTitle() {
+            return 50
         }
-        return 50
+        return 0
     }
     
 }

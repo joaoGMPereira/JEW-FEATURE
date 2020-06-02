@@ -1,19 +1,19 @@
 //
-//  LifeSupportTooltipViewProtocols.swift
-//  LifeSupport
+//  JEWTooltipViewProtocols.swift
+//  JEW
 //
 //  Created by Joao Gabriel Medeiros Perei on 09/02/20.
 //
 
 import Foundation
 
-protocol LifeSupportTooltipProtocol {
+public protocol JEWTooltipProtocol {
     // * Exibir o Tooltip usando as opções do TooltipConfig com os métodos de completion.
     // *
     // * @param superview UIView tela onde o tooltip será adicionado. Não pode ser nil.
     // * @param component UIView tela onde o tooltip será ancorado. Não pode ser nil.
     // * @param config IMCTooltipConfig objeto com as configurações de exibição do tooltip.
-    func show(withSuperview superview: UIView, anchorView: UIView, config: LifeSupportTooltipConfig)
+    func show(withSuperview superview: UIView, anchorView: UIView, config: JEWTooltipConfig)
     
     // * Exibir o Tooltip usando as opções do TooltipConfig com os métodos de completion.
     // *
@@ -23,7 +23,7 @@ protocol LifeSupportTooltipProtocol {
     // * @param completionShow bloco de callback para informar quando o tooltip acabou de ser exibido.
     // * @param completionDismiss bloco de callback para informar quando o tooltip acabou de ser removido.
     // */
-    func show(withSuperview superview: UIView, anchorView: UIView, config: LifeSupportTooltipConfig, showCompletion: LifeSupportTooltipCompletion?, dismissCompletion: LifeSupportTooltipCompletion?)
+    func show(withSuperview superview: UIView, anchorView: UIView, config: JEWTooltipConfig, showCompletion: JEWTooltipCompletion?, dismissCompletion: JEWTooltipCompletion?)
     
     ///**
     // Dismiss existing tooltip
@@ -31,7 +31,7 @@ protocol LifeSupportTooltipProtocol {
     func dismiss(animated: Bool)
 }
 
-protocol LifeSupportTooltipSetupProtocol {
+public protocol JEWTooltipSetupProtocol {
     func show(animated: Bool)
     
     func setup()
@@ -39,10 +39,10 @@ protocol LifeSupportTooltipSetupProtocol {
     func setupTooltipView(withFrame frame: CGRect) -> UIControl
     
     
-    func configure(withTooltipView tooltipView: UIControl, config: LifeSupportTooltipConfig)
+    func configure(withTooltipView tooltipView: UIControl, config: JEWTooltipConfig)
     func setupMessageLabel(withFrame frame: CGRect) -> UILabel
     
-    func configure(withMessageLabel messageLabel: UILabel, config: LifeSupportTooltipConfig)
+    func configure(withMessageLabel messageLabel: UILabel, config: JEWTooltipConfig)
     
     func arrowView(withFrame frame: CGRect) -> UIView
     
@@ -50,29 +50,29 @@ protocol LifeSupportTooltipSetupProtocol {
     
 }
 
-protocol LifeSupportTooltipConfigProtocol {
+public protocol JEWTooltipConfigProtocol {
     // * Changes configuration. If tooltip is shown it will be reloaded with the new configuration.
     // * @param config The configuration
     // */
-    func changeConfig(config: LifeSupportTooltipConfig)
+    func changeConfig(config: JEWTooltipConfig)
     
     ///**
     // * Recupera a instância do IMCTooltipConfig
     // */
-    func currentConfiguration() -> LifeSupportTooltipConfig?
+    func currentConfiguration() -> JEWTooltipConfig?
     
     func reloadTooltip()
     
 }
 
-protocol LifeSupportTooltipTextProtocol {
+public protocol JEWTooltipTextProtocol {
     func hasValid(string: String) -> Bool
     func hasValidTitle() -> Bool
     func hasValidText() -> Bool
     func attributedStringFullText() -> NSAttributedString
 }
 
-protocol LifeSupportTooltipCalculationProtocol {
+public protocol JEWTooltipCalculationProtocol {
   
     func tooltipRect() -> CGRect
     
@@ -82,7 +82,7 @@ protocol LifeSupportTooltipCalculationProtocol {
     
     func maxWidth() -> CGFloat
     
-    func messageRect() -> CGRect
+    func contentRect() -> CGRect
     
     func leftTopPositionArrowRect() -> CGRect
     
@@ -99,7 +99,7 @@ protocol LifeSupportTooltipCalculationProtocol {
     func arrowViewRect() -> CGRect
 }
 
-protocol LifeSupportTooltipAnimationProtocol {
+protocol JEWTooltipAnimationProtocol {
     func showTooltip(animated: Bool)
     
     func finishShow()

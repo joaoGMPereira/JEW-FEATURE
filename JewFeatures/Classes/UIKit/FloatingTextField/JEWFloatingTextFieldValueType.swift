@@ -8,7 +8,10 @@
 
 import Foundation
 
-public enum JEWFloatingTextFieldValueType: Decodable {
+public enum JEWFloatingTextFieldValueType: Decodable, Comparable {
+    public static func < (lhs: JEWFloatingTextFieldValueType, rhs: JEWFloatingTextFieldValueType) -> Bool {
+        return lhs != rhs
+    }
     
     case none
     case currency

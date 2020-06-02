@@ -174,6 +174,7 @@ extension JEWLoadingButton: JEWCodeView {
         self.layoutIfNeeded()
         if let bundle = PodAsset.bundle(forPod: JEWConstants.Resources.podsJewFeature.rawValue) {
             let loadAnimation = Animation.named(loadingJson, bundle: bundle)
+            loadingView.backgroundBehavior = .pauseAndRestore
             loadingView.animation = loadAnimation
             loadingView.contentMode = .scaleAspectFit
             loadingView.animationSpeed = 1.0

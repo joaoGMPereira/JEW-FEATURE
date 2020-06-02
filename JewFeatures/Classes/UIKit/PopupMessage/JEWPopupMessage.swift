@@ -39,7 +39,6 @@ public class JEWPopupMessage: UIView {
     private var heightLabelConstraint = NSLayoutConstraint()
     
     //MARK: UI
-    private var sender: UIView?
     var textMessageLabel = UILabel()
     var closeButton = UIButton()
     private var shadowLayer: CAShapeLayer?
@@ -83,7 +82,7 @@ public class JEWPopupMessage: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func show(withTextMessage message:String, title:String = "", popupType: JEWPopupMessageType = .error, shouldHideAutomatically: Bool = true, sender: UIView? = nil) {
+    public func show(withTextMessage message:String, title:String = "", popupType: JEWPopupMessageType = .error, shouldHideAutomatically: Bool = true) {
         setup(withTextMessage: message, title: title, popupType: popupType, shouldHideAutomatically: shouldHideAutomatically)
         show()
     }

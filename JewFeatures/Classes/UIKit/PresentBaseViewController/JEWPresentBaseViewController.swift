@@ -79,6 +79,7 @@ public class JEWPresentBaseViewController: UIViewController {
     private func setupLottie() {
         if let bundle = PodAsset.bundle(forPod: JEWConstants.Resources.podsJewFeature.rawValue) {
             let loadingAnimation = Animation.named(lottieString, bundle: bundle)
+            animatedLogoView.backgroundBehavior = .pauseAndRestore
             animatedLogoView.animation = loadingAnimation
             animatedLogoView.contentMode = .scaleAspectFit
             animatedLogoView.animationSpeed = 1.0
