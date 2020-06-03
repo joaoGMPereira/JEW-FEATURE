@@ -26,25 +26,32 @@ public struct JSONConverter {
        }
     }
     
-    public static func json<T: Encodable>(_ value: T, completion:(([String: Any]?, [[String: Any]]?) -> ())) {
+    public static func jsonDict<T: Encodable>(_ value: T) -> [String: Any]? {
         do {
              guard let data = try JSONConverter.encode(value) else {
-                completion(nil, nil)
-                return
+                return nil
              }
             if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-                completion(json, nil)
-                return
+                return json
             }
-            
-            if let arrayJson = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
-                completion(nil, arrayJson)
-                return
-            }
-            
-            completion(nil, nil)
+            return nil
         } catch {
-           completion(nil, nil)
+           return nil
+        }
+    }
+    
+    public static func jsonArray<T: Encodable>(_ value: T) -> [[String: Any]]? {
+        
+        do {
+             guard let data = try JSONConverter.encode(value) else {
+                return nil
+             }
+            if let arrayJson = try JSONSerialization.jsonObject(with: data, options: []) as? [[String: Any]] {
+                return arrayJson
+            }
+            return nil
+        } catch {
+           return nil
         }
     }
     

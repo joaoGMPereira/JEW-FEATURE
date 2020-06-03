@@ -171,10 +171,12 @@ public extension String {
     }
     
     func convertToDouble() -> Double? {
+        
         let formatter = NumberFormatter()
         formatter.locale = Locale(identifier: "pt_BR") // USA:
         formatter.numberStyle = .decimal
-        let number = formatter.number(from: self)
+        let string = self.replacingOccurrences(of: "R$", with: "").trimmingCharacters(in: .whitespaces)
+        let number = formatter.number(from: string)
         return number?.doubleValue
     }
     

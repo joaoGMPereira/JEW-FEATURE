@@ -16,6 +16,15 @@ public protocol ReloadableDelegate: class {
     func reachBottomEnd()
 }
 
+
+public extension ReloadableDelegate {
+    func didSelected(indexpath: IndexPath, cell: ReloadableCellProtocol?){}
+    func didAction(editItem: ReloadableEditItem, indexPath: IndexPath, cell: UITableViewCell?){}
+    func didRefresh(){}
+    func top(section: IndexPath){}
+    func reachBottomEnd(){}
+}
+
 public class ReloadableDataSource: NSObject {
     
     public weak var delegate: ReloadableDelegate?

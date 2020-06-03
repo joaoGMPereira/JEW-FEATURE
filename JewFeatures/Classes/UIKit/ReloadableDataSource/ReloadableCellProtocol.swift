@@ -12,3 +12,7 @@ public protocol ReloadableCellProtocol {
     func set(item: CellItem?, row: Int)
     func didSelected()
 }
+
+public extension ReloadableCellProtocol {
+    func didSelected(){}
+}
