@@ -7,7 +7,7 @@
 
 import Foundation
 
-class JEWFloatingTextFieldInfoButtonBuilder: NSObject, JEWFloatingTextFieldBuilderProtocol {
+class JEWFloatingTextFieldInfoButtonBuilder: NSObject, JEWToolbarBuilderProtocol {
     
        private var floatingTextField: JEWFloatingTextField
        init(with floatingTextField: JEWFloatingTextField) {

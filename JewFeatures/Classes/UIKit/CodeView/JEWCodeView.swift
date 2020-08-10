@@ -21,4 +21,15 @@ extension JEWCodeView {
         setupConstraints()
         setupAdditionalConfiguration()
     }
+//    
+//    public func buildViewHierarchy() {
+//        
+//    }
+//    public func setupConstraints() {
+//        
+//    }
+//    public func setupAdditionalConfiguration() {
+//        
+//    }
+
 }

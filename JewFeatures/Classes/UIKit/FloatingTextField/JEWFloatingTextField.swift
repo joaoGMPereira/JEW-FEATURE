@@ -25,6 +25,8 @@ public extension JEWFloatingTextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: JEWFloatingTextField){}
     
     func textFieldDidEndEditing(_ textField: JEWFloatingTextField){}
+    
+    func textFieldShouldChangeCharactersIn(_ textField: JEWFloatingTextField, text: String, isBackSpace: Bool){}
 }
 
 public class JEWFloatingTextField: UIView {

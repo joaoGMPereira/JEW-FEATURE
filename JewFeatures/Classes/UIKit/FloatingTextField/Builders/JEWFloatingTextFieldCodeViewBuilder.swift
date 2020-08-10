@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-class JEWFloatingTextFieldCodeViewBuilder: NSObject, JEWFloatingTextFieldBuilderProtocol, JEWCodeView {
+class JEWFloatingTextFieldCodeViewBuilder: NSObject, JEWToolbarBuilderProtocol, JEWCodeView {
         private static let eightyPercentSize: CGFloat = 0.8
     private static let padding: CGFloat = 16
     

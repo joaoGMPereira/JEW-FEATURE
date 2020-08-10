@@ -56,8 +56,14 @@ public struct JSONConverter {
     }
     
     public static func object<T: Decodable>(any: Any) -> T? {
-        let data = (try? JSONSerialization.data(withJSONObject: any, options: [])) ?? Data()
-        let decoded = try? JSONDecoder().decode(T.self, from: data)
-        return decoded as T?
+        do {
+        let data = try JSONSerialization.data(withJSONObject: any, options: [])
+        let decoded = try JSONDecoder().decode(T.self, from: data)
+        return decoded
+        } catch let error {
+            JEWLogger.error(error)
+            JEWLogger.error(any)
+            return nil
+        }
     }
 }

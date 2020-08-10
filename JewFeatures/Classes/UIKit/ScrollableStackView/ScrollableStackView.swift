@@ -11,40 +11,65 @@ import UIKit
 open class ScrollableStackView: UIScrollView {
     public var stackView = UIStackView(frame: .zero)
     public var hasUpdatedLayoutCallback: ((_ width: CGFloat) -> ())?
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
     }
     
-    public func setup(subViews: [UIView], axis: NSLayoutConstraint.Axis, spacing: CGFloat = 0, alwaysBounce: Bool = false) {
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupView()
+    }
+    
+    public func setup(subViews: [UIView], axis: NSLayoutConstraint.Axis, distribution: UIStackView.Distribution = .fill, spacing: CGFloat = 0, alwaysBounce: Bool = false, shouldHaveSizeOfView: Bool = false) {
+        stackView.distribution = distribution
         stackView.spacing = spacing
-        setupAxis(axis: axis, alwaysBounce: alwaysBounce)
         for subView in subViews {
             stackView.addArrangedSubview(subView)
         }
-        layoutIfNeeded()
-        if let hasUpdatedLayoutCallback = hasUpdatedLayoutCallback {
-            hasUpdatedLayoutCallback(stackView.frame.width)
-        }
+        setupAxis(axis: axis, alwaysBounce: alwaysBounce, shouldHaveSizeOfView: shouldHaveSizeOfView)
     }
     
     public func setCustomSpacing(spacing: CGFloat, after: UIView) {
         stackView.setCustomSpacing(spacing, after: after)
     }
     
-    private func setupAxis(axis: NSLayoutConstraint.Axis, alwaysBounce: Bool) {
+    private func setupAxis(axis: NSLayoutConstraint.Axis, alwaysBounce: Bool, shouldHaveSizeOfView: Bool) {
         stackView.axis = axis
+        alwaysBounceVertical = alwaysBounce
         if axis == .vertical {
             stackView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-            alwaysBounceVertical = alwaysBounce
         } else {
             stackView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
-            alwaysBounceHorizontal = alwaysBounce
         }
+        
+        shouldScroll(axis: axis, shouldHaveSizeOfView: shouldHaveSizeOfView)
     }
     
-    required public init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    private func shouldScroll(axis: NSLayoutConstraint.Axis, shouldHaveSizeOfView: Bool) {
+        
+        UIView.animate(withDuration: 0.01, animations: {
+            self.layoutIfNeeded()
+        }) { (finished) in
+            if shouldHaveSizeOfView {
+                if axis == .vertical {
+                    let shouldScroll = shouldHaveSizeOfView && self.contentSize.height < self.frame.height
+                    if shouldScroll {
+                        self.stackView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+                    }
+                } else {
+                    let shouldScroll = shouldHaveSizeOfView && self.contentSize.width < self.frame.width
+                    if shouldScroll {
+                        self.stackView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+                    }
+                }
+            }
+            self.layoutIfNeeded()
+            if let hasUpdatedLayoutCallback = self.hasUpdatedLayoutCallback {
+                hasUpdatedLayoutCallback(self.stackView.frame.width)
+            }
+        }
     }
     
 }
@@ -62,11 +87,10 @@ extension ScrollableStackView: JEWCodeView {
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
-            ])
+        ])
     }
     
     public func setupAdditionalConfiguration() {
-        stackView.distribution = .fill
         stackView.alignment = .fill
         stackView.backgroundColor = .clear
     }

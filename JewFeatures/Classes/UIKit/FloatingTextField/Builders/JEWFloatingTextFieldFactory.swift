@@ -13,8 +13,8 @@ public enum JEWFloatingTextFieldFactoryTypes {
     case CodeView
     case InfoButton
     case format(builder: JEWFloatingTextFieldFormatBuilder)
-    case toolbar(builder: JEWFloatingTextFieldToolbarBuilder)
-    func build(withFloatingTextField textField: JEWFloatingTextField) -> JEWFloatingTextFieldBuilderProtocol {
+    case toolbar(builder: JEWToolbarBuilder)
+    func build(withFloatingTextField textField: JEWFloatingTextField) -> JEWToolbarBuilderProtocol {
         switch self {
         case .CodeView:
             return JEWFloatingTextFieldCodeViewBuilder.init(with: textField)

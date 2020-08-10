@@ -16,7 +16,7 @@ public extension UILabel {
         label.textAlignment = textAlignment
         label.textColor = color
         label.font = font
-
+        
         return label
     }
     
@@ -37,5 +37,21 @@ public extension UILabel {
         mutableAttributedString.append(priceAttributedString)
         
         return createLabel(attributedText: mutableAttributedString, textAlignment: textAlignment)
+    }
+    
+    func append(text: String, color: UIColor, font: UIFont, breakline: Bool = false) {
+        let updatedText = "\(text)\(breakline ? "\n" : String())"
+        let mutableAttributedString = NSMutableAttributedString(attributedString: self.attributedText ?? NSAttributedString())
+        mutableAttributedString.append(NSAttributedString.init(string: updatedText, attributes: [NSAttributedString.Key.foregroundColor : color, NSAttributedString.Key.font : font]))
+        self.attributedText = mutableAttributedString
+    }
+}
+
+public extension UIButton {
+    func append(text: String, color: UIColor, font: UIFont, breakline: Bool = false) {
+        let updatedText = "\(text)\(breakline ? "\n" : String())"
+        let mutableAttributedString = NSMutableAttributedString(attributedString: self.titleLabel?.attributedText ?? NSAttributedString())
+        mutableAttributedString.append(NSAttributedString.init(string: updatedText, attributes: [NSAttributedString.Key.foregroundColor : color, NSAttributedString.Key.font : font]))
+        self.setAttributedTitle(mutableAttributedString, for: .normal)
     }
 }

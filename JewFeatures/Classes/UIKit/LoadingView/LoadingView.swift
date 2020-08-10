@@ -15,6 +15,7 @@ public class LoadingView: UIView {
     var trailingConstraint = NSLayoutConstraint()
     var heightConstraint = NSLayoutConstraint()
     var shouldAnimate = false
+    var hasStarted = false
     
     override public init(frame: CGRect) {
         super.init(frame: .zero)
@@ -37,6 +38,7 @@ extension LoadingView: JEWCodeView {
         leadingConstraint = animatedView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
         leadingConstraint.isActive = true
         trailingConstraint = animatedView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+        trailingConstraint.constant = -frame.width
         trailingConstraint.isActive = true
         heightConstraint = self.heightAnchor.constraint(equalToConstant: height)
         heightConstraint.isActive = true
@@ -45,17 +47,25 @@ extension LoadingView: JEWCodeView {
     
     public func setupAdditionalConfiguration() {
         animatedView.horizontalMode = true
-        animatedView.colors = [UIColor.white.cgColor, UIColor.JEWDefault().cgColor]
+        animatedView.colors = [backgroundColor?.cgColor ?? UIColor.white.cgColor, UIColor.JEWDefault().cgColor]
+        animatedView.setup()
+    }
+    
+    public func update(colors: [CGColor]) {
+        animatedView.colors = colors
         animatedView.setup()
     }
     
     public func start(animated: Bool = false) {
-        self.leadingConstraint.constant = 0
-        self.trailingConstraint.constant = -frame.width
-        self.layoutIfNeeded()
-        self.shouldAnimate = true
-        changeHeight(animated: animated)
-        moveRight()
+        if hasStarted == false {
+            hasStarted = true
+            self.leadingConstraint.constant = 0
+            self.trailingConstraint.constant = -frame.width
+            self.layoutIfNeeded()
+            self.shouldAnimate = true
+            changeHeight(animated: animated)
+            moveRight()
+        }
     }
     
     private func changeHeight(animated: Bool) {
@@ -70,6 +80,7 @@ extension LoadingView: JEWCodeView {
     }
     
     public func stop() {
+        hasStarted = false
         shouldAnimate = false
         self.heightConstraint.constant = 0
         self.leadingConstraint.constant = 0
@@ -79,20 +90,44 @@ extension LoadingView: JEWCodeView {
         }
     }
     
+    public func complete(time: TimeInterval = 0, completion: (() -> Void)? = nil) {
+        hasStarted = false
+        shouldAnimate = false
+        self.leadingConstraint.constant = 0
+        self.trailingConstraint.constant = 0
+        UIView.animate(withDuration: time, animations:  {
+            self.layoutIfNeeded()
+        }) { _ in
+            completion?()
+        }
+    }
+    
+    public func empty() {
+        hasStarted = false
+        shouldAnimate = false
+        self.leadingConstraint.constant = 0
+        self.trailingConstraint.constant = -frame.width
+        self.layoutIfNeeded()
+    }
+    
     func moveRight() {
         if shouldAnimate {
             self.trailingConstraint.constant = 0
             UIView.animate(withDuration: 1, delay: 0, options: .curveEaseInOut, animations: {
                 self.layoutIfNeeded()
             }) { (finished) in
-                self.leadingConstraint.constant = self.frame.width
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.layoutIfNeeded()
-                }) { _ in
-                    self.leadingConstraint.constant = 0
-                    self.trailingConstraint.constant = -self.frame.width
-                    self.layoutIfNeeded()
-                    self.moveRight()
+                if self.shouldAnimate {
+                    self.leadingConstraint.constant = self.frame.width
+                    UIView.animate(withDuration: 0.5, animations: {
+                        self.layoutIfNeeded()
+                    }) { _ in
+                        self.leadingConstraint.constant = 0
+                        self.trailingConstraint.constant = -self.frame.width
+                        self.layoutIfNeeded()
+                        if self.shouldAnimate {
+                            self.moveRight()
+                        }
+                    }
                 }
             }
         }

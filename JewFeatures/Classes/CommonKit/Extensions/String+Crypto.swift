@@ -51,7 +51,7 @@ extension String {
 }
 
 
-extension String {
+public extension String {
     
     static func randomIv() -> String {
         return randomString(count: kCCBlockSizeAES128)

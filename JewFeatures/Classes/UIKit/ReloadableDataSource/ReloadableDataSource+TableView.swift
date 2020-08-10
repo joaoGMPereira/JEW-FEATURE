@@ -90,7 +90,9 @@ extension ReloadableDataSource: UITableViewDataSource {
 
 extension ReloadableDataSource: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        delegate?.didSelected(indexpath: indexPath, cell: tableView.cellForRow(at: indexPath) as? ReloadableCellProtocol)
+        let cell = tableView.cellForRow(at: indexPath) as? ReloadableCellProtocol
+        cell?.didSelected()
+        delegate?.didSelected(indexpath: indexPath, cell: cell)
     }
     
     public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

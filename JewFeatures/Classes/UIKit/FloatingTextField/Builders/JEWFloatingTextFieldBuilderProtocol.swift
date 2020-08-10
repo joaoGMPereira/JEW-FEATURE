@@ -1,5 +1,5 @@
 //
-//  JEWFloatingTextFieldBuilderProtocol.swift
+//  JEWToolbarBuilderProtocol.swift
 //  InvestScopio
 //
 //  Created by Joao Medeiros Pereira on 22/10/19.
@@ -7,6 +7,6 @@
 //
 
 import Foundation
-public protocol JEWFloatingTextFieldBuilderProtocol {
+public protocol JEWToolbarBuilderProtocol {
     func setup()
 }

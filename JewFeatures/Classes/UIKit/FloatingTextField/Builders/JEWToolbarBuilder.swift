@@ -1,14 +1,14 @@
 //
-//  JEWFloatingTextFieldToolbarBuilder.swift
+//  JEWToolbarBuilder.swift
 //  JewFeatures
 //
 //  Created by Joao Gabriel Medeiros Perei on 23/11/19.
 //
 
 import Foundation
-public class JEWFloatingTextFieldToolbarBuilder: NSObject, JEWFloatingTextFieldBuilderProtocol {
+public class JEWToolbarBuilder: NSObject, JEWToolbarBuilderProtocol {
     
-    private var floatingTextField: JEWFloatingTextField
+    private var floatingTextField: JEWFloatingTextField?
     private var leftButtons: [JEWKeyboardToolbarButton] = [.cancel]
     private var rightButtons: [JEWKeyboardToolbarButton] = [.ok]
     private var shouldShowKeyboard: Bool = true
@@ -17,7 +17,11 @@ public class JEWFloatingTextFieldToolbarBuilder: NSObject, JEWFloatingTextFieldB
         super.init()
     }
     
-    public func setToolbar(leftButtons: [JEWKeyboardToolbarButton] = [.cancel], rightButtons: [JEWKeyboardToolbarButton] = [.ok], shouldShowKeyboard: Bool = true) -> JEWFloatingTextFieldToolbarBuilder {
+    public override init() {
+        
+    }
+    
+    @discardableResult public func setToolbar(leftButtons: [JEWKeyboardToolbarButton] = [.cancel], rightButtons: [JEWKeyboardToolbarButton] = [.ok], shouldShowKeyboard: Bool = true) -> JEWToolbarBuilder {
         self.leftButtons = leftButtons
         self.rightButtons = rightButtons
         self.shouldShowKeyboard = shouldShowKeyboard
@@ -33,10 +37,17 @@ public class JEWFloatingTextFieldToolbarBuilder: NSObject, JEWFloatingTextFieldB
         toolbar.toolBarDelegate = floatingTextField
         toolbar.setup(leftButtons: leftButtons, rightButtons: rightButtons)
         if shouldShowKeyboard {
-            floatingTextField.textField.inputAccessoryView = toolbar
+            floatingTextField?.textField.inputAccessoryView = toolbar
         } else {
-            floatingTextField.textField.inputView = UIView()
+            floatingTextField?.textField.inputView = UIView()
         }
+    }
+    
+    public func setToolbar(in textView: JEWTextView) {
+        let toolbar = JEWKeyboardToolbar()
+        toolbar.toolBarDelegate = textView
+        toolbar.setup(leftButtons: leftButtons, rightButtons: rightButtons)
+        textView.textView.inputAccessoryView = toolbar
     }
     
 

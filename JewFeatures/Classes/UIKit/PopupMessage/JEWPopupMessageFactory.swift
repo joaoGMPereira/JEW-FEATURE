@@ -12,7 +12,7 @@ public class JEWPopupMessageFactory: JEWPopupMessageDelegate {
     public var popups = [JEWPopupMessage]()
     public var isShowing = false
     
-    public static func appendPopup(title:String = String(), message:String, popupType: JEWPopupMessageType = .error, shouldHideAutomatically: Bool = true) {
+    public static func appendPopup(title:String = "Atenção\n", message:String, popupType: JEWPopupMessageType = .error, shouldHideAutomatically: Bool = true) {
         if JEWPopupMessageFactory.factory.isShowing == false {
             let popupMessage = JEWPopupMessage()
             popupMessage.setup(withTextMessage: message, title: title, popupType: popupType, shouldHideAutomatically: shouldHideAutomatically)

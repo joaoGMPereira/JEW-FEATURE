@@ -84,7 +84,7 @@ public class JEWLoadingButton: UIView {
         setupView()
         buttonTitle = title
         button.setTitle(buttonTitle, for: .normal)
-        button.setTitleColor(color, for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.round(radius: isRounded ? button.frame.height/2 : 0, backgroundColor: color, withShadow: true)
         
     }
