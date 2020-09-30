@@ -8,12 +8,6 @@
 
 import Foundation
 
-public enum ServiceType: Int {
-    case localHost = 0
-    case heroku
-    case offline
-}
-
 public class JEWSession {
     
     // Can't init is singleton
@@ -28,15 +22,8 @@ public class JEWSession {
 }
 
 public class JewSessionServices {
-    public var callService: ServiceType = .heroku
     public var publicKey: String = ""
     public var token: String = ""
     public var sessionToken: String = ""
-    public func isDev() -> Bool {
-        //#if DEV
-        return true
-        //#else
-        //return false
-        //#endif
-    }
+    public var scheme = Scheme.scheme
 }

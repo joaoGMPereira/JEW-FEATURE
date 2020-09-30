@@ -10,15 +10,6 @@ import Foundation
 public struct JEWUserRequest: JSONAble {
     var email: String = ""
     var password: String = ""
-    
-//  init(email: String, password: String) {
-//        if let emailAES = INVSCrypto.encryptAES(withText: email) {
-//            self.email = emailAES
-//        }
-//        if let passwordAES = INVSCrypto.encryptAES(withText: password) {
-//            self.password = passwordAES
-//        }
-//    }
 }
 
 
