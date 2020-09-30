@@ -56,11 +56,11 @@ public class JEWBiometrics: NSObject {
     }
     
     public static func defaultBiometricsAuthenticationReason() -> String {
-        return faceIDAvailable() ? BioMetricsFaceIDErrors.kFaceIdAuthenticationReason.rawValue : BioMetricsTouchIDErrors.kTouchIdAuthenticationReason.rawValue
+        return faceIDAvailable() ? BiometricsFaceIDErrors.kFaceIdAuthenticationReason.rawValue : BiometricsTouchIDErrors.kTouchIdAuthenticationReason.rawValue
     }
     
     public static func defaultPasscodeAuthenticationReason() -> String {
-        return faceIDAvailable() ? BioMetricsFaceIDErrors.kFaceIdPasscodeAuthenticationReason.rawValue : BioMetricsTouchIDErrors.kTouchIdPasscodeAuthenticationReason.rawValue
+        return faceIDAvailable() ? BiometricsFaceIDErrors.kFaceIdPasscodeAuthenticationReason.rawValue : BiometricsTouchIDErrors.kTouchIdPasscodeAuthenticationReason.rawValue
     }
     
     public func evaluate(policy: LAPolicy, with context: LAContext, reason: String, success successBlock:@escaping AuthenticationSuccess, failure failureBlock:@escaping AuthenticationFailure) {

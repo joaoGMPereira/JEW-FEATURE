@@ -11,7 +11,7 @@ import CommonCrypto
 
 protocol Crypter {
     func encrypt(_ digest: Data) -> String?
-    func decrypt(_ encrypted: Data) throws -> Data
+    func decrypt(_ encrypted: Data) -> String?
 }
 
 public struct JewAESCrypto: JSONAble {
@@ -20,7 +20,6 @@ public struct JewAESCrypto: JSONAble {
     let AESIV: String
     let deviceType: Int = 1 //iOS
                             //Android
-    
 }
 
 public class AES256Crypter {
@@ -29,23 +28,23 @@ public class AES256Crypter {
     public static let crypto = AES256Crypter()
     public static func create() -> JewAESCrypto? {
         do {
-        let salt = String.randomSalt()
-        let iv = String.randomIv()
-        let key = String.randomKey()
-        let secretKey = try AES256Crypter.createKey(password: key.randomData(), salt: salt.randomData())
-        let secretIv = iv.randomData()
-        
-        guard secretKey.count == kCCKeySizeAES256 else {
-            JEWLogger.error(JewAESError.badKeyLength.localizedDescription)
-            return nil
-        }
-        guard secretIv.count == kCCBlockSizeAES128 else {
-            JEWLogger.error(JewAESError.badInputVectorLength.localizedDescription)
-            return nil
-        }
-        AES256Crypter.crypto.key = secretKey
-        AES256Crypter.crypto.iv = secretIv
-        return JewAESCrypto(AESKey: key, AESSalt: salt, AESIV: iv)
+            let salt = String.randomSalt()
+            let iv = String.randomIv()
+            let key = String.randomKey()
+            let secretKey = try AES256Crypter.createKey(password: key.randomData(), salt: salt.randomData())
+            let secretIv = iv.randomData()
+            
+            guard secretKey.count == kCCKeySizeAES256 else {
+                JEWLogger.error(JewAESError.badKeyLength.localizedDescription)
+                return nil
+            }
+            guard secretIv.count == kCCBlockSizeAES128 else {
+                JEWLogger.error(JewAESError.badInputVectorLength.localizedDescription)
+                return nil
+            }
+            AES256Crypter.crypto.key = secretKey
+            AES256Crypter.crypto.iv = secretIv
+            return JewAESCrypto(AESKey: key, AESSalt: salt, AESIV: iv)
         } catch let error {
             JEWLogger.error(error.localizedDescription)
             return nil
@@ -68,22 +67,22 @@ public class AES256Crypter {
                 key.withUnsafeBytes { (keyBytes: UnsafePointer<UInt8>!) -> () in
                     status = CCCrypt(operation,
                                      CCAlgorithm(kCCAlgorithmAES128),            // algorithm
-                        CCOptions(kCCOptionPKCS7Padding),           // options
-                        keyBytes,                                   // key
-                        key.count,                                  // keylength
-                        ivBytes,                                    // iv
-                        encryptedBytes,                             // dataIn
-                        input.count,                                // dataInLength
-                        &outBytes,                                  // dataOut
-                        outBytes.count,                             // dataOutAvailable
-                        &outLength)                                 // dataOutMoved
+                                     CCOptions(kCCOptionPKCS7Padding),           // options
+                                     keyBytes,                                   // key
+                                     key.count,                                  // keylength
+                                     ivBytes,                                    // iv
+                                     encryptedBytes,                             // dataIn
+                                     input.count,                                // dataInLength
+                                     &outBytes,                                  // dataOut
+                                     outBytes.count,                             // dataOutAvailable
+                                     &outLength)                                 // dataOutMoved
                 }
             }
         }
         guard status == kCCSuccess else {
             throw JewAESError.cryptoFailed(status: status)
         }
-            
+        
         return Data(bytes: UnsafePointer<UInt8>(outBytes), count: outLength)
     }
     
@@ -94,14 +93,14 @@ public class AES256Crypter {
         password.withUnsafeBytes { (passwordBytes: UnsafePointer<Int8>!) in
             salt.withUnsafeBytes { (saltBytes: UnsafePointer<UInt8>!) in
                 status = CCKeyDerivationPBKDF(CCPBKDFAlgorithm(kCCPBKDF2),                  // algorithm
-                    passwordBytes,                                // password
-                    password.count,                               // passwordLen
-                    saltBytes,                                    // salt
-                    salt.count,                                   // saltLen
-                    CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA1),   // prf
-                    2048,                                        // rounds
-                    &derivedBytes,                                // derivedKey
-                    length)                                       // derivedKeyLen
+                                              passwordBytes,                                // password
+                                              password.count,                               // passwordLen
+                                              saltBytes,                                    // salt
+                                              salt.count,                                   // saltLen
+                                              CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA1),   // prf
+                                              2048,                                        // rounds
+                                              &derivedBytes,                                // derivedKey
+                                              length)                                       // derivedKeyLen
             }
         }
         guard status == 0 else {
@@ -126,8 +125,18 @@ extension AES256Crypter: Crypter {
         }
     }
     
-    public func decrypt(_ encrypted: Data) throws -> Data {
-        return try crypt(input: encrypted, operation: CCOperation(kCCDecrypt))
+    public func decrypt(_ encrypted: Data) -> String? {
+        do {
+            let decryptedData = try crypt(input: encrypted, operation: CCOperation(kCCDecrypt))
+            guard let data = Data(base64Encoded: decryptedData) else {
+                return nil
+            }
+            
+            return String(data: data, encoding: .utf8)
+        } catch let error {
+            JEWLogger.error(error.localizedDescription)
+            return nil
+        }
     }
     
 }

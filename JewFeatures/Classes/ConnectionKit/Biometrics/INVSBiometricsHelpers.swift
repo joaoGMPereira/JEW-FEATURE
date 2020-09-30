@@ -13,7 +13,7 @@ let kBiometryNotAvailableReason = "Autenticação de biometria não está dispon
 let kSessionExpiredTitle = "Sessão Expirada!"
 let kSessionExpiredMessage = "Para que continue usando o app\nsem que deslogue, salve seus Dados. "
 
-public enum BioMetricsTouchIDErrors: String {
+public enum BiometricsTouchIDErrors: String {
     //Touch ID
     case kTouchIdAuthenticationReason = "Confirme sua digital para autenticar."
     case kTouchIdPasscodeAuthenticationReason = "Touch ID está bloqueado agora, porque muitas tentativas falharam. Digite sua senha para desbloquear o Touch ID."
@@ -26,7 +26,7 @@ public enum BioMetricsTouchIDErrors: String {
     
 }
 
-public enum BioMetricsFaceIDErrors: String {
+public enum BiometricsFaceIDErrors: String {
     //Face ID
     case kFaceIdAuthenticationReason = "Confirme sua face para autenticar."
     case kFaceIdPasscodeAuthenticationReason = "Face ID está bloqueado agora, porque muitas tentativas falharam. Digite sua senha para desbloquear o Face ID."
@@ -83,17 +83,17 @@ public enum AuthenticationError {
         case .canceledByUser, .fallback, .canceledBySystem:
             return JEWConstants.Default.tryAgainLater.rawValue
         case .passcodeNotSet:
-            return JEWBiometrics.faceIDAvailable() ? BioMetricsFaceIDErrors.kSetPasscodeToUseFaceID.rawValue : BioMetricsTouchIDErrors.kSetPasscodeToUseTouchID.rawValue
+            return JEWBiometrics.faceIDAvailable() ? BiometricsFaceIDErrors.kSetPasscodeToUseFaceID.rawValue : BiometricsTouchIDErrors.kSetPasscodeToUseTouchID.rawValue
         case .biometryNotAvailable:
             return kBiometryNotAvailableReason
         case .biometryNotEnrolled:
-            return JEWBiometrics.faceIDAvailable() ? BioMetricsFaceIDErrors.kNoFaceIdentityEnrolled.rawValue : BioMetricsTouchIDErrors.kNoFingerprintEnrolled.rawValue
+            return JEWBiometrics.faceIDAvailable() ? BiometricsFaceIDErrors.kNoFaceIdentityEnrolled.rawValue : BiometricsTouchIDErrors.kNoFingerprintEnrolled.rawValue
         case .biometryLockedout:
-            return JEWBiometrics.faceIDAvailable() ? BioMetricsFaceIDErrors.kFaceIdPasscodeAuthenticationReason.rawValue : BioMetricsTouchIDErrors.kTouchIdPasscodeAuthenticationReason.rawValue
+            return JEWBiometrics.faceIDAvailable() ? BiometricsFaceIDErrors.kFaceIdPasscodeAuthenticationReason.rawValue : BiometricsTouchIDErrors.kTouchIdPasscodeAuthenticationReason.rawValue
         case .sessionExpired:
             return kSessionExpiredMessage
         default:
-            return JEWBiometrics.faceIDAvailable() ? BioMetricsFaceIDErrors.kDefaultFaceIDAuthenticationFailedReason.rawValue : BioMetricsTouchIDErrors.kDefaultTouchIDAuthenticationFailedReason.rawValue
+            return JEWBiometrics.faceIDAvailable() ? BiometricsFaceIDErrors.kDefaultFaceIDAuthenticationFailedReason.rawValue : BiometricsTouchIDErrors.kDefaultTouchIDAuthenticationFailedReason.rawValue
         }
     }
     

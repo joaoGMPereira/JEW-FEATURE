@@ -31,6 +31,7 @@ public class JewSessionServices {
     public var callService: ServiceType = .heroku
     public var publicKey: String = ""
     public var token: String = ""
+    public var sessionToken: String = ""
     public func isDev() -> Bool {
         //#if DEV
         return true

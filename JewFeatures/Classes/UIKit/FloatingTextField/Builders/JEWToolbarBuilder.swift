@@ -6,7 +6,7 @@
 //
 
 import Foundation
-public class JEWToolbarBuilder: NSObject, JEWToolbarBuilderProtocol {
+public class JEWToolbarBuilder: NSObject, JEWFloatingTextFieldBuilderProtocol {
     
     private var floatingTextField: JEWFloatingTextField?
     private var leftButtons: [JEWKeyboardToolbarButton] = [.cancel]
@@ -25,6 +25,11 @@ public class JEWToolbarBuilder: NSObject, JEWToolbarBuilderProtocol {
         self.leftButtons = leftButtons
         self.rightButtons = rightButtons
         self.shouldShowKeyboard = shouldShowKeyboard
+        return self
+    }
+    
+    public func update(textField: JEWFloatingTextField) -> JEWToolbarBuilder  {
+        self.floatingTextField = textField
         return self
     }
     

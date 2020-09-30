@@ -14,8 +14,6 @@ public enum JEWConstants {
     
     public enum Services: String {
         case localHost = "http://localhost:8084/api/v1"
-        case dev = "https://daily-rewards-node-api-dev.herokuapp.com/api/v1"
-        case prod = "https://daily-rewards-node-api.herokuapp.com/api/v1"
     }
     
     public enum Default: String {
@@ -55,16 +53,9 @@ public enum JEWConstants {
             case refreshAnimationPurple = "refreshAnimationPurple"
         }
     }
+
     
-    public enum StartAlertViewController: String {
-        case titleSettings = "Vá para Ajustes"
-    }
-    
-    public enum LogoutAlertViewController: String {
-        case message = "Deseja sair da sua conta?"
-    }
-    
-    public enum EnableBiometricViewController: String {
+    public enum EnableBiometric: String {
         case enableTouchId = "Habilitar Touch ID"
         case enableFaceId = "Habilitar Face ID"
         case CanceledBiometricPopup = "Por favor aceite a biometria para que possa logar"
@@ -84,5 +75,4 @@ public enum JEWConstants {
             }
         }
     }
-
 }

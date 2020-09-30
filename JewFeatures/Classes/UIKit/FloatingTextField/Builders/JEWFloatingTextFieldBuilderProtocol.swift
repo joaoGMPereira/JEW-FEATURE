@@ -7,6 +7,6 @@
 //
 
 import Foundation
-public protocol JEWToolbarBuilderProtocol {
+public protocol JEWFloatingTextFieldBuilderProtocol {
     func setup()
 }

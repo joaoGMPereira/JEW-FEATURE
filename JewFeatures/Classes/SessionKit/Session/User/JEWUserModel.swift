@@ -14,18 +14,18 @@ public enum JEWUserRole: Int {
 }
 
 public struct JEWUserModel: JSONAble {
-    public var email: String = ""
-    public var fullName: String?
+    public var email: String
+    public var fullName: String
     public var photoURL: URL?
     public var photoImage: UIImage?
-    public var uid: String = ""
+    public var uid: String = String()
     public var access: JEWAccessModel? = nil
     public var role: JEWUserRole = .client
     
-    public init(email: String, uid: String, fullName: String? = nil, photoURL: URL? = nil) {
-        self.email = email
+    public init(email: String?, uid: String, fullName: String?, photoURL: URL? = nil) {
+        self.email = email ?? "User Without Email"
         self.uid = uid
-        self.fullName = fullName
+        self.fullName = fullName ?? "User Without Name"
         self.photoURL = photoURL
     }
 }

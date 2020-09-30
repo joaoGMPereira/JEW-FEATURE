@@ -15,7 +15,7 @@ public enum OptionType {
     public func title() -> String {
         switch self {
         case .biometric(let isFaceID):
-                return isFaceID ? JEWConstants.EnableBiometricViewController.enableFaceId.rawValue : JEWConstants.EnableBiometricViewController.enableTouchId.rawValue
+                return isFaceID ? JEWConstants.EnableBiometric.enableFaceId.rawValue : JEWConstants.EnableBiometric.enableTouchId.rawValue
             case .notification:
                 return "Habilitar Notificação"
         }

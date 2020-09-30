@@ -39,7 +39,7 @@ public class JEWFloatingTextField: UIView {
     
     //UI
     public let textField = UITextField(frame: .zero)
-    let placeholderLabel = UILabel(frame: .zero)
+    public let placeholderLabel = UILabel(frame: .zero)
     let bottomLineView = UIView(frame: .zero)
     var infoButton: UIButton? = nil
     
@@ -61,6 +61,8 @@ public class JEWFloatingTextField: UIView {
             if textFieldText != String() {
                 textField.text = textFieldText
                 openKeyboard()
+            } else {
+                textField.text = nil
             }
         }
     }
@@ -80,7 +82,7 @@ public class JEWFloatingTextField: UIView {
     
     var hideBottomView: Bool = false
     
-    var valueTypeTextField: JEWFloatingTextFieldValueType?
+    public var valueTypeTextField: JEWFloatingTextFieldValueType?
     var currentlySelectedColor = UIColor.white
     var placeholderColor: UIColor? {
         didSet {
@@ -176,7 +178,7 @@ extension JEWFloatingTextField: UITextFieldDelegate, JEWKeyboardToolbarDelegate 
         }
     }
     
-    func openKeyboard() {
+    public  func openKeyboard() {
         UIView.animate(withDuration: JEWFloatingTextField.animationDuration) { [weak self] in
             self?.bottomLabelConstraint.constant = -(self?.frame.height ?? JEWFloatingTextField.defaultHeight)/JEWFloatingTextField.numberTwo
             self?.topTextFieldConstraint.constant = (self?.frame.height ?? JEWFloatingTextField.defaultHeight)/JEWFloatingTextField.numberTwo
